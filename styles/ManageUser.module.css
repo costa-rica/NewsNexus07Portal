@@ -1,8 +1,6 @@
 .main {
   display: flex;
   flex-direction: row;
-  /* justify-content: center;
-  align-items: center; */
   min-height: 100vh;
   /* padding: 4rem 0; */
 }
@@ -10,13 +8,17 @@
 .divLeft {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* padding: 4rem 0; */
-  /* background-color: #f0f0f0; */
+  width: 100%;
+  min-width: 50%;
+  background-color: #d9d9d9;
 }
 
+.imgNewsNexusLogo {
+  width: 150px;
+}
 .divRight {
   display: none;
 }
@@ -24,35 +26,61 @@
 .h1PageTitle {
   line-height: 1.15;
   font-size: 2rem;
+  color: var(--med-text-color);
 }
 
-/* .title a {
-  color: #0070f3;
-  text-decoration: none;
+.divForm {
+  min-width: 200px;
+  width: 80%;
 }
+.divEmailAndPassword {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
-} */
-
+  width: 100%;
+}
 .divInputGroup {
   display: flex;
   flex-direction: column;
-  /* justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 4rem 0; */
+  gap: 0.25rem;
+}
+.divInputGroup label {
+  color: var(--med-text-color);
 }
 .inputEmail {
-  /* no border */
   border: none;
   background-color: #f7f7f8;
   border-radius: 12px;
   padding: 12px;
 }
 
+.divButtonAndLinks {
+  width: 100%;
+  padding: 1rem 0;
+}
+.divResetPassword {
+  display: flex;
+  justify-content: flex-end;
+  /* align-items: center; */
+  width: 100%;
+  padding: 1rem 0;
+}
+.buttonSubmit {
+  background-color: var(--blue-color);
+  color: var(--light-text-color);
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.divRegister {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem 0;
+}
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .divRight {

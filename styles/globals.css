@@ -8,3 +8,15 @@ body {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --dark-color: #000000;
+  --background-color: #bbbbbb;
+  --blue-color: #283a59;
+  --med-text-color: #888787;
+  --light-text-color: #ffffff;
+  --highlight-red: #8b0419;
+  --highlight-green: #4ad22b;
+  --highlight-yellow: #fa9f15;
+  --header-height: 9rem;
+}
