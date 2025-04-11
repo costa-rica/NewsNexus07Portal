@@ -1,15 +1,16 @@
 import styles from "../styles/Home.module.css";
+import TemplateView from "./common/TemplateView";
 
-function Home() {
+export default function GNewsRequest() {
   return (
-    <div>
+    <TemplateView>
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">G News</a>
-        </h1>
+        {Array.from({ length: 100 }).map((_, index) => (
+          <h1 key={index} className={styles.title}>
+            Welcome to <a href="https://nextjs.org">G News</a>
+          </h1>
+        ))}
       </main>
-    </div>
+    </TemplateView>
   );
 }
-
-export default Home;

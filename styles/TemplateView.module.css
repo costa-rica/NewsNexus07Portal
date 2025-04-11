@@ -1,0 +1,59 @@
+.headerCustom {
+  background-color: var(--bg-navbar-top);
+  /* border: 4px dashed gray; */
+}
+.divMain {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  /* margin-top: var(--header-height); */
+  /* border: 4px dashed gray; */
+}
+.divHeaderLeft {
+  padding: 0.5rem;
+}
+.imgNewsNexusLogo {
+  width: 50px;
+}
+.divHeaderMiddle {
+  flex: 1;
+}
+.divHeaderRight {
+  padding: 0.5rem;
+}
+
+.hamburgerMenu {
+  display: block; /* Visible on small screens */
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.faHamburgerMenu {
+  font-size: 1.5rem;
+  color: white;
+}
+.divLeftChildren {
+  flex: 1;
+}
+.divRightMenu {
+  background-color: var(--bg-navbar-top);
+  /* border: 4px dashed gray; */
+}
+
+/* Large screens (media query) */
+@media (min-width: 768px) {
+  .divHeaderLeft {
+    padding: 1rem;
+  }
+  .imgNewsNexusLogo {
+    width: 100px;
+  }
+  .divHeaderRight {
+    padding: 1rem;
+  }
+  .faHamburgerMenu {
+    font-size: 2.5rem;
+    /* color: white; */
+  }
+}

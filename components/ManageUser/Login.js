@@ -3,7 +3,7 @@ import InputPassword from "../common/InputPassword";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../reducers/user";
 
 export default function Login() {
@@ -11,7 +11,15 @@ export default function Login() {
   const [password, passwordSetter] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
-  // const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user.value);
+
+  useEffect(() => {
+    if (userReducer.token) {
+      // Redirect if token exists
+      router.push("/get-articles/gnews");
+    }
+  }, [userReducer]); // Run effect if token changes
+
   const sendPasswordBackToParent = (passwordFromInputPasswordElement) => {
     passwordSetter(passwordFromInputPasswordElement);
   };

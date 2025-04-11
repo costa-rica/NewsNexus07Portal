@@ -10,13 +10,18 @@ body {
 }
 
 :root {
-  --dark-color: #000000;
+  --gray-light: #d9d9d9;
+  --gray-medium: #888787;
+  --blue-dark: #283a59;
+  --bg-login-left: #d9d9d9;
+  --bg-navbar-top: #283a59;
+  /* --dark-color: #000000;
   --background-color: #bbbbbb;
   --blue-color: #283a59;
-  --med-text-color: #888787;
   --light-text-color: #ffffff;
   --highlight-red: #8b0419;
   --highlight-green: #4ad22b;
-  --highlight-yellow: #fa9f15;
+  --highlight-yellow: #fa9f15; */
   --header-height: 9rem;
+  --menu-width: 20rem;
 }
