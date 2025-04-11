@@ -1,11 +1,12 @@
-import '../styles/globals.css';
-import Head from 'next/head';
+import "../styles/globals.css";
+import Head from "next/head";
 
 function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Next.js App</title>
+        <title>News Nexus</title>
+        <link rel="icon" href="/favicon_io/favicon.ico" />
       </Head>
       <Component {...pageProps} />
     </>
