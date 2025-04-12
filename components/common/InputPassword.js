@@ -5,7 +5,7 @@ import styles from "../../styles/InputPassword.module.css";
 
 export default function InputPassword(props) {
   const [passwordVisible, passwordVisibleSetter] = useState(false);
-  const [password, passwordSetter] = useState("");
+  const [password, passwordSetter] = useState(props.value);
 
   const togglePasswordVisibility = () => {
     passwordVisibleSetter((prev) => !prev);

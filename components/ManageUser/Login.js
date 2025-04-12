@@ -7,12 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../reducers/user";
 
 export default function Login() {
-  const [email, emailSetter] = useState("");
-  const [password, passwordSetter] = useState("");
+  const [email, emailSetter] = useState(
+    process.env.NEXT_PUBLIC_MODE === "development"
+      ? "nickrodriguez@kineticmetrics.com"
+      : ""
+  );
+  const [password, passwordSetter] = useState(
+    process.env.NEXT_PUBLIC_MODE === "development" ? "test" : ""
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   const userReducer = useSelector((state) => state.user.value);
 
+  console.log(process.env.NEXT_PUBLIC_MODE);
   useEffect(() => {
     if (userReducer.token) {
       // Redirect if token exists
@@ -85,6 +92,7 @@ export default function Login() {
                 <input
                   className={styles.inputEmail}
                   onChange={(e) => emailSetter(e.target.value)}
+                  value={email}
                   type="email"
                   placeholder="example@gmail.com"
                 />
@@ -93,6 +101,7 @@ export default function Login() {
                 <label htmlFor="password">Password</label>
                 <InputPassword
                   sendPasswordBackToParent={sendPasswordBackToParent}
+                  value={password}
                 />
               </div>
             </div>
@@ -102,7 +111,7 @@ export default function Login() {
                 <a href="/forgot-password">Forgot Password</a>
               </div>
               <button
-                className={styles.buttonSubmit}
+                className={styles.btnSubmit}
                 onClick={() => {
                   console.log("Submitted email:", email);
                   console.log("Submitted password:", password);

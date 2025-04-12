@@ -66,14 +66,18 @@
   width: 100%;
   padding: 1rem 0;
 }
-.buttonSubmit {
-  background-color: var(--blue-color);
-  color: var(--light-text-color);
+.btnSubmit {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
   border: none;
   padding: 12px;
   width: 100%;
   border-radius: 12px;
   cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnSubmit:active {
+  transform: scale(0.87);
 }
 .divRegister {
   display: flex;

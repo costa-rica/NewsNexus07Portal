@@ -94,7 +94,7 @@ export default function Login() {
                 <a href="/forgot-password">Forgot Password</a>
               </div> */}
               <button
-                className={styles.buttonSubmit}
+                className={styles.btnSubmit}
                 onClick={() => {
                   console.log("Submitted email:", email);
                   console.log("Submitted password:", password);

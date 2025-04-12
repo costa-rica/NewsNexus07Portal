@@ -6,8 +6,6 @@
   display: flex;
   flex-direction: row;
   min-height: 100vh;
-  /* margin-top: var(--header-height); */
-  /* border: 4px dashed gray; */
 }
 .divHeaderLeft {
   padding: 0.5rem;
@@ -38,7 +36,22 @@
 }
 .divRightMenu {
   background-color: var(--bg-navbar-top);
+  opacity: 0.5;
   /* border: 4px dashed gray; */
+}
+
+.divRightMenu a {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: white;
+  text-decoration: none;
+}
+.divRightMenu a:hover {
+  border: 1px solid white;
+}
+.divRightMenu a.active {
+  background-color: black;
 }
 
 /* Large screens (media query) */
