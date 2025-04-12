@@ -15,4 +15,7 @@ body {
   --blue-dark: #283a59;
   --bg-login-left: #d9d9d9;
   --bg-navbar-top: #283a59;
+  --width-side-menu: 15rem;
+  --height-header-top: 5rem;
+  --height-header-top-large: 8rem;
 }

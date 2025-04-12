@@ -1,11 +1,20 @@
 .headerCustom {
   background-color: var(--bg-navbar-top);
-  /* border: 4px dashed gray; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  height: var(--height-header-top);
 }
 .divMain {
   display: flex;
   flex-direction: row;
   min-height: 100vh;
+  margin-top: var(--height-header-top);
 }
 .divHeaderLeft {
   padding: 0.5rem;
@@ -31,13 +40,35 @@
   font-size: 1.5rem;
   color: white;
 }
+
 .divLeftChildren {
   flex: 1;
 }
 .divRightMenu {
   background-color: var(--bg-navbar-top);
   opacity: 0.5;
+  position: fixed;
+  z-index: 1000;
+  right: 0;
+  top: var(--height-header-top);
+  width: var(--width-side-menu);
+  height: 100vh;
   /* border: 4px dashed gray; */
+}
+.divRightMenuClose {
+  width: var(--width-side-menu);
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.faXmark {
+  font-size: 2rem;
+  color: gray;
+}
+.faXmark:hover {
+  color: white;
 }
 
 .divRightMenu a {
@@ -56,6 +87,15 @@
 
 /* Large screens (media query) */
 @media (min-width: 768px) {
+  .headerCustom {
+    height: var(--height-header-top-large);
+  }
+  .divMain {
+    margin-top: var(--height-header-top-large);
+  }
+  .divRightMenu {
+    top: var(--height-header-top-large);
+  }
   .divHeaderLeft {
     padding: 1rem;
   }
