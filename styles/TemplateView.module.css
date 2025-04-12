@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 2;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -48,9 +48,9 @@
   background-color: var(--bg-navbar-top);
   opacity: 0.5;
   position: fixed;
-  z-index: 1000;
+  z-index: 2;
   right: 0;
-  top: var(--height-header-top);
+  top: 0;
   width: var(--width-side-menu);
   height: 100vh;
   /* border: 4px dashed gray; */
@@ -100,7 +100,7 @@
     padding: 1rem;
   }
   .imgNewsNexusLogo {
-    width: 100px;
+    width: 80px;
   }
   .divHeaderRight {
     padding: 1rem;
@@ -109,4 +109,21 @@
     font-size: 2.5rem;
     /* color: white; */
   }
+}
+
+/* Modal */
+/* Modal */
+
+.openModalButton {
+  /* padding: 10px 20px; */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.openModalButton:hover {
+  background-color: #0056b3;
 }

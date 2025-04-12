@@ -50,7 +50,7 @@
 }
 .inputEmail {
   border: none;
-  background-color: #f7f7f8;
+  background-color: var(--bg-input-off-white);
   border-radius: 12px;
   padding: 12px;
 }

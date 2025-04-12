@@ -1,0 +1,93 @@
+.main {
+  min-height: 100vh;
+}
+.divMainTop {
+  width: 100%;
+  height: 5rem;
+  border: 4px dashed gray;
+}
+
+/* --- MIDDLE --- */
+/* --- MIDDLE --- */
+/* --- MIDDLE --- */
+
+.divMainMiddle {
+  height: 10rem;
+  width: 100%;
+  /* flex: 1; */
+  border: 4px dashed gray;
+}
+.divRequestGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+.divRequestGroupInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  /* background-color: blue; */
+
+  justify-content: flex-end;
+}
+.divRequestGroupInput label {
+  color: var(--med-text-color);
+}
+.inputRequestKeyword {
+  border: none;
+  background-color: var(--bg-input-off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+.inputRequestStartDate,
+.inputRequestEndDate {
+  border: none;
+  background-color: var(--bg-input-off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.btnSubmit {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  padding: 12px;
+  /* width: 100%; */
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnSubmit:active {
+  transform: scale(0.87);
+}
+
+/* --- BOTTOM --- */
+/* --- BOTTOM --- */
+/* --- BOTTOM --- */
+
+.divMainBottom {
+  width: 100%;
+  height: 20rem;
+  border: 4px dashed gray;
+}
+
+.divKeywordsGroup {
+  border: 4px dashed green;
+}
+.inputKeywordGroup {
+  border: none;
+  background-color: #f7f7f8;
+  border-radius: 12px;
+  padding: 5px;
+}
+.divRequestTableGroup {
+  flex: 1;
+  border: 4px dashed green;
+}
+/* Large screens (media query) */
+@media (min-width: 768px) {
+  .divMainBottom {
+    display: flex;
+    flex-direction: row;
+  }
+}

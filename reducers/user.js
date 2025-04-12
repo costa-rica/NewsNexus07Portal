@@ -13,19 +13,19 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action) => {
-      console.log(`- dans Redux: loginUser 🔔`);
+      // console.log(`- dans Redux: loginUser 🔔`);
       state.value.token = action.payload.token;
       state.value.username = action.payload.user.username || "some_name";
       state.value.email = action.payload.user.email || "some_name@mail.com";
-      console.log(`- finished loginUser 🏁`);
+      // console.log(`- finished loginUser 🏁`);
     },
 
     logoutUser: (state) => {
-      console.log(`- dans Redux: logoutUser 🔔`);
+      // console.log(`- dans Redux: logoutUser 🔔`);
       state.value.token = null;
       state.value.username = null;
       state.value.email = null;
-      console.log(`- finished logoutUser 🏁`);
+      // console.log(`- finished logoutUser 🏁`);
     },
   },
 });

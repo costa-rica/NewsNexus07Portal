@@ -6,22 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../reducers/user";
-export default function TemplateView({
-  children,
-  onlyVersionsVisible = false,
-}) {
+export default function TemplateView({ children }) {
   const dispatch = useDispatch();
-  // const [headerHeight, setHeaderHeight] = useState(
-  //   typeof window !== "undefined" && window.innerWidth >= 768 ? "8rem" : "5rem"
-  // );
-
-  // useEffect(() => {
-  //   const updateHeaderHeight = () => {
-  //     setHeaderHeight(window.innerWidth >= 768 ? "8rem" : "5rem");
-  //   };
-  //   window.addEventListener("resize", updateHeaderHeight);
-  //   return () => window.removeEventListener("resize", updateHeaderHeight);
-  // }, []);
 
   const [menuOpen, setMenuOpen] = useState(true);
   const toggleMenu = () => {
@@ -32,37 +18,12 @@ export default function TemplateView({
 
   // --- dynamic styles ---
   const menuWidth = "15rem";
-  // const styleHeader = {
-  //   position: "fixed",
-  //   top: 0,
-  //   left: 0,
-  //   width: "100%",
-  //   zIndex: 1000,
-  //   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   height: headerHeight,
-  // };
-  // const styleRightMenu = {
-  //   position: "fixed",
-  //   zIndex: 1000,
-  //   right: 0,
-  //   top: headerHeight,
-  //   width: menuWidth,
-  //   height: "100vh",
-  //   // border: "4px dashed gray",
-  // };
-
   const { navigator } = router.query;
   const currentPath = navigator || router.pathname;
 
-  console.log(`currentPath : ${currentPath}`);
   return (
     <>
-      <header
-        className={styles.headerCustom}
-        // style={styleHeader}
-      >
+      <header className={styles.headerCustom}>
         <div className={styles.divHeaderLeft}>
           <img
             className={styles.imgNewsNexusLogo}
