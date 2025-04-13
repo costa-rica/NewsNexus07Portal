@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../reducers/user";
+import NavBarSideLink from "./navBarSide/NavBarSideLink";
+import NavBarSideDropdown from "./navBarSide/NavBarSideDropdown";
 export default function TemplateView({ children }) {
   const dispatch = useDispatch();
 
@@ -72,157 +74,39 @@ export default function TemplateView({ children }) {
             </div>
           )}
 
-          <Link href="/" passHref legacyBehavior>
-            <a
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "1rem",
-                color: "white",
-                textDecoration: "none",
-                backgroundColor:
-                  router.pathname === "/" ? "black" : "transparent",
-                border: "1px solid transparent",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.border = "1px solid white";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.border =
-                  router.pathname === "/"
-                    ? "1px solid black"
-                    : "1px solid transparent";
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.backgroundColor = "black";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  router.pathname === "/" ? "black" : "transparent";
-              }}
-            >
-              <img
-                src="/images/menu/house-solid.svg"
-                alt="Home Icon"
-                style={{ width: "1.5rem", marginRight: "1rem" }}
-              />
-              <span>Home</span>
-            </a>
-          </Link>
-          <Link href="/get-articles/gnews" passHref legacyBehavior>
-            <a
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "1rem",
-                color: "white",
-                textDecoration: "none",
-                backgroundColor:
-                  currentPath === "gnews" ? "black" : "transparent",
-                border: "1px solid transparent",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.border = "1px solid white";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.border =
-                  currentPath === "gnews"
-                    ? "1px solid black"
-                    : "1px solid transparent";
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.backgroundColor = "black";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  currentPath === "gnews" ? "black" : "transparent";
-              }}
-              onClick={() => setMenuOpen(false)}
-            >
-              <img
-                src="/images/menu/satellite-dish-solid.svg"
-                alt="GNews Icon"
-                style={{ width: "1.5rem", marginRight: "1rem" }}
-              />
-              <span>GNews</span>
-            </a>
-          </Link>
-          <Link href="/login" passHref legacyBehavior>
-            <a
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "1rem",
-                color: "white",
-                textDecoration: "none",
-                backgroundColor:
-                  currentPath === "login" ? "black" : "transparent",
-                border: "1px solid transparent",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.border = "1px solid white";
-                dispatch(logoutUser());
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.border =
-                  currentPath === "login"
-                    ? "1px solid black"
-                    : "1px solid transparent";
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.backgroundColor = "black";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  currentPath === "login" ? "black" : "transparent";
-              }}
-            >
-              <img
-                src="/images/menu/logout.svg"
-                alt="Logout Icon"
-                style={{ width: "1.5rem", marginRight: "1rem" }}
-              />
-              <span>Logout</span>
-            </a>
-          </Link>
-          <Link href="/admin-db/manage-db-backups" passHref legacyBehavior>
-            <a
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "1rem",
-                color: "white",
-                textDecoration: "none",
-                backgroundColor:
-                  currentPath === "manage-db-backups" ? "black" : "transparent",
-                border: "1px solid transparent",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.border = "1px solid white";
-                dispatch(logoutUser());
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.border =
-                  currentPath === "manage-db-backups"
-                    ? "1px solid black"
-                    : "1px solid transparent";
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.backgroundColor = "black";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  currentPath === "manage-db-backups" ? "black" : "transparent";
-              }}
-            >
-              <img
-                src="/images/menu/logout.svg"
-                alt="Logout Icon"
-                style={{ width: "1.5rem", marginRight: "1rem" }}
-              />
-              <span>Manage Backups</span>
-            </a>
-          </Link>
+          <NavBarSideLink
+            href="/"
+            iconFilenameAndPath="/images/menu/house-solid.svg"
+            label="Home"
+          />
+          <NavBarSideLink
+            href="/get-articles/gnews"
+            iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
+            label="GNews"
+          />
+          <NavBarSideLink
+            href="/login"
+            iconFilenameAndPath="/images/menu/logout.svg"
+            label="Logout"
+            onEnterFunction={() => dispatch(logoutUser())}
+          />
+          <NavBarSideDropdown
+            iconFilenameAndPath="/images/menu/database-solid.svg"
+            label="Manage DB"
+          >
+            <NavBarSideLink
+              href="/admin-db/manage-db-backups"
+              // iconFilenameAndPath="/images/menu/database-solid.svg"
+              label="Backups"
+              style={{ padding: "0.25rem" }}
+            />
+            <NavBarSideLink
+              href="/admin-db/manage-db-uploads"
+              // iconFilenameAndPath="/images/menu/database-solid.svg"
+              label="Uploads"
+              style={{ padding: "0.25rem" }}
+            />
+          </NavBarSideDropdown>
         </div>
       </div>
     </>

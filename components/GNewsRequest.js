@@ -11,16 +11,38 @@ export default function GNewsRequest() {
   const [filterKeyword, setFilterKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [isModalOpen, isModalOpenSetter] = useState(false);
+  const [isOpenKeywordWarning, setIsOpenKeywordWarning] = useState(false);
+  const [isOpenRequestWarning, setIsOpenRequestWarning] = useState(false);
+  const [isOpenRequestResponse, setIsOpenRequestResponse] = useState(false);
+  const [requestResponseMessage, setRequestResponseMessage] = useState("");
+  const [newsApiRequestsArray, setNewsApiRequestsArray] = useState([]);
+  const [maxResults, setMaxResults] = useState(10);
+  const [newsOrgArray, setNewsOrgArray] = useState([]);
+  const [newsOrg, setNewsOrg] = useState("");
+  const [inputErrors, setInputErrors] = useState({
+    keyword: false,
+    startDate: false,
+    endDate: false,
+    maxResults: false,
+    newsOrg: false,
+  });
   const userReducer = useSelector((state) => state.user.value);
-
   const todayDate = new Date().toISOString().split("T")[0];
   const minDate = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)
     .toISOString()
     .split("T")[0];
 
+  const filteredKeywords = keywordsArray.filter((keyword) =>
+    keyword.toLowerCase().includes(filterKeyword.toLowerCase())
+  );
+  const exactMatch = keywordsArray.some(
+    (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
+  );
+
   useEffect(() => {
     fetchKeywordsArray();
+    requestNewsApiRequestsArray();
+    fetchNewsOrgArray();
   }, []);
   useEffect(() => {
     if (!endDate) {
@@ -59,22 +81,48 @@ export default function GNewsRequest() {
   };
   const handleRequestArticles = () => {
     // if filteredKeyword is not in keywordsArray, add it do not trigger
+    console.log(`newsOrg: ${newsOrg}`);
+    const errors = {
+      keyword: !filterKeyword,
+      startDate: !startDate,
+      endDate: !endDate,
+      maxResults: !maxResults || Number(maxResults) <= 0,
+      newsOrg: !newsOrg || newsOrg === "",
+    };
+    setInputErrors(errors);
 
-    // else trigger console.log
+    // This is need for the input errors (keyword, max, start/end dates) to be displayed
+    if (Object.values(errors).some((e) => e)) {
+      setIsOpenRequestWarning(true);
+      return;
+    }
+
     if (!exactMatch) {
       console.log("Keyword not found:", filterKeyword);
-      isModalOpenSetter(true);
+      setIsOpenKeywordWarning(true);
     } else {
-      console.log("Request articles:", filterKeyword);
-      console.log("Start Date:", startDate);
-      console.log("End Date:", endDate);
-      requestGNewsApi();
+      if (newsOrg === "GNews") {
+        requestGNewsApi();
+      } else if (newsOrg === "NewsAPI") {
+        requestNewsApi();
+      }
     }
   };
-
   const requestGNewsApi = async () => {
+    if (!startDate || !endDate || !filterKeyword || !maxResults || !newsOrg) {
+      // console.log("Missing required fields");
+      setIsOpenRequestWarning(true);
+      return;
+    }
+
     try {
-      const bodyObj = { startDate, endDate, keywordString: filterKeyword };
+      const bodyObj = {
+        newsOrg,
+        startDate,
+        endDate,
+        keywordString: filterKeyword,
+        max: maxResults,
+      };
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/gnews/request`,
         {
@@ -88,20 +136,8 @@ export default function GNewsRequest() {
       );
 
       console.log(`Response status: ${response.status}`);
-
-      // if (!response.ok) {
-      //   const errorText = await response.text(); // Log response text for debugging
-      //   throw new Error(`Server Error: ${errorText}`);
-      // }
-
       const result = await response.json();
       console.log("Fetched Data:", result);
-
-      // if (result.keywordsArray && Array.isArray(result.keywordsArray)) {
-      //   setKeywordsArray(result.keywordsArray);
-      // } else {
-      //   setKeywordsArray([]);
-      // }
       setFilterKeyword("");
     } catch (error) {
       console.error("Error fetching data:", error.message);
@@ -110,12 +146,109 @@ export default function GNewsRequest() {
       // setKeywordsArray([]);
     }
   };
-  const filteredKeywords = keywordsArray.filter((keyword) =>
-    keyword.toLowerCase().includes(filterKeyword.toLowerCase())
-  );
-  const exactMatch = keywordsArray.some(
-    (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
-  );
+  const requestNewsApi = async () => {
+    if (!startDate || !endDate || !filterKeyword || !maxResults || !newsOrg) {
+      // console.log("Missing required fields");
+      setIsOpenRequestWarning(true);
+      return;
+    }
+
+    try {
+      const bodyObj = {
+        newsOrg,
+        startDate,
+        endDate,
+        keywordString: filterKeyword,
+        max: maxResults,
+      };
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-api/request`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+          body: JSON.stringify(bodyObj),
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+      let resJson = null;
+      const contentType = response.headers.get("Content-Type");
+
+      if (contentType?.includes("application/json")) {
+        resJson = await response.json();
+      }
+
+      if (resJson) {
+        console.log("Fetched Data:", resJson);
+        if (response.status === 400) {
+          setRequestResponseMessage(resJson.message);
+          setIsOpenRequestResponse(true);
+          return;
+        } else {
+          setFilterKeyword("");
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+
+      const result = await response.json();
+      console.log("Error Data:", result);
+    }
+  };
+  const requestNewsApiRequestsArray = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/requests`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      const result = await response.json();
+      console.log("Fetched Data:", result);
+
+      if (
+        result.newsApiRequestsArray &&
+        Array.isArray(result.newsApiRequestsArray)
+      ) {
+        setNewsApiRequestsArray(result.newsApiRequestsArray);
+      } else {
+        setNewsApiRequestsArray([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+      setNewsApiRequestsArray([]);
+    }
+  };
+  const fetchNewsOrgArray = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/news-org-apis`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      const result = await response.json();
+      console.log("Fetched Data:", result);
+
+      if (result.newsOrgArray && Array.isArray(result.newsOrgArray)) {
+        setNewsOrgArray(result.newsOrgArray);
+      } else {
+        setNewsOrgArray([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+      setNewsOrgArray([]);
+    }
+  };
 
   return (
     <TemplateView>
@@ -127,19 +260,57 @@ export default function GNewsRequest() {
         <div className={styles.divMainMiddle}>
           <div className={styles.divRequestGroup}>
             <div className={styles.divRequestGroupInput}>
+              <label htmlFor="newsOrg">News Organization</label>
+              <select
+                // className={styles.inputRequestKeyword}
+                className={`${styles.inputRequestKeyword} ${
+                  inputErrors.newsOrg ? styles.inputError : ""
+                }`}
+                value={newsOrg}
+                onChange={(e) => setNewsOrg(e.target.value)}
+              >
+                <option value="">Select API</option>
+                {newsOrgArray.map((org, index) => (
+                  <option key={index} value={org.nameOfOrg}>
+                    {org.nameOfOrg}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.divRequestGroupInput}>
               <label htmlFor="keyword">Keyword</label>
               <input
-                className={styles.inputRequestKeyword}
-                type="keyword"
+                // className={styles.inputRequestKeyword}
+                className={`${styles.inputRequestKeyword} ${
+                  inputErrors.keyword ? styles.inputError : ""
+                }`}
+                type="text"
                 placeholder="enter word"
                 value={filterKeyword}
                 onChange={(e) => setFilterKeyword(e.target.value)}
               />
             </div>
+            <div className={styles.divRequestGroupInputSmall}>
+              <label htmlFor="maxResults">Max Results</label>
+              <input
+                // className={styles.inputRequestKeyword}
+                className={`${styles.inputRequestKeyword} ${
+                  inputErrors.maxResults ? styles.inputError : ""
+                }`}
+                type="number"
+                min="1"
+                placeholder="enter word"
+                value={maxResults}
+                onChange={(e) => setMaxResults(e.target.value)}
+              />
+            </div>
             <div className={styles.divRequestGroupInput}>
               <label htmlFor="startDate">Start Date</label>
               <input
-                className={styles.inputRequestStartDate}
+                // className={styles.inputRequestStartDate}
+                className={`${styles.inputRequestStartDate} ${
+                  inputErrors.startDate ? styles.inputError : ""
+                }`}
                 min={minDate}
                 max={todayDate}
                 value={startDate}
@@ -150,7 +321,10 @@ export default function GNewsRequest() {
             <div className={styles.divRequestGroupInput}>
               <label htmlFor="endDate">End Date</label>
               <input
-                className={styles.inputRequestEndDate}
+                // className={styles.inputRequestEndDate}
+                className={`${styles.inputRequestEndDate} ${
+                  inputErrors.endDate ? styles.inputError : ""
+                }`}
                 min={minDate}
                 max={todayDate}
                 value={endDate}
@@ -187,8 +361,7 @@ export default function GNewsRequest() {
               )}
             </div>
             <div className={styles.divKeywordsTable}>
-              {/* <table style={{ width: "100%", backgroundColor: "white" }}> */}
-              <table style={{ backgroundColor: "white" }}>
+              <table className={styles.tableKeywords}>
                 <thead>
                   <tr>
                     <th>Keywords</th>
@@ -223,28 +396,41 @@ export default function GNewsRequest() {
                 </tr>
               </thead>
               <tbody>
-                {/* make an array for request table */}
-                {Array.from({ length: 10 }).map((_, index) => (
+                {newsApiRequestsArray.map((request, index) => (
                   <tr key={index}>
-                    <td>Request {index + 1}</td>
-                    <td>Org {index + 1}</td>
-                    <td>Keyword {index + 1}</td>
-                    <td>Start Date {index + 1}</td>
-                    <td>End Date {index + 1}</td>
-                    <td>Count {index + 1}</td>
-                    <td>Make similar request {index + 1}</td>
-                    <td>Status {index + 1}</td>
+                    <td>{request.madeOn}</td>
+                    <td>{request.nameOfOrg}</td>
+                    <td>{request.keyword}</td>
+                    <td>{request.startDate}</td>
+                    <td>{request.endDate}</td>
+                    <td>{request.count}</td>
+                    <td>Button</td>
+                    <td>Status</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
-        {isModalOpen && (
+        {isOpenKeywordWarning && (
           <Modal
-            isModalOpenSetter={isModalOpenSetter}
+            isModalOpenSetter={setIsOpenKeywordWarning}
             title="Must match keyword"
             content="If you're sure this keyword is correct, you can add it."
+          />
+        )}
+        {isOpenRequestWarning && (
+          <Modal
+            isModalOpenSetter={setIsOpenRequestWarning}
+            title="Must fill all fields"
+            content="Please fill all fields to make a request."
+          />
+        )}
+        {isOpenRequestResponse && (
+          <Modal
+            isModalOpenSetter={setIsOpenRequestResponse}
+            title="Problem with request"
+            content={requestResponseMessage}
           />
         )}
       </main>

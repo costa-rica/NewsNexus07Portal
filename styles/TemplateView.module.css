@@ -8,13 +8,14 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
-  height: var(--height-header-top);
+  height: var(--height-header);
 }
 .divMain {
   display: flex;
   flex-direction: row;
-  min-height: 100vh;
-  margin-top: var(--height-header-top);
+
+  margin-top: var(--height-header);
+  min-height: var(--height-content-main);
 }
 .divHeaderLeft {
   padding: 0.5rem;
@@ -40,7 +41,6 @@
   font-size: 1.5rem;
   color: white;
 }
-
 .divLeftChildren {
   flex: 1;
 }
@@ -53,7 +53,6 @@
   top: 0;
   width: var(--width-side-menu);
   height: 100vh;
-  /* border: 4px dashed gray; */
 }
 .divRightMenuClose {
   width: var(--width-side-menu);
@@ -70,7 +69,6 @@
 .faXmark:hover {
   color: white;
 }
-
 .divRightMenu a {
   display: flex;
   align-items: center;
@@ -84,17 +82,18 @@
 .divRightMenu a.active {
   background-color: black;
 }
-
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .headerCustom {
-    height: var(--height-header-top-large);
+    /* height: var(--height-header-top-large); */
+    height: var(--height-header-large);
   }
-  .divMain {
-    margin-top: var(--height-header-top-large);
-  }
+
   .divRightMenu {
-    top: var(--height-header-top-large);
+    /* margin-top: 10vh;
+    height: 90vh; */
+    margin-top: var(--height-header-large);
+    height: var(--height-content-main-large);
   }
   .divHeaderLeft {
     padding: 1rem;

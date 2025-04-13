@@ -1,5 +1,6 @@
 .main {
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  min-height: var(--height-content-main);
 }
 .divMainTop {
   width: 100%;
@@ -15,7 +16,7 @@
   height: 10rem;
   width: 100%;
   /* flex: 1; */
-  border: 4px dashed gray;
+  /* border: 4px dashed gray; */
 }
 .divRequestGroup {
   display: flex;
@@ -26,9 +27,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  /* background-color: blue; */
-
   justify-content: flex-end;
+}
+.divRequestGroupInputSmall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  width: 5rem;
 }
 .divRequestGroupInput label {
   color: var(--med-text-color);
@@ -68,22 +74,40 @@
 .divMainBottom {
   width: 100%;
   height: 20rem;
-  border: 4px dashed gray;
+  /* border: 4px dashed gray; */
 }
 
-.divKeywordsGroup {
+/* .divKeywordsGroup {
   border: 4px dashed green;
-}
+} */
 .inputKeywordGroup {
   border: none;
   background-color: #f7f7f8;
   border-radius: 12px;
   padding: 5px;
 }
+.divKeywordsTable {
+  height: 20rem;
+  overflow-y: auto;
+  /* width: 20rem; */
+  /* background-color: blue; */
+}
 .divRequestTableGroup {
   flex: 1;
-  border: 4px dashed green;
+  /* border: 4px dashed green; */
 }
+.tableKeywords {
+  height: 10rem;
+  overflow-y: auto;
+  background-color: gray;
+  border-radius: 10px;
+  /* width: 15rem; */
+}
+
+.inputError {
+  outline: 2px solid red;
+}
+
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .divMainBottom {

@@ -18,6 +18,9 @@ body {
   --bg-navbar-top: #283a59;
   --bg-input-off-white: #f7f7f8;
   --width-side-menu: 15rem;
-  --height-header-top: 5rem;
-  --height-header-top-large: 6rem;
+  --height-header: 5vh;
+  /* --height-header-top-large: 6rem; */
+  --height-header-large: 10vh;
+  --height-content-main: 95vh;
+  --height-content-main-large: 90vh;
 }

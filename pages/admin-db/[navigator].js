@@ -10,6 +10,10 @@ export default function Navigator() {
       return import(`../../components/AdminDb/ManageDbBackups`).catch(
         () => () => <p>ManageDbBackups Not Found</p>
       );
+    } else if (navigator === "manage-db-uploads") {
+      return import(`../../components/AdminDb/ManageDbUploads`).catch(
+        () => () => <p>ManageDbUploads Not Found</p>
+      );
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }
