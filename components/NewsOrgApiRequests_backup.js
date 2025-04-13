@@ -2,15 +2,11 @@ import styles from "../styles/GetArticles.module.css";
 import TemplateView from "./common/TemplateView";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./common/Modal";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-} from "@tanstack/react-table";
 
-export default function NewsOrgApiRequests() {
+export default function NewsOrgApiRequestsBAckup() {
   const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -42,16 +38,6 @@ export default function NewsOrgApiRequests() {
   const exactMatch = keywordsArray.some(
     (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
   );
-  const columnHelper = createColumnHelper();
-  const columns = [
-    columnHelper.accessor("madeOn", { header: "Made On" }),
-    columnHelper.accessor("nameOfOrg", { header: "Org Name" }),
-    columnHelper.accessor("keyword", { header: "Keyword" }),
-    columnHelper.accessor("startDate", { header: "Start Date" }),
-    columnHelper.accessor("endDate", { header: "End Date" }),
-    columnHelper.accessor("count", { header: "Count" }),
-    columnHelper.accessor("status", { header: "Status" }),
-  ];
 
   useEffect(() => {
     fetchKeywordsArray();
@@ -264,12 +250,6 @@ export default function NewsOrgApiRequests() {
     }
   };
 
-  const table = useReactTable({
-    data: newsApiRequestsArray,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -402,13 +382,12 @@ export default function NewsOrgApiRequests() {
             </div>
           </div>
           <div className={styles.divRequestTableGroup}>
-            {/* <table
+            <table
               className={styles.tableRequest}
               // style={{ backgroundColor: "white" }}
-            > */}
-            <table className={styles.tableRequest}>
+            >
               <thead>
-                {/* <tr>
+                <tr>
                   <th>Made On</th>
                   <th>Org Name</th>
                   <th>Keyword</th>
@@ -417,23 +396,10 @@ export default function NewsOrgApiRequests() {
                   <th>Count</th>
                   <th>Make similar request</th>
                   <th>Status</th>
-                </tr> */}
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th key={header.id}>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </th>
-                    ))}
-                    <th>Make similar request</th>
-                  </tr>
-                ))}
+                </tr>
               </thead>
               <tbody>
-                {/* {newsApiRequestsArray.map((request, index) => (
+                {newsApiRequestsArray.map((request, index) => (
                   <tr key={index}>
                     <td>{request.madeOn}</td>
                     <td>{request.nameOfOrg}</td>
@@ -443,19 +409,6 @@ export default function NewsOrgApiRequests() {
                     <td>{request.count}</td>
                     <td>Button</td>
                     <td>{request.status}</td>
-                  </tr>
-                ))} */}
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                    <td>Button</td>
                   </tr>
                 ))}
               </tbody>
