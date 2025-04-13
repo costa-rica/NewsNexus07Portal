@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./common/Modal";
 
-export default function GNewsRequest() {
+export default function NewsOrgApiRequests() {
   const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -382,7 +382,10 @@ export default function GNewsRequest() {
             </div>
           </div>
           <div className={styles.divRequestTableGroup}>
-            <table style={{ backgroundColor: "white" }}>
+            <table
+              className={styles.tableRequest}
+              // style={{ backgroundColor: "white" }}
+            >
               <thead>
                 <tr>
                   <th>Made On</th>
@@ -405,7 +408,7 @@ export default function GNewsRequest() {
                     <td>{request.endDate}</td>
                     <td>{request.count}</td>
                     <td>Button</td>
-                    <td>Status</td>
+                    <td>{request.status}</td>
                   </tr>
                 ))}
               </tbody>

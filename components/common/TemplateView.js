@@ -80,9 +80,9 @@ export default function TemplateView({ children }) {
             label="Home"
           />
           <NavBarSideLink
-            href="/get-articles/gnews"
+            href="/get-articles/news-org-api-requests"
             iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
-            label="GNews"
+            label="NewsOrg API Requests"
           />
           <NavBarSideLink
             href="/login"

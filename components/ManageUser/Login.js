@@ -23,7 +23,7 @@ export default function Login() {
   useEffect(() => {
     if (userReducer.token) {
       // Redirect if token exists
-      router.push("/get-articles/gnews");
+      router.push("/get-articles/news-org-api-requests");
     }
   }, [userReducer]); // Run effect if token changes
 

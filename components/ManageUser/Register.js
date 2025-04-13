@@ -11,10 +11,17 @@ export default function Login() {
   const [password, passwordSetter] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
-  // const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user.value);
   const sendPasswordBackToParent = (passwordFromInputPasswordElement) => {
     passwordSetter(passwordFromInputPasswordElement);
   };
+
+  useEffect(() => {
+    if (userReducer.token) {
+      // Redirect if token exists
+      router.push("/get-articles/news-org-api-requests");
+    }
+  }, [userReducer]); // Run effect if token changes
 
   const handleClickRegister = async () => {
     console.log(
