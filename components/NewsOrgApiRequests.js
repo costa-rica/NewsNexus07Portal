@@ -9,6 +9,8 @@ import {
   flexRender,
   createColumnHelper,
   getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 export default function NewsOrgApiRequests() {
@@ -22,9 +24,12 @@ export default function NewsOrgApiRequests() {
   const [requestResponseMessage, setRequestResponseMessage] = useState("");
   const [newsApiRequestsArray, setNewsApiRequestsArray] = useState([]);
   const [maxResults, setMaxResults] = useState(10);
-  // const [pageIndex, setPageIndex] = useState(0);
-  // const [pageSize, setPageSize] = useState(10);
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [paginationForRequestsTable, setPaginationForRequestsTable] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [sorting, setSorting] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
   const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("");
   const [inputErrors, setInputErrors] = useState({
@@ -48,13 +53,25 @@ export default function NewsOrgApiRequests() {
   );
   const columnHelper = createColumnHelper();
   const columns = [
-    columnHelper.accessor("madeOn", { header: "Made On" }),
-    columnHelper.accessor("nameOfOrg", { header: "Org Name" }),
-    columnHelper.accessor("keyword", { header: "Keyword" }),
-    columnHelper.accessor("startDate", { header: "Start Date" }),
-    columnHelper.accessor("endDate", { header: "End Date" }),
-    columnHelper.accessor("count", { header: "Count" }),
-    columnHelper.accessor("status", { header: "Status" }),
+    columnHelper.accessor("madeOn", { header: "Made On", enableSorting: true }),
+    columnHelper.accessor("nameOfOrg", {
+      header: "Org Name",
+      enableSorting: true,
+    }),
+    columnHelper.accessor("keyword", {
+      header: "Keyword",
+      enableSorting: true,
+    }),
+    columnHelper.accessor("startDate", {
+      header: "Start Date",
+      enableSorting: true,
+    }),
+    columnHelper.accessor("endDate", {
+      header: "End Date",
+      enableSorting: true,
+    }),
+    columnHelper.accessor("count", { header: "Count", enableSorting: true }),
+    columnHelper.accessor("status", { header: "Status", enableSorting: true }),
   ];
 
   useEffect(() => {
@@ -268,31 +285,22 @@ export default function NewsOrgApiRequests() {
     }
   };
 
-  // const setPagination = ({ pageIndex, pageSize }) => {
-  //   if (pageIndex !== undefined) setPageIndex(pageIndex);
-  //   if (pageSize !== undefined) setPageSize(pageSize);
-  // };
   const tableRequests = useReactTable({
     data: newsApiRequestsArray,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
-      pagination,
+      pagination: paginationForRequestsTable,
+      sorting,
+      globalFilter,
     },
-    onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    onPaginationChange: setPaginationForRequestsTable,
+    onGlobalFilterChange: setGlobalFilter,
   });
-  // const tableRequests = useReactTable({
-  //   data: newsApiRequestsArray,
-  //   columns,
-  //   getCoreRowModel: getCoreRowModel(),
-  //   getPaginationRowModel: getPaginationRowModel(),
-  //   initialState: {
-  //     pagination: {
-  //       pageSize: pageSize,
-  //     },
-  //   },
-  // });
 
   return (
     <TemplateView>
@@ -433,7 +441,7 @@ export default function NewsOrgApiRequests() {
                   <button
                     key={size}
                     onClick={() =>
-                      setPagination((prev) => ({
+                      setPaginationForRequestsTable((prev) => ({
                         ...prev,
                         pageSize: size,
                         pageIndex: 0, // reset to first page
@@ -443,6 +451,19 @@ export default function NewsOrgApiRequests() {
                     {size}
                   </button>
                 ))}
+              </div>
+              <div>
+                Search:{" "}
+                <input
+                  type="text"
+                  value={globalFilter ?? ""}
+                  onChange={(e) => setGlobalFilter(e.target.value)}
+                  style={{
+                    padding: "4px 8px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                  }}
+                />
               </div>
               <div>
                 <button
@@ -471,11 +492,19 @@ export default function NewsOrgApiRequests() {
                 {tableRequests.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <th key={header.id}>
+                      <th
+                        key={header.id}
+                        onClick={header.column.getToggleSortingHandler()}
+                        style={{ cursor: "pointer" }}
+                      >
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                        {{
+                          asc: " ▲",
+                          desc: " ▼",
+                        }[header.column.getIsSorted()] ?? ""}
                       </th>
                     ))}
                     <th>Make similar request</th>

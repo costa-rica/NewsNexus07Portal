@@ -110,7 +110,7 @@
   justify-content: space-between;
 }
 .tableRequest {
-  background-color: gray;
+  /* background-color: gray; */
 }
 /* Large screens (media query) */
 @media (min-width: 768px) {
