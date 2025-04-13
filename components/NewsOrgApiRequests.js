@@ -8,6 +8,7 @@ import {
   getCoreRowModel,
   flexRender,
   createColumnHelper,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 
 export default function NewsOrgApiRequests() {
@@ -21,6 +22,9 @@ export default function NewsOrgApiRequests() {
   const [requestResponseMessage, setRequestResponseMessage] = useState("");
   const [newsApiRequestsArray, setNewsApiRequestsArray] = useState([]);
   const [maxResults, setMaxResults] = useState(10);
+  // const [pageIndex, setPageIndex] = useState(0);
+  // const [pageSize, setPageSize] = useState(10);
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("");
   const [inputErrors, setInputErrors] = useState({
@@ -264,11 +268,31 @@ export default function NewsOrgApiRequests() {
     }
   };
 
-  const table = useReactTable({
+  // const setPagination = ({ pageIndex, pageSize }) => {
+  //   if (pageIndex !== undefined) setPageIndex(pageIndex);
+  //   if (pageSize !== undefined) setPageSize(pageSize);
+  // };
+  const tableRequests = useReactTable({
     data: newsApiRequestsArray,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
   });
+  // const tableRequests = useReactTable({
+  //   data: newsApiRequestsArray,
+  //   columns,
+  //   getCoreRowModel: getCoreRowModel(),
+  //   getPaginationRowModel: getPaginationRowModel(),
+  //   initialState: {
+  //     pagination: {
+  //       pageSize: pageSize,
+  //     },
+  //   },
+  // });
 
   return (
     <TemplateView>
@@ -402,23 +426,49 @@ export default function NewsOrgApiRequests() {
             </div>
           </div>
           <div className={styles.divRequestTableGroup}>
-            {/* <table
-              className={styles.tableRequest}
-              // style={{ backgroundColor: "white" }}
-            > */}
+            <div className={styles.divRequestTableDisplayRows}>
+              <div>
+                Show rows:{" "}
+                {[5, 10, 20].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() =>
+                      setPagination((prev) => ({
+                        ...prev,
+                        pageSize: size,
+                        pageIndex: 0, // reset to first page
+                      }))
+                    }
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+              <div>
+                <button
+                  onClick={() => tableRequests.previousPage()}
+                  disabled={!tableRequests.getCanPreviousPage()}
+                >
+                  {"<"} Prev
+                </button>
+                <span>
+                  Page {tableRequests.getState().pagination.pageIndex + 1} of{" "}
+                  {tableRequests.getPageCount()}
+                </span>
+                <button
+                  onClick={() => {
+                    tableRequests.nextPage();
+                    console.log("clicked next page");
+                  }}
+                  disabled={!tableRequests.getCanNextPage()}
+                >
+                  Next {">"}
+                </button>
+              </div>
+            </div>
             <table className={styles.tableRequest}>
               <thead>
-                {/* <tr>
-                  <th>Made On</th>
-                  <th>Org Name</th>
-                  <th>Keyword</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Count</th>
-                  <th>Make similar request</th>
-                  <th>Status</th>
-                </tr> */}
-                {table.getHeaderGroups().map((headerGroup) => (
+                {tableRequests.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th key={header.id}>
@@ -433,19 +483,7 @@ export default function NewsOrgApiRequests() {
                 ))}
               </thead>
               <tbody>
-                {/* {newsApiRequestsArray.map((request, index) => (
-                  <tr key={index}>
-                    <td>{request.madeOn}</td>
-                    <td>{request.nameOfOrg}</td>
-                    <td>{request.keyword}</td>
-                    <td>{request.startDate}</td>
-                    <td>{request.endDate}</td>
-                    <td>{request.count}</td>
-                    <td>Button</td>
-                    <td>{request.status}</td>
-                  </tr>
-                ))} */}
-                {table.getRowModel().rows.map((row) => (
+                {tableRequests.getPaginationRowModel().rows.map((row) => (
                   <tr key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id}>
