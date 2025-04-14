@@ -27,9 +27,12 @@ export default function NavBarSideLink({
     <Link href={href} passHref legacyBehavior>
       <a
         style={mergedStyle}
+        onClick={(e) => {
+          onEnterFunction(); // ← Only run on actual click
+        }}
+        // onMouseEnter: triggers on hover
         onMouseEnter={(e) => {
           e.currentTarget.style.border = "1px solid white";
-          onEnterFunction();
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.border =

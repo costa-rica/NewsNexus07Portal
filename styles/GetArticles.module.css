@@ -127,9 +127,21 @@
   flex-direction: row;
   justify-content: space-between;
 }
-/* .tableRequest {
-  background-color: gray;
-} */
+
+/* ----------
+
+    Table
+
+---------- */
+
+.columnHeaderSmallNote {
+  text-align: center;
+}
+.columnHeaderSmallNote span {
+  font-size: 0.8em;
+  color: #555;
+}
+
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .divMainBottom {

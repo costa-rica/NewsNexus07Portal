@@ -58,7 +58,32 @@ export default function NewsOrgApiRequests() {
       enableSorting: true,
     }),
     columnHelper.accessor("count", {
-      header: "Count",
+      header: () => (
+        <div className={styles.columnHeaderSmallNote}>
+          Count
+          <br />
+          <span>(Returned)</span>
+        </div>
+      ),
+      enableSorting: true,
+      cell: ({ getValue }) => (
+        <div
+          style={{
+            textAlign: "center",
+          }}
+        >
+          {getValue()}
+        </div>
+      ),
+    }),
+    columnHelper.accessor("countSaved", {
+      header: () => (
+        <div className={styles.columnHeaderSmallNote}>
+          Count
+          <br />
+          <span>(Saved)</span>
+        </div>
+      ),
       enableSorting: true,
       cell: ({ getValue }) => (
         <div

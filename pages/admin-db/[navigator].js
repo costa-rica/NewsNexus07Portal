@@ -14,6 +14,10 @@ export default function Navigator() {
       return import(`../../components/AdminDb/ManageDbUploads`).catch(
         () => () => <p>ManageDbUploads Not Found</p>
       );
+    } else if (navigator === "manage-users") {
+      return import(`../../components/AdminDb/ManageUsers`).catch(() => () => (
+        <p>ManageDbUploads Not Found</p>
+      ));
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }

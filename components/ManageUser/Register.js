@@ -2,7 +2,7 @@ import styles from "../../styles/ManageUser.module.css";
 import InputPassword from "../common/InputPassword";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../reducers/user";
 

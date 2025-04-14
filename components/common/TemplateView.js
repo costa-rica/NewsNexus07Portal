@@ -33,7 +33,13 @@ export default function TemplateView({ children }) {
             alt="NewsNexus Logo"
           />
         </div>
-        <div className={styles.divHeaderMiddle}></div>
+        <div className={styles.divHeaderMiddle}>
+          <div className={styles.divHeaderMiddleName}> News Nexus</div>
+
+          <div className={styles.divHeaderMiddleApiUrl}>
+            {process.env.NEXT_PUBLIC_API_BASE_URL}
+          </div>
+        </div>
         <div className={styles.divHeaderRight}>
           {!menuOpen && (
             <button
@@ -96,14 +102,17 @@ export default function TemplateView({ children }) {
           >
             <NavBarSideLink
               href="/admin-db/manage-db-backups"
-              // iconFilenameAndPath="/images/menu/database-solid.svg"
               label="Backups"
               style={{ padding: "0.25rem" }}
             />
             <NavBarSideLink
               href="/admin-db/manage-db-uploads"
-              // iconFilenameAndPath="/images/menu/database-solid.svg"
               label="Uploads"
+              style={{ padding: "0.25rem" }}
+            />
+            <NavBarSideLink
+              href="/admin-db/manage-users"
+              label="Users"
               style={{ padding: "0.25rem" }}
             />
           </NavBarSideDropdown>

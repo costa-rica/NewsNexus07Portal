@@ -25,6 +25,16 @@
 }
 .divHeaderMiddle {
   flex: 1;
+  justify-content: center;
+}
+.divHeaderMiddleName {
+  text-align: center;
+  color: white;
+}
+.divHeaderMiddleApiUrl {
+  text-align: center;
+  color: white;
+  font-size: 0.75rem;
 }
 .divHeaderRight {
   padding: 0.5rem;
@@ -94,6 +104,13 @@
     height: 90vh; */
     margin-top: var(--height-header-large);
     height: var(--height-content-main-large);
+  }
+
+  .divHeaderMiddleName {
+    font-size: 1.5rem;
+  }
+  .divHeaderMiddleApiUrl {
+    font-size: 1rem;
   }
   .divHeaderLeft {
     padding: 1rem;

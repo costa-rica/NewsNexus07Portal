@@ -61,6 +61,7 @@ export default function Login() {
 
     if (response.ok) {
       // if (resJson.user.isAdminForKvManagerWebsite) {
+      console.log(resJson);
       resJson.email = email;
       dispatch(loginUser(resJson));
       router.push("/get-articles/news-org-api-requests");
