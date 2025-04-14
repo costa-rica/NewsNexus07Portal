@@ -6,9 +6,13 @@ import { useSelector } from "react-redux";
 import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import StateSelector from "../common/StateSelector";
+import ModalApproveArticle from "../common/ModalApproveArticle";
+import Modal from "../common/Modal";
 export default function ReviewArticles() {
   const [articlesArray, setArticlesArray] = useState([]);
   const [stateArray, setStateArray] = useState([]);
+  const [isOpenApproveModal, setIsOpenApproveModal] = useState(false);
+  const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
 
   const [selectedArticle, setSelectedArticle] = useState(null);
   const userReducer = useSelector((state) => state.user.value);
@@ -142,13 +146,55 @@ export default function ReviewArticles() {
     }),
   ];
 
-  const stateSelected = (stateId) => {
-    const updated = stateArray.map((st) =>
-      st.id === stateId ? { ...st, selected: !st.selected } : st
-    );
-    setStateArray(updated);
-  };
+  const handleClickedValidateState = async () => {
+    console.log("clicked validate state");
 
+    const selectedStateIds = stateArray
+      .filter((st) => st.selected)
+      .map((st) => st.id);
+    // if (selectedStateIds.length === 0) {
+    //   // console.log("No states selected");
+    //   setIsOpenStateWarning(true);
+    //   return;
+    // }
+    try {
+      const bodyObj = {
+        stateIdArray: selectedStateIds,
+      };
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/states/${selectedArticle.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+          body: JSON.stringify(bodyObj),
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+      let resJson = null;
+      const contentType = response.headers.get("Content-Type");
+
+      if (contentType?.includes("application/json")) {
+        resJson = await response.json();
+      }
+
+      if (resJson) {
+        console.log("Fetched Data:", resJson);
+        if (response.status === 400) {
+          setRequestResponseMessage(resJson.message);
+          setIsOpenRequestResponse(true);
+          return;
+        } else {
+          fetchArticlesArray();
+        }
+      }
+    } catch (error) {
+      console.error("Error validating states:", error.message);
+    }
+  };
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -183,6 +229,30 @@ export default function ReviewArticles() {
                 setStateArray={setStateArray}
               />
             </div>
+
+            <button
+              className={styles.btnSubmit}
+              onClick={() => {
+                console.log("approve article");
+                handleClickedValidateState();
+                // setIsOpenApproveModal(true);
+                // handleRequestArticles();
+                // You can call your submit logic or dispatch here
+              }}
+            >
+              Validate State
+            </button>
+            <button
+              className={styles.btnSubmit}
+              onClick={() => {
+                console.log("approve article");
+                setIsOpenApproveModal(true);
+                // handleRequestArticles();
+                // You can call your submit logic or dispatch here
+              }}
+            >
+              Approve
+            </button>
           </div>
         </div>
         <div className={styles.divMainBottom}>
@@ -194,6 +264,16 @@ export default function ReviewArticles() {
           </div>
         </div>
       </main>
+      {isOpenApproveModal && (
+        <ModalApproveArticle setIsOpen={setIsOpenApproveModal} />
+      )}
+      {isOpenStateWarning && (
+        <Modal
+          isModalOpenSetter={setIsOpenStateWarning}
+          title="Problem with state request"
+          content="Maybe no selected states ?"
+        />
+      )}
     </TemplateView>
   );
 }

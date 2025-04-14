@@ -1,0 +1,127 @@
+/* Modal Overlay */
+/* Modal Overlay */
+/* Modal Overlay */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Ensure it's above all other content */
+}
+
+/* Modal Content */
+.modalContent {
+  background: black;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 60%;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.modalTop {
+  position: relative;
+}
+/* Close Icon */
+.closeModalIcon {
+  position: absolute;
+  top: -2rem;
+  right: -10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.closeModalIcon:hover {
+  color: var(--med-text-color);
+}
+
+/*
+
+   Main Bottom
+
+*/
+
+.divMainBottom {
+  /* height: 10rem; */
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.divRequestGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+.divRequestGroupInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+}
+.divRequestGroupInputWide {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+  position: relative;
+  /* background-color: green; */
+  justify-content: flex-start;
+}
+
+.divRequestGroupInputSmall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  width: 5rem;
+}
+.divRequestGroupInput label {
+  color: var(--med-text-color);
+  width: 100%;
+}
+.divRequestGroupInputWide label {
+  text-align: left;
+  width: 100%;
+}
+.inputRequestKeyword {
+  border: none;
+  background-color: var(--bg-input-off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+.inputRequestStartDate,
+.inputRequestEndDate {
+  border: none;
+  background-color: var(--bg-input-off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.btnSubmit {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  padding: 12px;
+  /* width: 100%; */
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnSubmit:active {
+  transform: scale(0.87);
+}
+.inputError {
+  outline: 2px solid red;
+}
