@@ -7,15 +7,14 @@ export default function GetArticlesNavigator() {
   const { navigator } = router.query;
 
   const GetArticlesComponent = dynamic(() => {
-    // if (navigator === "gnews") {
-    //   return import(`../../components/GNewsRequest`).catch(() => () => (
-    //     <p>GNewsRequest Not Found</p>
-    //   ));
-    // }
     if (navigator === "news-org-api-requests") {
-      return import(`../../components/NewsOrgApiRequests`).catch(() => () => (
-        <p>NewsOrgApiRequests Not Found</p>
-      ));
+      return import(`../../components/Articles/NewsOrgApiRequests`).catch(
+        () => () => <p>NewsOrgApiRequests Not Found</p>
+      );
+    } else if (navigator === "review") {
+      return import(`../../components/Articles/ReviewArticles`).catch(
+        () => () => <p>ReviewArticles Not Found</p>
+      );
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }

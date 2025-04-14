@@ -23,7 +23,7 @@ export default function Login() {
   useEffect(() => {
     if (userReducer.token) {
       // Redirect if token exists
-      router.push("/get-articles/news-org-api-requests");
+      router.push("/articles/news-org-api-requests");
     }
   }, [userReducer]); // Run effect if token changes
 
@@ -64,7 +64,7 @@ export default function Login() {
       console.log(resJson);
       resJson.email = email;
       dispatch(loginUser(resJson));
-      router.push("/get-articles/news-org-api-requests");
+      router.push("/articles/news-org-api-requests");
       // } else {
       //   alert("You are not authorized to login.");
       // }

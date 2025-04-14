@@ -86,9 +86,14 @@ export default function TemplateView({ children }) {
             label="Home"
           />
           <NavBarSideLink
-            href="/get-articles/news-org-api-requests"
+            href="/articles/news-org-api-requests"
             iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
             label="NewsOrg API Requests"
+          />
+          <NavBarSideLink
+            href="/articles/review"
+            iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+            label="Review Articles"
           />
           <NavBarSideLink
             href="/login"

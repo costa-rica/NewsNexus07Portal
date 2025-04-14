@@ -1,0 +1,127 @@
+.main {
+  /* min-height: 100vh; */
+  min-height: var(--height-content-main);
+}
+
+/* ----------
+
+    divMainTop
+
+---------- */
+
+.divMainTop {
+  width: 100%;
+  height: 5rem;
+  border: 4px dashed gray;
+}
+
+/* ----------
+
+    divMainMiddle
+
+---------- */
+
+.divMainMiddle {
+  /* height: 10rem; */
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border: 4px dashed gray;
+}
+
+.divMainMiddleLeft {
+  border: 4px dashed gray;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.divArticleDetail {
+  padding: 0.5rem;
+  background-color: var(--gray-medium);
+}
+.lblArticleDetail {
+  font-weight: bold;
+  color: var(--off-white);
+}
+.divArticleContent {
+  background-color: var(--gray-medium);
+  padding: 0.5rem;
+}
+.divMainMiddleRight {
+  flex: 1;
+  border: 4px dashed gray;
+}
+
+/* .divRequestGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+.divRequestGroupInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+}
+.divRequestGroupInputWide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  width: 20rem;
+  position: relative;
+}
+
+.btnSubmit {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  padding: 12px;
+
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; 
+}
+.btnSubmit:active {
+  transform: scale(0.87);
+}
+.inputError {
+  outline: 2px solid red;
+} */
+
+/* ----------
+
+    divMainBottom
+
+---------- */
+
+.divMainBottom {
+  width: 100%;
+  /* height: 20rem; */
+  border: 4px dashed gray;
+}
+
+/* .divRequestTableGroup {
+  background-color: purple;
+} */
+/* ----------
+
+    Table
+
+---------- */
+
+.columnHeaderSmallNote {
+  text-align: center;
+}
+.columnHeaderSmallNote span {
+  font-size: 0.8em;
+  color: #555;
+}
+
+/* Large screens (media query) */
+@media (min-width: 768px) {
+  .divMainBottom {
+    display: flex;
+    flex-direction: row;
+  }
+}

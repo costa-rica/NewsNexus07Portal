@@ -1,9 +1,9 @@
-import styles from "../styles/GetArticles.module.css";
-import TemplateView from "./common/TemplateView";
+import styles from "../../styles/GetArticles.module.css";
+import TemplateView from "../common/TemplateView";
+import Modal from "../common/Modal";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Modal from "./common/Modal";
-import TableRequests from "./common/TableRequests";
+import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 export default function NewsOrgApiRequests() {
   const [keywordsArray, setKeywordsArray] = useState([]);
