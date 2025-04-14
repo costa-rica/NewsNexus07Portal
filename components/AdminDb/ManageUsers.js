@@ -19,7 +19,7 @@ export default function ManageUsers() {
   const [usersList, setUsersList] = useState([]);
   const [columns, setColumns] = useState([]);
   const [showPassword, setShowPassword] = useState(false); // 🔹 Toggle password visibility
-  const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -248,7 +248,7 @@ export default function ManageUsers() {
 
 //   const [usersList, setUsersList] = useState([]);
 //   const [columns, setColumns] = useState([]);
-//   const userReducer = useSelector((state) => state.user.value);
+//   const userReducer = useSelector((state) => state.user);
 //   const dispatch = useDispatch();
 //   const router = useRouter();
 

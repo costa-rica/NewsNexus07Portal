@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function ManageDbUploads() {
   // const [arrayBackups, setArrayBackups] = useState([]);
   const [arrayRowCountsByTable, setArrayRowCountsByTable] = useState([]);
-  const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);

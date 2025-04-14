@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../reducers/user";
+import { loginUser, updateStateArray } from "../../reducers/user";
 
 export default function Login() {
   const [email, emailSetter] = useState(
@@ -17,15 +17,19 @@ export default function Login() {
   );
   const dispatch = useDispatch();
   const router = useRouter();
-  const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user);
 
   console.log(process.env.NEXT_PUBLIC_MODE);
   useEffect(() => {
+    // fetchStateArray();
     if (userReducer.token) {
       // Redirect if token exists
       router.push("/articles/news-org-api-requests");
     }
   }, [userReducer]); // Run effect if token changes
+  useEffect(() => {
+    fetchStateArray();
+  }, []);
 
   const sendPasswordBackToParent = (passwordFromInputPasswordElement) => {
     passwordSetter(passwordFromInputPasswordElement);
@@ -72,6 +76,40 @@ export default function Login() {
       const errorMessage =
         resJson?.error || `There was a server error: ${response.status}`;
       alert(errorMessage);
+    }
+  };
+
+  const fetchStateArray = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Log response text for debugging
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log("Fetched Data:", result);
+
+      if (result.statesArray && Array.isArray(result.statesArray)) {
+        const tempStatesArray = result.statesArray.map((stateObj) => ({
+          ...stateObj,
+          selected: false,
+        }));
+        dispatch(updateStateArray(tempStatesArray));
+      } else {
+        dispatch(updateStateArray([]));
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+      // dispatch(updateStateArray([]));
     }
   };
 
@@ -131,6 +169,13 @@ export default function Login() {
           </div>
         </div>
         <div className={styles.divRight}>
+          {/* {userReducer.stateArray &&
+            userReducer.stateArray.map((state) => (
+              <div key={state.id}>
+                <input type="checkbox" readOnly checked={state.selected} />
+                {state.name}
+              </div>
+            ))} */}
           <img
             className={styles.imgKmLogo}
             src="/images/kmLogo_square1500.png"

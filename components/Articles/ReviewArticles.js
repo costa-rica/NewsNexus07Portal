@@ -9,16 +9,16 @@ import StateSelector from "../common/StateSelector";
 import ModalApproveArticle from "../common/ModalApproveArticle";
 import Modal from "../common/Modal";
 export default function ReviewArticles() {
+  const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
-  const [stateArray, setStateArray] = useState([]);
+  const [stateArray, setStateArray] = useState(userReducer.stateArray);
   const [isOpenApproveModal, setIsOpenApproveModal] = useState(false);
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
 
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const userReducer = useSelector((state) => state.user.value);
   useEffect(() => {
     fetchArticlesArray();
-    fetchStateArray();
+    // fetchStateArray();
   }, []);
   const fetchArticlesArray = async () => {
     try {
@@ -42,6 +42,7 @@ export default function ReviewArticles() {
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         setArticlesArray(result.articlesArray);
         setSelectedArticle(result.articlesArray[0]);
+        updateStateArrayWithArticleState(result.articlesArray[0]);
       } else {
         setArticlesArray([]);
       }
@@ -51,42 +52,56 @@ export default function ReviewArticles() {
     }
   };
 
-  const fetchStateArray = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`,
-        {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
-        }
-      );
+  // const fetchStateArray = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`,
+  //       {
+  //         headers: { Authorization: `Bearer ${userReducer.token}` },
+  //       }
+  //     );
 
-      console.log(`Response status: ${response.status}`);
+  //     console.log(`Response status: ${response.status}`);
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Log response text for debugging
-        throw new Error(`Server Error: ${errorText}`);
-      }
+  //     if (!response.ok) {
+  //       const errorText = await response.text(); // Log response text for debugging
+  //       throw new Error(`Server Error: ${errorText}`);
+  //     }
 
-      const result = await response.json();
-      console.log("Fetched Data:", result);
+  //     const result = await response.json();
+  //     console.log("Fetched Data:", result);
 
-      if (result.statesArray && Array.isArray(result.statesArray)) {
-        const tempStatesArray = result.statesArray.map((stateObj) => ({
-          ...stateObj,
-          selected: false,
-        }));
-        setStateArray(tempStatesArray);
-      } else {
-        setStateArray([]);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-      setStateArray([]);
-    }
-  };
+  //     if (result.statesArray && Array.isArray(result.statesArray)) {
+  //       const tempStatesArray = result.statesArray.map((stateObj) => ({
+  //         ...stateObj,
+  //         selected: false,
+  //       }));
+  //       setStateArray(tempStatesArray);
+  //     } else {
+  //       setStateArray([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error.message);
+  //     setStateArray([]);
+  //   }
+  // };
   const handleRowClick = (article) => {
     console.log("Selected article:", article);
     setSelectedArticle(article);
+    updateStateArrayWithArticleState(article);
+  };
+
+  const updateStateArrayWithArticleState = (article) => {
+    console.log(article.States);
+    const articleStateIds = article.States.map((state) => state.id);
+    const tempStatesArray = stateArray.map((stateObj) => {
+      if (articleStateIds.includes(stateObj.id)) {
+        return { ...stateObj, selected: true };
+      } else {
+        return { ...stateObj, selected: false };
+      }
+    });
+    setStateArray(tempStatesArray);
   };
 
   const columnHelper = createColumnHelper();
@@ -140,7 +155,7 @@ export default function ReviewArticles() {
         </div>
       ),
     }),
-    columnHelper.accessor("state", {
+    columnHelper.accessor("states", {
       header: "State",
       enableSorting: true,
     }),

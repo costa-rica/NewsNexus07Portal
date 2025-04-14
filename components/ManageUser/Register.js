@@ -11,7 +11,7 @@ export default function Login() {
   const [password, passwordSetter] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
-  const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user);
   const sendPasswordBackToParent = (passwordFromInputPasswordElement) => {
     passwordSetter(passwordFromInputPasswordElement);
   };

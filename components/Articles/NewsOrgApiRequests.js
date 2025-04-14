@@ -25,7 +25,7 @@ export default function NewsOrgApiRequests() {
     maxResults: false,
     newsOrg: false,
   });
-  const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user);
   const todayDate = new Date().toISOString().split("T")[0];
   const minDate = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)
     .toISOString()
