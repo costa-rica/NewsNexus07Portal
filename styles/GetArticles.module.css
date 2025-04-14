@@ -29,6 +29,24 @@
   gap: 0.25rem;
   justify-content: flex-end;
 }
+.divRequestGroupInputWide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  width: 20rem;
+  position: relative;
+}
+.btnClearKeyword {
+  position: absolute;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: gray;
+}
 .divRequestGroupInputSmall {
   display: flex;
   flex-direction: column;
@@ -109,9 +127,9 @@
   flex-direction: row;
   justify-content: space-between;
 }
-.tableRequest {
-  /* background-color: gray; */
-}
+/* .tableRequest {
+  background-color: gray;
+} */
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .divMainBottom {

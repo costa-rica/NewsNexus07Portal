@@ -3,16 +3,8 @@ import TemplateView from "./common/TemplateView";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Modal from "./common/Modal";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-} from "@tanstack/react-table";
-
+import TableRequests from "./common/TableRequests";
+import { createColumnHelper } from "@tanstack/react-table";
 export default function NewsOrgApiRequests() {
   const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
@@ -24,12 +16,6 @@ export default function NewsOrgApiRequests() {
   const [requestResponseMessage, setRequestResponseMessage] = useState("");
   const [newsApiRequestsArray, setNewsApiRequestsArray] = useState([]);
   const [maxResults, setMaxResults] = useState(10);
-  const [paginationForRequestsTable, setPaginationForRequestsTable] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const [sorting, setSorting] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState("");
   const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("");
   const [inputErrors, setInputErrors] = useState({
@@ -51,8 +37,9 @@ export default function NewsOrgApiRequests() {
   const exactMatch = keywordsArray.some(
     (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
   );
+
   const columnHelper = createColumnHelper();
-  const columns = [
+  const columnsForRequestTable = [
     columnHelper.accessor("madeOn", { header: "Made On", enableSorting: true }),
     columnHelper.accessor("nameOfOrg", {
       header: "Org Name",
@@ -70,10 +57,28 @@ export default function NewsOrgApiRequests() {
       header: "End Date",
       enableSorting: true,
     }),
-    columnHelper.accessor("count", { header: "Count", enableSorting: true }),
+    columnHelper.accessor("count", {
+      header: "Count",
+      enableSorting: true,
+      cell: ({ getValue }) => (
+        <div
+          style={{
+            textAlign: "center",
+          }}
+        >
+          {getValue()}
+        </div>
+      ),
+    }),
     columnHelper.accessor("status", { header: "Status", enableSorting: true }),
+    columnHelper.display({
+      id: "copyRequest",
+      header: "Copy Request",
+      cell: ({ row }) => (
+        <button onClick={() => handleCopyRequest(row.original)}>Copy</button>
+      ),
+    }),
   ];
-
   useEffect(() => {
     fetchKeywordsArray();
     requestNewsApiRequestsArray();
@@ -285,22 +290,12 @@ export default function NewsOrgApiRequests() {
     }
   };
 
-  const tableRequests = useReactTable({
-    data: newsApiRequestsArray,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      pagination: paginationForRequestsTable,
-      sorting,
-      globalFilter,
-    },
-    onSortingChange: setSorting,
-    onPaginationChange: setPaginationForRequestsTable,
-    onGlobalFilterChange: setGlobalFilter,
-  });
+  const handleCopyRequest = (rowData) => {
+    setNewsOrg(rowData.nameOfOrg);
+    setFilterKeyword(rowData.keyword);
+    setStartDate(rowData.startDate);
+    setEndDate(rowData.endDate);
+  };
 
   return (
     <TemplateView>
@@ -329,10 +324,9 @@ export default function NewsOrgApiRequests() {
                 ))}
               </select>
             </div>
-            <div className={styles.divRequestGroupInput}>
+            <div className={styles.divRequestGroupInputWide}>
               <label htmlFor="keyword">Keyword</label>
               <input
-                // className={styles.inputRequestKeyword}
                 className={`${styles.inputRequestKeyword} ${
                   inputErrors.keyword ? styles.inputError : ""
                 }`}
@@ -341,6 +335,14 @@ export default function NewsOrgApiRequests() {
                 value={filterKeyword}
                 onChange={(e) => setFilterKeyword(e.target.value)}
               />
+              {filterKeyword && (
+                <button
+                  className={styles.btnClearKeyword}
+                  onClick={() => setFilterKeyword("")}
+                >
+                  ×
+                </button>
+              )}
             </div>
             <div className={styles.divRequestGroupInputSmall}>
               <label htmlFor="maxResults">Max Results</label>
@@ -434,99 +436,11 @@ export default function NewsOrgApiRequests() {
             </div>
           </div>
           <div className={styles.divRequestTableGroup}>
-            <div className={styles.divRequestTableDisplayRows}>
-              <div>
-                Show rows:{" "}
-                {[5, 10, 20].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() =>
-                      setPaginationForRequestsTable((prev) => ({
-                        ...prev,
-                        pageSize: size,
-                        pageIndex: 0, // reset to first page
-                      }))
-                    }
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-              <div>
-                Search:{" "}
-                <input
-                  type="text"
-                  value={globalFilter ?? ""}
-                  onChange={(e) => setGlobalFilter(e.target.value)}
-                  style={{
-                    padding: "4px 8px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                  }}
-                />
-              </div>
-              <div>
-                <button
-                  onClick={() => tableRequests.previousPage()}
-                  disabled={!tableRequests.getCanPreviousPage()}
-                >
-                  {"<"} Prev
-                </button>
-                <span>
-                  Page {tableRequests.getState().pagination.pageIndex + 1} of{" "}
-                  {tableRequests.getPageCount()}
-                </span>
-                <button
-                  onClick={() => {
-                    tableRequests.nextPage();
-                    console.log("clicked next page");
-                  }}
-                  disabled={!tableRequests.getCanNextPage()}
-                >
-                  Next {">"}
-                </button>
-              </div>
-            </div>
-            <table className={styles.tableRequest}>
-              <thead>
-                {tableRequests.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                        {{
-                          asc: " ▲",
-                          desc: " ▼",
-                        }[header.column.getIsSorted()] ?? ""}
-                      </th>
-                    ))}
-                    <th>Make similar request</th>
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {tableRequests.getPaginationRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                    <td>Button</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <TableRequests
+              data={newsApiRequestsArray}
+              columns={columnsForRequestTable}
+              onCopyRequest={handleCopyRequest}
+            />
           </div>
         </div>
         {isOpenKeywordWarning && (

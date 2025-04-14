@@ -63,7 +63,7 @@ export default function Login() {
       // if (resJson.user.isAdminForKvManagerWebsite) {
       resJson.email = email;
       dispatch(loginUser(resJson));
-      router.push("/get-articles/gnews");
+      router.push("/get-articles/news-org-api-requests");
       // } else {
       //   alert("You are not authorized to login.");
       // }
