@@ -6,10 +6,16 @@ export default function NavBarSideLink({
   iconFilenameAndPath = false,
   style,
   label,
-
+  currentPath,
   onEnterFunction = () => {},
 }) {
   const router = useRouter();
+
+  // works for everything in pages/articles
+  const currentPathModified = router.pathname.replace(
+    "[navigator]",
+    currentPath
+  );
   // Define default styles
   const defaultStyles = {
     display: "flex",
@@ -17,12 +23,18 @@ export default function NavBarSideLink({
     padding: "1rem",
     color: "white",
     textDecoration: "none",
-    backgroundColor: router.pathname === href ? "black" : "transparent",
+    backgroundColor: currentPathModified === href ? "black" : "transparent",
     border: "1px solid transparent",
   };
   // Merge provided style with default styles
   const mergedStyle = { ...defaultStyles, ...style };
 
+  // console.log(
+  //   `[NavBarSideLink]currentPath: ${currentPathModified} --> ${href}`
+  // );
+  // console.log(
+  //   `[NavBarSideLink]router.pathname: ${router.pathname} --> ${href}`
+  // );
   return (
     <Link href={href} passHref legacyBehavior>
       <a
@@ -36,7 +48,7 @@ export default function NavBarSideLink({
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.border =
-            router.pathname === href
+            currentPathModified === href
               ? "1px solid black"
               : "1px solid transparent";
         }}
@@ -45,7 +57,7 @@ export default function NavBarSideLink({
         }}
         onMouseUp={(e) => {
           e.currentTarget.style.backgroundColor =
-            router.pathname === href ? "black" : "transparent";
+            currentPathModified === href ? "black" : "transparent";
         }}
       >
         {iconFilenameAndPath && (

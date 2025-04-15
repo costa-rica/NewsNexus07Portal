@@ -136,6 +136,11 @@ export default function ManageDbUploads() {
                 "Row Counts by Table" (yes, also contrary to db schema). They
                 are the names of the JavaScript Model objects - all singular.
               </li>
+              <li>
+                If ANY Boolean column is modified, must have complete 0s and 1s
+                for that column ( 0= false, 1=true) i.e. empty row is not false,
+                and db doen't handle it well.
+              </li>
             </ul>
 
             <form onSubmit={handleSubmit} className={styles.form}>

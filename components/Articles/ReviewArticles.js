@@ -14,7 +14,7 @@ export default function ReviewArticles() {
   const [stateArray, setStateArray] = useState(userReducer.stateArray);
   const [isOpenApproveModal, setIsOpenApproveModal] = useState(false);
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
-
+  const [hideIrrelevant, setHideIrrelevant] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   useEffect(() => {
     fetchArticlesArray();
@@ -52,43 +52,59 @@ export default function ReviewArticles() {
     }
   };
 
-  // const fetchStateArray = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`,
-  //       {
-  //         headers: { Authorization: `Bearer ${userReducer.token}` },
-  //       }
-  //     );
-
-  //     console.log(`Response status: ${response.status}`);
-
-  //     if (!response.ok) {
-  //       const errorText = await response.text(); // Log response text for debugging
-  //       throw new Error(`Server Error: ${errorText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log("Fetched Data:", result);
-
-  //     if (result.statesArray && Array.isArray(result.statesArray)) {
-  //       const tempStatesArray = result.statesArray.map((stateObj) => ({
-  //         ...stateObj,
-  //         selected: false,
-  //       }));
-  //       setStateArray(tempStatesArray);
-  //     } else {
-  //       setStateArray([]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error.message);
-  //     setStateArray([]);
-  //   }
-  // };
   const handleRowClick = (article) => {
     console.log("Selected article:", article);
     setSelectedArticle(article);
     updateStateArrayWithArticleState(article);
+  };
+
+  const handleClickIsRelevant = async (articleId) => {
+    console.log("Clicked is relevant for article:", articleId);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/user-toggle-is-not-relevant/${articleId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+      let resJson = null;
+      const contentType = response.headers.get("Content-Type");
+
+      if (contentType?.includes("application/json")) {
+        resJson = await response.json();
+      }
+
+      if (resJson) {
+        console.log("Fetched Data:", resJson);
+        if (response.status === 400) {
+          setRequestResponseMessage(resJson.message);
+          setIsOpenRequestResponse(true);
+          return;
+        } else {
+          let updatedArticle = articlesArray.find(
+            (article) => article.id === articleId
+          );
+          updatedArticle.isRelevant = !updatedArticle.isRelevant;
+          setArticlesArray(
+            articlesArray.map((article) =>
+              article.id === articleId ? updatedArticle : article
+            )
+          );
+          // setSelectedArticle(updatedArticle);
+          if (selectedArticle.id === articleId) {
+            setSelectedArticle(updatedArticle);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error validating states:", error.message);
+    }
   };
 
   const updateStateArrayWithArticleState = (article) => {
@@ -116,7 +132,7 @@ export default function ReviewArticles() {
             fontSize: "10px",
           }}
         >
-          {row.id}
+          {row.original.id}
         </button>
       ),
     }),
@@ -159,6 +175,23 @@ export default function ReviewArticles() {
       header: "State",
       enableSorting: true,
     }),
+    columnHelper.accessor("isRelevant", {
+      header: "Relevant ?",
+      enableSorting: true,
+      cell: ({ getValue, row }) => (
+        <div className={styles.divBtnRelevant}>
+          {/* {getValue() === true ? (<button>Yes</button>) : "No"} */}
+          <button
+            className={`${styles.btnRelevant} ${
+              getValue() === false ? styles.btnIsNotRelevant : ""
+            }`}
+            onClick={() => handleClickIsRelevant(row.original.id)}
+          >
+            {getValue() === true ? "Yes" : "No"}
+          </button>
+        </div>
+      ),
+    }),
   ];
 
   const handleClickedValidateState = async () => {
@@ -167,11 +200,6 @@ export default function ReviewArticles() {
     const selectedStateIds = stateArray
       .filter((st) => st.selected)
       .map((st) => st.id);
-    // if (selectedStateIds.length === 0) {
-    //   // console.log("No states selected");
-    //   setIsOpenStateWarning(true);
-    //   return;
-    // }
     try {
       const bodyObj = {
         stateIdArray: selectedStateIds,
@@ -210,6 +238,7 @@ export default function ReviewArticles() {
       console.error("Error validating states:", error.message);
     }
   };
+
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -268,13 +297,30 @@ export default function ReviewArticles() {
             >
               Approve
             </button>
+
+            <button
+              className={`${styles.btnSubmit} ${
+                hideIrrelevant ? styles.btnOpaque : ""
+              }`}
+              onClick={() => setHideIrrelevant(!hideIrrelevant)}
+            >
+              {hideIrrelevant
+                ? "Show All Articles"
+                : "Hide Irrelevant Articles"}
+            </button>
           </div>
         </div>
         <div className={styles.divMainBottom}>
           <div className={styles.divRequestTableGroup}>
             <TableRequests
               columns={columnsForArticlesTable}
-              data={articlesArray}
+              data={
+                hideIrrelevant
+                  ? articlesArray.filter(
+                      (article) => article.isRelevant !== false
+                    )
+                  : articlesArray
+              }
             />
           </div>
         </div>

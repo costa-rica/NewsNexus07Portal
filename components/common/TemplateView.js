@@ -86,39 +86,46 @@ export default function TemplateView({ children }) {
             label="Home"
           />
           <NavBarSideLink
-            href="/articles/news-org-api-requests"
+            href="/articles/get-from-api-services"
             iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
-            label="NewsOrg API Requests"
+            label="Get Articles"
+            currentPath={currentPath}
           />
           <NavBarSideLink
             href="/articles/review"
             iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
             label="Review Articles"
+            currentPath={currentPath}
           />
           <NavBarSideLink
             href="/login"
             iconFilenameAndPath="/images/menu/logout.svg"
             label="Logout"
             onEnterFunction={() => dispatch(logoutUser())}
+            currentPath={currentPath}
           />
           <NavBarSideDropdown
             iconFilenameAndPath="/images/menu/database-solid.svg"
             label="Manage DB"
+            currentPath={currentPath}
           >
             <NavBarSideLink
               href="/admin-db/manage-db-backups"
               label="Backups"
               style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
             />
             <NavBarSideLink
               href="/admin-db/manage-db-uploads"
               label="Uploads"
               style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
             />
             <NavBarSideLink
               href="/admin-db/manage-users"
               label="Users"
               style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
             />
           </NavBarSideDropdown>
         </div>

@@ -7,7 +7,7 @@ export default function GetArticlesNavigator() {
   const { navigator } = router.query;
 
   const GetArticlesComponent = dynamic(() => {
-    if (navigator === "news-org-api-requests") {
+    if (navigator === "get-from-api-services") {
       return import(`../../components/Articles/NewsOrgApiRequests`).catch(
         () => () => <p>NewsOrgApiRequests Not Found</p>
       );
