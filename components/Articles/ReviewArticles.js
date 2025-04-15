@@ -7,6 +7,9 @@ import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import StateSelector from "../common/StateSelector";
 import Modal from "../common/Modal";
+import { useDispatch } from "react-redux";
+import { updateArticlesSummaryStatistics } from "../../reducers/user";
+import SummaryStatistics from "../common/SummaryStatistics";
 export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
@@ -16,10 +19,11 @@ export default function ReviewArticles() {
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
   const [hideIrrelevant, setHideIrrelevant] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchArticlesArray();
-    // fetchStateArray();
+    fetchArticlesSummaryStatistics();
   }, []);
   const fetchArticlesArray = async () => {
     try {
@@ -42,7 +46,10 @@ export default function ReviewArticles() {
 
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         setArticlesArray(result.articlesArray);
-        setSelectedArticle(result.articlesArray[0]);
+        setSelectedArticle({
+          ...result.articlesArray[0],
+          content: result.articlesArray[0].description,
+        });
         // updateStateArrayWithArticleState(result.articlesArray[0]);
       } else {
         setArticlesArray([]);
@@ -139,6 +146,7 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error validating states:", error.message);
     }
+    fetchArticlesSummaryStatistics();
   };
 
   const updateStateArrayWithArticleState = (article) => {
@@ -270,6 +278,7 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error validating states:", error.message);
     }
+    fetchArticlesSummaryStatistics();
   };
 
   const handleApproveArticle = async () => {
@@ -337,11 +346,82 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error approving article:", error.message);
     }
+    fetchArticlesSummaryStatistics();
+  };
+
+  const fetchArticlesSummaryStatistics = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Log response text for debugging
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log(
+        "Fetched Data (articles/summary-statistics):",
+        result.summaryStatistics
+      );
+
+      if (result.summaryStatistics) {
+        console.log("-----> make summary statistics");
+        dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
+      }
+    } catch (error) {
+      console.error(
+        "Error fetching articles summary statistics:",
+        error.message
+      );
+    }
   };
   return (
     <TemplateView>
       <main className={styles.main}>
-        <div className={styles.divMainTop}>Articles review: [some number]</div>
+        <div className={styles.divMainTop}>
+          <SummaryStatistics />
+          {/* <div className={styles.divArticleSummaryStatisticsGroupSuper}>
+            <div className={styles.divArticleSummaryStatisticsGroup}>
+              <div className={styles.divArticlesSummaryStatisticsTitle}>
+                Article count
+              </div>
+              <div className={styles.divArticlesSummaryStatisticsMetric}>
+                {userReducer.articlesSummaryStatistics?.articlesCount}
+              </div>
+            </div>
+            <div className={styles.divArticleSummaryStatisticsGroup}>
+              <div className={styles.divArticlesSummaryStatisticsTitle}>
+                Relevant articles
+              </div>
+              <div className={styles.divArticlesSummaryStatisticsMetric}>
+                {userReducer.articlesSummaryStatistics?.articlesIsRelevantCount}
+              </div>
+            </div>
+            <div className={styles.divArticleSummaryStatisticsGroup}>
+              <div className={styles.divArticlesSummaryStatisticsTitle}>
+                Approved articles
+              </div>
+              <div className={styles.divArticlesSummaryStatisticsMetric}>
+                {userReducer.articlesSummaryStatistics?.articlesIsApprovedCount}
+              </div>
+            </div>
+            <div className={styles.divArticleSummaryStatisticsGroup}>
+              <div className={styles.divArticlesSummaryStatisticsTitle}>
+                Articles assigned to a state
+              </div>
+              <div className={styles.divArticlesSummaryStatisticsMetric}>
+                {userReducer.articlesSummaryStatistics?.hasStateAssigned}
+              </div>
+            </div>
+          </div> */}
+        </div>
         <div className={styles.divMainMiddle}>
           <div className={styles.divMainMiddleLeft}>
             <div className={`${styles.divMainMiddleLeftTitle} tooltipWrapper`}>
@@ -440,13 +520,6 @@ export default function ReviewArticles() {
             </div>
           </div>
           <div className={styles.divMainMiddleRight}>
-            {/* <div className={styles.divManageStates}>
-              <StateSelector
-                stateArray={stateArray}
-                setStateArray={setStateArray}
-              />
-            </div> */}
-
             <button
               className={`${styles.btnSubmit} ${
                 selectedArticle?.isApproved ? styles.btnOpaque : ""
@@ -469,15 +542,14 @@ export default function ReviewArticles() {
                 ? "Show All Articles"
                 : "Hide Irrelevant Articles"}
             </button>
-            <button
+            {/* <button
               className={styles.btnSubmit}
               onClick={() => {
-                console.log(selectedArticle);
-                console.log(selectedArticle.isApproved);
+                setIsOpenModalInfo(true);
               }}
             >
-              Show Selected Article
-            </button>
+              Test
+            </button> */}
           </div>
         </div>
         <div className={styles.divMainBottom}>

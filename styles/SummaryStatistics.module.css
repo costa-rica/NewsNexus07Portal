@@ -1,0 +1,26 @@
+/* ----------
+
+    Summary Statistics Group
+
+---------- */
+.divArticleSummaryStatisticsGroupSuper {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+.divArticleSummaryStatisticsGroup {
+  background-color: var(--gray-medium);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+.divArticlesSummaryStatisticsTitle {
+  display: flex;
+  justify-content: center;
+}
+.divArticlesSummaryStatisticsMetric {
+  display: flex;
+  justify-content: center;
+}

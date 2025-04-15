@@ -35,7 +35,7 @@ export default function NavBarSideDropdown({
       >
         <FontAwesomeIcon
           icon={expanded ? faChevronRight : faChevronDown}
-          style={{ paddingRight: "1rem" }}
+          style={{ width: expanded ? "1rem" : "1.5rem", marginRight: "1rem" }}
         />
         <div style={{ display: "flex", alignItems: "center" }}>
           <img

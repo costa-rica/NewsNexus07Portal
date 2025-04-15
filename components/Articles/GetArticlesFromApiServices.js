@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
+import SummaryStatistics from "../common/SummaryStatistics";
 
 export default function GetArticlesFromApiServices() {
   const [keywordsArray, setKeywordsArray] = useState([]);
@@ -328,6 +329,7 @@ export default function GetArticlesFromApiServices() {
       <main className={styles.main}>
         <div className={styles.divMainTop}>
           {/* Some tables with counts will go here */}
+          <SummaryStatistics />
         </div>
 
         <div className={styles.divMainMiddle}>

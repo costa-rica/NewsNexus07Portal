@@ -29,12 +29,6 @@ export default function NavBarSideLink({
   // Merge provided style with default styles
   const mergedStyle = { ...defaultStyles, ...style };
 
-  // console.log(
-  //   `[NavBarSideLink]currentPath: ${currentPathModified} --> ${href}`
-  // );
-  // console.log(
-  //   `[NavBarSideLink]router.pathname: ${router.pathname} --> ${href}`
-  // );
   return (
     <Link href={href} passHref legacyBehavior>
       <a
