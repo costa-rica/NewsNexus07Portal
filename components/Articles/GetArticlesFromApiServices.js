@@ -327,7 +327,7 @@ export default function GetArticlesFromApiServices() {
     <TemplateView>
       <main className={styles.main}>
         <div className={styles.divMainTop}>
-          Some tables with counts will go here
+          {/* Some tables with counts will go here */}
         </div>
 
         <div className={styles.divMainMiddle}>
@@ -440,28 +440,30 @@ export default function GetArticlesFromApiServices() {
                 </button>
               )}
             </div>
-            <div className={styles.divKeywordsTable}>
-              <table className={styles.tableKeywords}>
-                <thead>
-                  <tr>
-                    <th>Keywords</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredKeywords.map((keyword, index) => (
-                    <tr
-                      key={index}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setFilterKeyword(keyword)}
-                    >
-                      <td>{keyword}</td>
+            <div className={styles.divKeywordsTableSuper}>
+              <div className={styles.divKeywordsTable}>
+                <table className={styles.tableKeywords}>
+                  <thead>
+                    <tr>
+                      <th>Keywords</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filteredKeywords.map((keyword, index) => (
+                      <tr
+                        key={index}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setFilterKeyword(keyword)}
+                      >
+                        <td>{keyword}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-          <div className={styles.divRequestTableGroup}>
+          <div className={styles.divRequestTableGroupSuper}>
             <TableRequests
               data={newsApiRequestsArray}
               columns={columnsForRequestTable}

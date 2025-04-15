@@ -492,7 +492,7 @@ export default function ReviewArticles() {
           </div>
         </div>
         <div className={styles.divMainBottom}>
-          <div className={styles.divRequestTableGroup}>
+          <div className={styles.divRequestTableGroupSuper}>
             <TableRequests
               columns={columnsForArticlesTable}
               data={
