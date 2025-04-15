@@ -2,11 +2,13 @@ import styles from "../../styles/ManageUser.module.css";
 import InputPassword from "../common/InputPassword";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import Modal from "../common/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, updateStateArray } from "../../reducers/user";
 
 export default function Login() {
+  const [isOpenModalWarning, setIsOpenModalWarning] = useState(false);
+  const [requestResponseMessage, setRequestResponseMessage] = useState("");
   const [email, emailSetter] = useState(
     process.env.NEXT_PUBLIC_MODE === "development"
       ? "nickrodriguez@kineticmetrics.com"
@@ -67,15 +69,20 @@ export default function Login() {
       // if (resJson.user.isAdminForKvManagerWebsite) {
       console.log(resJson);
       resJson.email = email;
-      dispatch(loginUser(resJson));
-      router.push("/articles/get-from-api-services");
-      // } else {
-      //   alert("You are not authorized to login.");
-      // }
+      try {
+        dispatch(loginUser(resJson));
+        router.push("/articles/get-from-api-services");
+      } catch (error) {
+        console.error("Error logging in:", error.message);
+        setRequestResponseMessage("There's a problem with the website");
+        setIsOpenModalWarning(true);
+      }
     } else {
       const errorMessage =
         resJson?.error || `There was a server error: ${response.status}`;
-      alert(errorMessage);
+      // alert(errorMessage);
+      setRequestResponseMessage(errorMessage);
+      setIsOpenModalWarning(true);
     }
   };
 
@@ -169,13 +176,6 @@ export default function Login() {
           </div>
         </div>
         <div className={styles.divRight}>
-          {/* {userReducer.stateArray &&
-            userReducer.stateArray.map((state) => (
-              <div key={state.id}>
-                <input type="checkbox" readOnly checked={state.selected} />
-                {state.name}
-              </div>
-            ))} */}
           <img
             className={styles.imgKmLogo}
             src="/images/kmLogo_square1500.png"
@@ -183,6 +183,13 @@ export default function Login() {
           />
         </div>
       </main>
+      {isOpenModalWarning && (
+        <Modal
+          isModalOpenSetter={setIsOpenModalWarning}
+          title="Login error"
+          content={requestResponseMessage}
+        />
+      )}
     </div>
   );
 }
