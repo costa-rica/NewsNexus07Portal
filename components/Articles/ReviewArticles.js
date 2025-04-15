@@ -218,7 +218,10 @@ export default function ReviewArticles() {
       enableSorting: true,
     }),
     columnHelper.accessor("isRelevant", {
-      header: "Relevant ?",
+      // header: "Relevant ?",
+      header: () => (
+        <div style={{ display: "flex", flexWrap: "nowrap" }}>Relevant ?</div>
+      ),
       enableSorting: true,
       cell: ({ getValue, row }) => (
         <div className={styles.divBtnRelevant}>

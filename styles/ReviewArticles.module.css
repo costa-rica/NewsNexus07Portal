@@ -1,5 +1,4 @@
 .main {
-  /* min-height: 100vh; */
   min-height: var(--height-content-main);
 }
 
@@ -191,6 +190,9 @@
 }
 /* Large screens (media query) */
 @media (min-width: 768px) {
+  .main {
+    padding: 0.5rem;
+  }
   .divMainBottom {
     display: flex;
     flex-direction: row;

@@ -1,4 +1,4 @@
-import styles from "../../styles/GetArticles.module.css";
+import styles from "../../styles/TableRequests.module.css";
 import {
   useReactTable,
   getCoreRowModel,
@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-export default function TableRequests({ data, columns, onCopyRequest }) {
+export default function TableRequests({ data, columns }) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -89,7 +89,8 @@ export default function TableRequests({ data, columns, onCopyRequest }) {
       <table className={styles.tableRequest}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            // <tr key={headerGroup.id} className={styles.tableRequestHeader}>
+            <tr key={headerGroup.id} className={styles.tableRequestHeader}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
@@ -109,6 +110,7 @@ export default function TableRequests({ data, columns, onCopyRequest }) {
             </tr>
           ))}
         </thead>
+        {/* <div className={styles.divLine}></div> */}
         <tbody>
           {table.getPaginationRowModel().rows.map((row) => (
             <tr key={row.id}>

@@ -137,19 +137,12 @@
   padding: 0.5rem;
   /* height: 50vh; */
 }
-.divRequestTableDisplayRows {
-  /* background-color: green; */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 
 /* ----------
 
     Table
 
 ---------- */
-
 .columnHeaderSmallNote {
   text-align: center;
 }
