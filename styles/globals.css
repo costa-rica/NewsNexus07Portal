@@ -23,3 +23,35 @@ body {
   --height-content-main: 95vh;
   --height-content-main-large: 90vh;
 }
+
+.btnOpaque {
+  background-color: gray;
+  opacity: 0.7;
+}
+
+.tooltipWrapper {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.tooltipText {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltipWrapper:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+}
