@@ -13,7 +13,6 @@
 .divMain {
   display: flex;
   flex-direction: row;
-
   margin-top: var(--height-header);
   min-height: var(--height-content-main);
 }
@@ -98,7 +97,9 @@
     /* height: var(--height-header-top-large); */
     height: var(--height-header-large);
   }
-
+  .divMain {
+    margin-top: var(--height-header-large);
+  }
   .divRightMenu {
     /* margin-top: 10vh;
     height: 90vh; */

@@ -248,10 +248,6 @@ export default function ReviewArticles() {
         </div>
         <div className={styles.divMainMiddle}>
           <div className={styles.divMainMiddleLeft}>
-            <div className={styles.divMainMiddleLeftTitle}>
-              <h2>Article Approval Details</h2>
-              <span>(This is the content for CPSC report PDF)</span>
-            </div>
             <div className={styles.divArticleDetail}>
               <span className={styles.lblArticleDetail}>Article Title:</span>{" "}
               <span> {selectedArticle?.title}</span>

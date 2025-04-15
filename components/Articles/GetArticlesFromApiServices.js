@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
-export default function NewsOrgApiRequests() {
+
+export default function GetArticlesFromApiServices() {
   const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
