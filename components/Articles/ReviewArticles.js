@@ -6,13 +6,11 @@ import { useSelector } from "react-redux";
 import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import StateSelector from "../common/StateSelector";
-import ModalApproveArticle from "../common/ModalApproveArticle";
 import Modal from "../common/Modal";
 export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
   const [stateArray, setStateArray] = useState(userReducer.stateArray);
-  // const [isOpenApproveModal, setIsOpenApproveModal] = useState(false);
   const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
   const [infoModalContent, setInfoModalContent] = useState("");
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
@@ -45,7 +43,7 @@ export default function ReviewArticles() {
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         setArticlesArray(result.articlesArray);
         setSelectedArticle(result.articlesArray[0]);
-        updateStateArrayWithArticleState(result.articlesArray[0]);
+        // updateStateArrayWithArticleState(result.articlesArray[0]);
       } else {
         setArticlesArray([]);
       }
@@ -55,7 +53,6 @@ export default function ReviewArticles() {
     }
   };
 
-  // const handleRowClick = async (article) => {
   const handleSelectArticleFromTable = async (article) => {
     console.log("Selected article:", article);
 
@@ -85,22 +82,14 @@ export default function ReviewArticles() {
           approved: result.result,
           content: result.content,
         });
-        updateStateArrayWithArticleState(result.article);
       } else {
         setSelectedArticle({ ...article, content: article.description });
       }
-      // else {
-      //   console.log("----- blanking out the aritlces list");
-      //   setArticlesArray([]);
-      // }
+      // modify the stateArray with the states that the article is associated with
+      updateStateArrayWithArticleState(article);
     } catch (error) {
       console.error("Error fetching data:", error.message);
-      // setArticlesArray([]);
     }
-
-    // // STEP 2
-    // setSelectedArticle(article);
-    // updateStateArrayWithArticleState(article);
   };
 
   const handleClickIsRelevant = async (articleId) => {
