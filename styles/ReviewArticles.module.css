@@ -78,6 +78,8 @@
   flex: 1;
   border-radius: 0.5rem;
   padding: 0.5rem;
+  background-color: var(--gray-medium);
+  color: black;
 }
 .divArticleDetailContent {
   display: flex;
