@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import SummaryStatistics from "../common/SummaryStatistics";
+import { useDispatch } from "react-redux";
+import { updateArticlesSummaryStatistics } from "../../reducers/user";
 
 export default function GetArticlesFromApiServices() {
   const [keywordsArray, setKeywordsArray] = useState([]);
@@ -110,6 +112,7 @@ export default function GetArticlesFromApiServices() {
     fetchKeywordsArray();
     requestNewsApiRequestsArray();
     fetchNewsOrgArray();
+    fetchArticlesSummaryStatistics();
   }, []);
   useEffect(() => {
     if (!endDate) {
@@ -322,6 +325,39 @@ export default function GetArticlesFromApiServices() {
     setFilterKeyword(rowData.keyword);
     setStartDate(rowData.startDate);
     setEndDate(rowData.endDate);
+  };
+  const fetchArticlesSummaryStatistics = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Log response text for debugging
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log(
+        "Fetched Data (articles/summary-statistics):",
+        result.summaryStatistics
+      );
+
+      if (result.summaryStatistics) {
+        console.log("-----> make summary statistics");
+        dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
+      }
+    } catch (error) {
+      console.error(
+        "Error fetching articles summary statistics:",
+        error.message
+      );
+    }
   };
 
   return (
