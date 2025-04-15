@@ -57,12 +57,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  /* flex: 1; */
 }
-/* .divArticleDetailTitleGroup {
-  display: flex;
-  flex-direction: column;
-} */
 .divManageStates {
   flex: 1;
 }
