@@ -1,0 +1,221 @@
+.main {
+  /* min-height: 100vh; */
+  min-height: var(--height-content-main);
+}
+.divMainTop {
+  /* display: none; */
+  /* width: 100%; */
+  height: 5rem;
+  /* border: 4px dashed gray; */
+}
+
+/* --- MIDDLE --- */
+/* --- MIDDLE --- */
+/* --- MIDDLE --- */
+
+.divMainMiddle {
+  /* height: 10rem; */
+  /* width: 100%; */
+  padding-bottom: 10rem;
+}
+.divRequestGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: space-between;
+  border: 4px solid gray;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+.divRequestGroupTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: space-between;
+}
+.divRequestGroupInput {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 0.25rem;
+  /* justify-content: flex-end; */
+  align-items: center;
+  /* background-color: green; */
+}
+.divRequestGroupInputWide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  /* width: 20rem; */
+  position: relative;
+}
+.divKeywordInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  /* width: 20rem; */
+  position: relative;
+}
+.btnClearKeyword {
+  position: absolute;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: gray;
+  /* width: 10rem; */
+}
+.divRequestGroupInputSmall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  width: 5rem;
+}
+.divRequestGroupInput label {
+  color: var(--med-text-color);
+}
+.inputRequestKeyword {
+  border: none;
+  background-color: var(--bg-input-off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+.inputRequestStartDate,
+.inputRequestEndDate {
+  border: none;
+  background-color: var(--bg-input-off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.btnSubmit {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  padding: 12px;
+  /* width: 100%; */
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnSubmit:active {
+  transform: scale(0.87);
+}
+.inputError {
+  outline: 2px solid red;
+}
+/* --- BOTTOM --- */
+/* --- BOTTOM --- */
+/* --- BOTTOM --- */
+
+.divMainBottom {
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+  justify-content: space-between;
+  align-items: stretch;
+  border: 4px solid gray;
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
+.divKeywordsGroup {
+  /* flex: 1;
+  height: 100%;
+  overflow: auto; */
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-width: 20%;
+}
+.inputKeywordGroup {
+  border: none;
+  background-color: #f7f7f8;
+  border-radius: 12px;
+  padding: 5px;
+}
+.divKeywordsTable {
+  border-radius: 10px;
+  padding: 0.5rem;
+  overflow: auto;
+  height: 10rem;
+}
+
+.tableKeywords {
+  overflow-y: auto;
+  border-radius: 10px;
+  height: 5rem;
+}
+
+.divKeywordsTableSuper {
+  max-height: 100%;
+  overflow: auto;
+}
+
+.divRequestTableGroup {
+  flex: 1;
+}
+
+/* ----------
+
+    Table
+
+---------- */
+.columnHeaderSmallNote {
+  text-align: center;
+}
+.columnHeaderSmallNote span {
+  font-size: 0.8em;
+  color: #555;
+}
+
+/* Large screens (media query) */
+@media (min-width: 768px) {
+  .main {
+    padding: 0.5rem;
+  }
+  .divMainBottom {
+    display: flex;
+    flex-direction: row;
+  }
+  .divMainMiddle {
+    /* height: 10rem; */
+    width: 100%;
+  }
+  .divRequestGroup {
+    gap: 0.5rem;
+  }
+  .divRequestGroupTop {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    justify-content: space-between;
+  }
+  .divRequestGroupInputWide {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    align-items: center;
+  }
+  .divRequestGroupInputWide label {
+    display: flex;
+  }
+  .divRequestGroupInputWide input {
+    flex: 1;
+  }
+  .divMainBottom {
+    display: flex;
+    flex-direction: row;
+  }
+  .divKeywordsTable {
+    height: 30rem;
+  }
+  .tableKeywords {
+    height: 20rem;
+  }
+}

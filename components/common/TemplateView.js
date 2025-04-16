@@ -85,12 +85,24 @@ export default function TemplateView({ children }) {
             iconFilenameAndPath="/images/menu/house-solid.svg"
             label="Home"
           />
-          <NavBarSideLink
-            href="/articles/get-from-api-services"
+          <NavBarSideDropdown
             iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
             label="Get Articles"
             currentPath={currentPath}
-          />
+          >
+            <NavBarSideLink
+              href="/articles/get-from-api-services"
+              style={{ padding: "0.25rem" }}
+              label="Old way"
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
+              href="/articles/get-from-api-services-detailed"
+              style={{ padding: "0.25rem" }}
+              label="Detailed way"
+              currentPath={currentPath}
+            />
+          </NavBarSideDropdown>
           <NavBarSideLink
             href="/articles/review"
             iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
@@ -124,6 +136,12 @@ export default function TemplateView({ children }) {
             <NavBarSideLink
               href="/admin-db/manage-users"
               label="Users"
+              style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
+              href="/admin-db/manage-db-deletes"
+              label="Deletes"
               style={{ padding: "0.25rem" }}
               currentPath={currentPath}
             />

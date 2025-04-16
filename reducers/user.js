@@ -7,6 +7,8 @@ const initialState = {
   stateArray: [],
   articlesSummaryStatistics: {},
   hideIrrelevant: false,
+  includeDomainsArray: [],
+  excludeDomainsArray: [],
 };
 
 export const userSlice = createSlice({
@@ -23,6 +25,12 @@ export const userSlice = createSlice({
     },
     updateArticlesSummaryStatistics: (state, action) => {
       state.articlesSummaryStatistics = action.payload;
+    },
+    updateIncludeDomainsArray: (state, action) => {
+      state.includeDomainsArray = action.payload;
+    },
+    updateExcludeDomainsArray: (state, action) => {
+      state.excludeDomainsArray = action.payload;
     },
     logoutUser: (state) => {
       state.token = null;
@@ -41,5 +49,7 @@ export const {
   updateStateArray,
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
+  updateIncludeDomainsArray,
+  updateExcludeDomainsArray,
 } = userSlice.actions;
 export default userSlice.reducer;

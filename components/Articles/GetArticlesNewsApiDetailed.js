@@ -1,4 +1,4 @@
-import styles from "../../styles/GetArticles.module.css";
+import styles from "../../styles/GetArticlesDetailed.module.css";
 import TemplateView from "../common/TemplateView";
 import Modal from "../common/Modal";
 import { useEffect, useState } from "react";
@@ -7,26 +7,32 @@ import TableRequests from "../common/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import SummaryStatistics from "../common/SummaryStatistics";
 import { useDispatch } from "react-redux";
-import { updateArticlesSummaryStatistics } from "../../reducers/user";
+import {
+  updateArticlesSummaryStatistics,
+  updateIncludeDomainsArray,
+  updateExcludeDomainsArray,
+} from "../../reducers/user";
 
-export default function GetArticlesFromApiServices() {
+export default function GetArticlesNewsApiDetailed() {
   const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isOpenKeywordWarning, setIsOpenKeywordWarning] = useState(false);
-  const [isOpenRequestWarning, setIsOpenRequestWarning] = useState(false);
+
   const [isOpenRequestResponse, setIsOpenRequestResponse] = useState(false);
   const [requestResponseMessage, setRequestResponseMessage] = useState("");
   const [newsApiRequestsArray, setNewsApiRequestsArray] = useState([]);
-  const [maxResults, setMaxResults] = useState(10);
+  const dispatch = useDispatch();
+  const [keywordsAnd, setKeywordsAnd] = useState("");
+  const [keywordsOr, setKeywordsOr] = useState("");
+  const [keywordsNot, setKeywordsNot] = useState("");
+
   const [newsOrgArray, setNewsOrgArray] = useState([]);
-  const [newsOrg, setNewsOrg] = useState("");
+  const [newsOrg, setNewsOrg] = useState("NewsAPI");
   const [inputErrors, setInputErrors] = useState({
-    keyword: false,
     startDate: false,
     endDate: false,
-    maxResults: false,
     newsOrg: false,
   });
   const userReducer = useSelector((state) => state.user);
@@ -153,86 +159,27 @@ export default function GetArticlesFromApiServices() {
     // if filteredKeyword is not in keywordsArray, add it do not trigger
     console.log(`newsOrg: ${newsOrg}`);
     const errors = {
-      keyword: !filterKeyword,
       startDate: !startDate,
       endDate: !endDate,
-      maxResults: !maxResults || Number(maxResults) <= 0,
       newsOrg: !newsOrg || newsOrg === "",
     };
     setInputErrors(errors);
 
-    // This is need for the input errors (keyword, max, start/end dates) to be displayed
-    if (Object.values(errors).some((e) => e)) {
-      setIsOpenRequestWarning(true);
-      return;
-    }
-
-    if (!exactMatch) {
-      console.log("Keyword not found:", filterKeyword);
-      setIsOpenKeywordWarning(true);
-    } else {
-      if (newsOrg === "GNews") {
-        requestGNewsApi();
-      } else if (newsOrg === "NewsAPI") {
-        requestNewsApi();
-      }
-    }
+    requestNewsApi();
   };
-  const requestGNewsApi = async () => {
-    if (!startDate || !endDate || !filterKeyword || !maxResults || !newsOrg) {
-      // console.log("Missing required fields");
-      setIsOpenRequestWarning(true);
-      return;
-    }
 
-    try {
-      const bodyObj = {
-        newsOrg,
-        startDate,
-        endDate,
-        keywordString: filterKeyword,
-        max: maxResults,
-      };
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/gnews/request`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userReducer.token}`,
-          },
-          body: JSON.stringify(bodyObj),
-        }
-      );
-
-      console.log(`Response status: ${response.status}`);
-      const result = await response.json();
-      console.log("Fetched Data:", result);
-      setFilterKeyword("");
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-      const result = await response.json();
-      console.log("Error Data:", result);
-      // setKeywordsArray([]);
-    }
-  };
   const requestNewsApi = async () => {
-    if (!startDate || !endDate || !filterKeyword || !maxResults || !newsOrg) {
-      // console.log("Missing required fields");
-      setIsOpenRequestWarning(true);
-      return;
-    }
-
     try {
       const bodyObj = {
         newsOrg,
         startDate,
         endDate,
-        keywordString: filterKeyword,
-        max: maxResults,
+        keywordsAnd,
+        keywordsOr,
+        keywordsNot,
       };
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-api/request`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-api/detailed-news-api`,
         {
           method: "POST",
           headers: {
@@ -370,28 +317,121 @@ export default function GetArticlesFromApiServices() {
 
         <div className={styles.divMainMiddle}>
           <div className={styles.divRequestGroup}>
-            <div className={styles.divRequestGroupInput}>
-              <label htmlFor="newsOrg">News Organization</label>
-              <select
-                // className={styles.inputRequestKeyword}
-                className={`${styles.inputRequestKeyword} ${
-                  inputErrors.newsOrg ? styles.inputError : ""
-                }`}
-                value={newsOrg}
-                onChange={(e) => {
-                  setNewsOrg(e.target.value);
-                  // setMaxResults(e.target.value === "GNews" ? "10" : "100");
-                }}
-              >
-                <option value="">Select API</option>
-                {newsOrgArray.map((org, index) => (
-                  <option key={index} value={org.nameOfOrg}>
-                    {org.nameOfOrg}
-                  </option>
-                ))}
-              </select>
+            <div className={styles.divRequestGroupTop}>
+              <div className={styles.divRequestGroupInput}>
+                <label htmlFor="newsOrg">News Organization</label>
+                <input
+                  // className={styles.inputRequestKeyword}
+                  className={styles.inputRequestKeyword}
+                  value={newsOrg}
+                  // onChange={(e) => {
+                  //   setNewsOrg(e.target.value);
+                  // }}
+                  disabled
+                />
+              </div>
+              <div className={styles.divRequestGroupInput}>
+                <label htmlFor="startDate">Start Date</label>
+                <input
+                  // className={styles.inputRequestStartDate}
+                  className={`${styles.inputRequestStartDate} ${
+                    inputErrors.startDate ? styles.inputError : ""
+                  }`}
+                  min={minDate}
+                  max={todayDate}
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  type="date"
+                />
+              </div>
+              <div className={styles.divRequestGroupInput}>
+                <label htmlFor="endDate">End Date</label>
+                <input
+                  // className={styles.inputRequestEndDate}
+                  className={`${styles.inputRequestEndDate} ${
+                    inputErrors.endDate ? styles.inputError : ""
+                  }`}
+                  min={minDate}
+                  max={todayDate}
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  type="date"
+                />
+              </div>
+              <div className={styles.divRequestGroupInput}>
+                <button
+                  className={styles.btnSubmit}
+                  onClick={() => {
+                    handleRequestArticles();
+                    // You can call your submit logic or dispatch here
+                  }}
+                >
+                  Request Articles
+                </button>
+              </div>
+            </div>
+            {/* <div className */}
+
+            <div className={styles.divRequestGroupInputWide}>
+              <label htmlFor="keywordsAnd">Keywords AND</label>
+              <input
+                className={styles.inputRequestKeyword}
+                type="text"
+                placeholder={`enter word(s), use " " for exact phrase`}
+                value={keywordsAnd}
+                onChange={(e) => setKeywordsAnd(e.target.value)}
+              />
+              {keywordsAnd && (
+                <button
+                  className={styles.btnClearKeyword}
+                  onClick={() => setKeywordsAnd("")}
+                >
+                  ×
+                </button>
+              )}
             </div>
             <div className={styles.divRequestGroupInputWide}>
+              <label htmlFor="keywordsNot">Keywords NOT</label>
+              <input
+                className={styles.inputRequestKeyword}
+                type="text"
+                placeholder={`enter word(s), use " " for exact phrase`}
+                value={keywordsNot}
+                onChange={(e) => setKeywordsNot(e.target.value)}
+              />
+              {keywordsNot && (
+                <button
+                  className={styles.btnClearKeyword}
+                  onClick={() => setKeywordsNot("")}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+            <div className={styles.divRequestGroupInputWide}>
+              <label htmlFor="keywordsOr">Keywords OR</label>
+              <input
+                className={styles.inputRequestKeyword}
+                type="text"
+                placeholder={`enter word(s), use " " for exact phrase`}
+                value={keywordsOr}
+                onChange={(e) => setKeywordsOr(e.target.value)}
+              />
+              {keywordsOr && (
+                <button
+                  className={styles.btnClearKeyword}
+                  onClick={() => setKeywordsOr("")}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.divMainBottom}>
+          <div className={styles.divKeywordsGroup}>
+            <div className={styles.divKeywordInputGroup}>
               <label htmlFor="keyword">Keyword</label>
               <input
                 className={`${styles.inputRequestKeyword} ${
@@ -411,85 +451,14 @@ export default function GetArticlesFromApiServices() {
                 </button>
               )}
             </div>
-            {/* <div className={styles.divRequestGroupInputSmall}>
-              <label htmlFor="maxResults">Max Results</label>
-              <input
-                // className={styles.inputRequestKeyword}
-                className={`${styles.inputRequestKeyword} ${
-                  inputErrors.maxResults ? styles.inputError : ""
-                }`}
-                type="number"
-                min="1"
-                placeholder="enter word"
-                value={maxResults}
-                // onChange={(e) => setMaxResults(e.target.value)}
-                disabled
-              />
-            </div> */}
-            <div className={styles.divRequestGroupInput}>
-              <label htmlFor="startDate">Start Date</label>
-              <input
-                // className={styles.inputRequestStartDate}
-                className={`${styles.inputRequestStartDate} ${
-                  inputErrors.startDate ? styles.inputError : ""
-                }`}
-                min={minDate}
-                max={todayDate}
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                type="date"
-              />
-            </div>
-            <div className={styles.divRequestGroupInput}>
-              <label htmlFor="endDate">End Date</label>
-              <input
-                // className={styles.inputRequestEndDate}
-                className={`${styles.inputRequestEndDate} ${
-                  inputErrors.endDate ? styles.inputError : ""
-                }`}
-                min={minDate}
-                max={todayDate}
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                type="date"
-              />
-            </div>
-            <div className={styles.divRequestGroupInput}>
-              <button
-                className={styles.btnSubmit}
-                onClick={() => {
-                  handleRequestArticles();
-                  // You can call your submit logic or dispatch here
-                }}
-              >
-                Request Articles
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.divMainBottom}>
-          <div className={styles.divKeywordsGroup}>
-            <div className={styles.divKeywordInputGroup}>
-              {filterKeyword && !exactMatch && (
-                <button
-                  onClick={() => {
-                    // placeholder for add keyword functionality
-                    console.log("Add keyword:", filterKeyword);
-                  }}
-                >
-                  Add Keyword
-                </button>
-              )}
-            </div>
             <div className={styles.divKeywordsTableSuper}>
               <div className={styles.divKeywordsTable}>
                 <table className={styles.tableKeywords}>
-                  <thead>
+                  {/* <thead>
                     <tr>
                       <th>Keywords</th>
                     </tr>
-                  </thead>
+                  </thead> */}
                   <tbody>
                     {filteredKeywords.map((keyword, index) => (
                       <tr
@@ -520,13 +489,7 @@ export default function GetArticlesFromApiServices() {
             content="If you're sure this keyword is correct, you can add it."
           />
         )}
-        {isOpenRequestWarning && (
-          <Modal
-            isModalOpenSetter={setIsOpenRequestWarning}
-            title="Must fill all fields"
-            content="Please fill all fields to make a request."
-          />
-        )}
+
         {isOpenRequestResponse && (
           <Modal
             isModalOpenSetter={setIsOpenRequestResponse}

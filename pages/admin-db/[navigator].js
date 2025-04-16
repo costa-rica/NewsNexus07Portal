@@ -18,6 +18,10 @@ export default function Navigator() {
       return import(`../../components/AdminDb/ManageUsers`).catch(() => () => (
         <p>ManageDbUploads Not Found</p>
       ));
+    } else if (navigator === "manage-db-deletes") {
+      return import(`../../components/AdminDb/ManageDbDeletes`).catch(
+        () => () => <p>ManageDbDeletes Not Found</p>
+      );
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }
