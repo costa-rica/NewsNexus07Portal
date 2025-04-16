@@ -501,7 +501,7 @@ export default function GetArticlesFromApiServices() {
               </div>
             </div>
           </div>
-          <div className={styles.divRequestTableGroupSuper}>
+          <div className={styles.divRequestTableGroup}>
             <TableRequests
               data={newsApiRequestsArray}
               columns={columnsForRequestTable}

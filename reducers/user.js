@@ -6,6 +6,7 @@ const initialState = {
   email: null,
   stateArray: [],
   articlesSummaryStatistics: {},
+  hideIrrelevant: false,
 };
 
 export const userSlice = createSlice({
@@ -21,15 +22,15 @@ export const userSlice = createSlice({
       state.stateArray = action.payload;
     },
     updateArticlesSummaryStatistics: (state, action) => {
-      console.log("- dans Redux: updateArticlesSummaryStatistics 🔔");
       state.articlesSummaryStatistics = action.payload;
     },
     logoutUser: (state) => {
-      console.log(`- dans Redux: logoutUser 🔔🔔🔔🔔`);
       state.token = null;
       state.username = null;
       state.email = null;
-      // console.log(`- finished logoutUser 🏁`);
+    },
+    toggleHideIrrelevant: (state) => {
+      state.hideIrrelevant = !state.hideIrrelevant;
     },
   },
 });
@@ -39,5 +40,6 @@ export const {
   logoutUser,
   updateStateArray,
   updateArticlesSummaryStatistics,
+  toggleHideIrrelevant,
 } = userSlice.actions;
 export default userSlice.reducer;

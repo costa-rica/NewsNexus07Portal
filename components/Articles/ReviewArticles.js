@@ -8,7 +8,10 @@ import { createColumnHelper } from "@tanstack/react-table";
 import StateSelector from "../common/StateSelector";
 import Modal from "../common/Modal";
 import { useDispatch } from "react-redux";
-import { updateArticlesSummaryStatistics } from "../../reducers/user";
+import {
+  updateArticlesSummaryStatistics,
+  toggleHideIrrelevant,
+} from "../../reducers/user";
 import SummaryStatistics from "../common/SummaryStatistics";
 export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
@@ -17,7 +20,7 @@ export default function ReviewArticles() {
   const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
   const [infoModalContent, setInfoModalContent] = useState("");
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
-  const [hideIrrelevant, setHideIrrelevant] = useState(false);
+  // const [hideIrrelevant, setHideIrrelevant] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const dispatch = useDispatch();
 
@@ -235,6 +238,10 @@ export default function ReviewArticles() {
           </button>
         </div>
       ),
+    }),
+    columnHelper.accessor("keyword", {
+      header: "Keyword",
+      enableSorting: true,
     }),
   ];
 
@@ -537,11 +544,11 @@ export default function ReviewArticles() {
 
             <button
               className={`${styles.btnSubmit} ${
-                hideIrrelevant ? styles.btnOpaque : ""
+                userReducer.hideIrrelevant ? styles.btnOpaque : ""
               }`}
-              onClick={() => setHideIrrelevant(!hideIrrelevant)}
+              onClick={() => dispatch(toggleHideIrrelevant())}
             >
-              {hideIrrelevant
+              {userReducer.hideIrrelevant
                 ? "Show All Articles"
                 : "Hide Irrelevant Articles"}
             </button>
@@ -560,7 +567,7 @@ export default function ReviewArticles() {
             <TableRequests
               columns={columnsForArticlesTable}
               data={
-                hideIrrelevant
+                userReducer.hideIrrelevant
                   ? articlesArray.filter(
                       (article) => article.isRelevant !== false
                     )

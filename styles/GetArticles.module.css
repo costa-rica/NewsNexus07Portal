@@ -97,45 +97,48 @@
 .divMainBottom {
   display: flex;
   width: 100%;
-  height: 20rem;
   justify-content: space-between;
-  /* border: 4px dashed gray; */
+  align-items: stretch;
+  border: 4px solid gray;
+  border-radius: 10px;
+  padding: 0.5rem;
 }
 
-/* .divKeywordsGroup {
-  border: 4px dashed green;
-} */
+.divKeywordsGroup {
+  /* flex: 1;
+  height: 100%;
+  overflow: auto; */
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 .inputKeywordGroup {
   border: none;
   background-color: #f7f7f8;
   border-radius: 12px;
   padding: 5px;
 }
-.divKeywordsTableSuper {
-  border-radius: 10px;
-  border: 4px solid gray;
-  padding: 0.5rem;
-}
 .divKeywordsTable {
-  /* height: 20rem; */
-  max-height: 50vh;
-  overflow-y: auto;
-  /* width: 20rem; */
-  /* background-color: blue; */
+  border-radius: 10px;
+  padding: 0.5rem;
+  overflow: auto;
+  height: 30rem;
 }
 
 .tableKeywords {
-  height: 10rem;
   overflow-y: auto;
-  /* background-color: gray; */
   border-radius: 10px;
-  /* width: 15rem; */
+  height: 20rem;
 }
-.divRequestTableGroupSuper {
-  border-radius: 10px;
-  border: 4px solid gray;
-  padding: 0.5rem;
-  /* height: 50vh; */
+
+.divKeywordsTableSuper {
+  max-height: 100%;
+  overflow: auto;
+}
+
+.divRequestTableGroup {
+  flex: 1;
 }
 
 /* ----------

@@ -34,8 +34,9 @@ export default function TableRequests({ data, columns }) {
   });
 
   return (
-    <div className={styles.divRequestTableGroup}>
-      <div className={styles.divRequestTableDisplayRows}>
+    // <div className={styles.divRequestTableGroup}>
+    <div className={styles.divTableMain}>
+      <div className={styles.divTableButtonsAndInputs}>
         <div>
           Show rows:{" "}
           {[5, 10, 20].map((size) => (
