@@ -378,7 +378,10 @@ export default function GetArticlesFromApiServices() {
                   inputErrors.newsOrg ? styles.inputError : ""
                 }`}
                 value={newsOrg}
-                onChange={(e) => setNewsOrg(e.target.value)}
+                onChange={(e) => {
+                  setNewsOrg(e.target.value);
+                  // setMaxResults(e.target.value === "GNews" ? "10" : "100");
+                }}
               >
                 <option value="">Select API</option>
                 {newsOrgArray.map((org, index) => (
@@ -408,7 +411,7 @@ export default function GetArticlesFromApiServices() {
                 </button>
               )}
             </div>
-            <div className={styles.divRequestGroupInputSmall}>
+            {/* <div className={styles.divRequestGroupInputSmall}>
               <label htmlFor="maxResults">Max Results</label>
               <input
                 // className={styles.inputRequestKeyword}
@@ -419,9 +422,10 @@ export default function GetArticlesFromApiServices() {
                 min="1"
                 placeholder="enter word"
                 value={maxResults}
-                onChange={(e) => setMaxResults(e.target.value)}
+                // onChange={(e) => setMaxResults(e.target.value)}
+                disabled
               />
-            </div>
+            </div> */}
             <div className={styles.divRequestGroupInput}>
               <label htmlFor="startDate">Start Date</label>
               <input

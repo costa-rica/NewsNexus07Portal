@@ -112,6 +112,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  max-width: 20%;
 }
 .inputKeywordGroup {
   border: none;
