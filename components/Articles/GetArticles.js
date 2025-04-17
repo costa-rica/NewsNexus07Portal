@@ -165,16 +165,16 @@ export default function GetArticles() {
       return;
     }
 
-    if (!exactMatch) {
-      console.log("Keyword not found:", filterKeyword);
-      setIsOpenKeywordWarning(true);
-    } else {
-      if (newsOrg === "GNews") {
-        requestGNewsApi();
-      } else if (newsOrg === "NewsAPI") {
-        requestNewsApi();
-      }
+    // if (!exactMatch) {
+    //   console.log("Keyword not found:", filterKeyword);
+    //   setIsOpenKeywordWarning(true);
+    // } else {
+    if (newsOrg === "GNews") {
+      requestGNewsApi();
+    } else if (newsOrg === "NewsAPI") {
+      requestNewsApi();
     }
+    // }
   };
   const requestGNewsApi = async () => {
     if (!startDate || !endDate || !filterKeyword || !newsOrg) {

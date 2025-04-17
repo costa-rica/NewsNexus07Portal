@@ -34,7 +34,9 @@ export default function TemplateView({ children }) {
           />
         </div>
         <div className={styles.divHeaderMiddle}>
-          <div className={styles.divHeaderMiddleName}> News Nexus</div>
+          <div className={styles.divHeaderMiddleName}>
+            {process.env.NEXT_PUBLIC_APP_NAME}
+          </div>
 
           <div className={styles.divHeaderMiddleApiUrl}>
             {process.env.NEXT_PUBLIC_API_BASE_URL}
