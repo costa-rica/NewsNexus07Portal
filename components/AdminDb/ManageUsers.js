@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import TemplateView from "../common/TemplateView";
-import DynamicDbTable from "../common/DynamicDbTable";
+import DynamicDbTable from "../common/Tables/DynamicDbTable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 

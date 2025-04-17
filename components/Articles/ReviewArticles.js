@@ -3,7 +3,7 @@ import TemplateView from "../common/TemplateView";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import TableRequests from "../common/TableRequests";
+import Table01 from "../common/Tables/Table01";
 import { createColumnHelper } from "@tanstack/react-table";
 import StateSelector from "../common/StateSelector";
 import Modal from "../common/Modal";
@@ -140,7 +140,6 @@ export default function ReviewArticles() {
               article.id === articleId ? updatedArticle : article
             )
           );
-          // setSelectedArticle(updatedArticle);
           if (selectedArticle.id === articleId) {
             setSelectedArticle(updatedArticle);
           }
@@ -521,19 +520,11 @@ export default function ReviewArticles() {
                 ? "Show All Articles"
                 : "Hide Irrelevant Articles"}
             </button>
-            {/* <button
-              className={styles.btnSubmit}
-              onClick={() => {
-                setIsOpenModalInfo(true);
-              }}
-            >
-              Test
-            </button> */}
           </div>
         </div>
         <div className={styles.divMainBottom}>
           <div className={styles.divRequestTableGroupSuper}>
-            <TableRequests
+            <Table01
               columns={columnsForArticlesTable}
               data={
                 userReducer.hideIrrelevant

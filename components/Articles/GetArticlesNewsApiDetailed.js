@@ -3,7 +3,7 @@ import TemplateView from "../common/TemplateView";
 import Modal from "../common/Modal";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import TableRequests from "../common/TableRequests";
+import TableRequests from "../common/Tables/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import SummaryStatistics from "../common/SummaryStatistics";
 import { useDispatch } from "react-redux";

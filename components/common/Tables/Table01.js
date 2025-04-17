@@ -1,4 +1,4 @@
-import styles from "../../styles/TableRequests.module.css";
+import styles from "../../../styles/TableRequests.module.css";
 import {
   useReactTable,
   getCoreRowModel,
@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-export default function TableRequests({ data, columns }) {
+export default function Table01({ data, columns }) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -31,6 +31,7 @@ export default function TableRequests({ data, columns }) {
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
+    autoResetPageIndex: false, // ✅ ADD THIS
   });
 
   return (
