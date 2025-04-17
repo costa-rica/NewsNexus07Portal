@@ -13,11 +13,9 @@
 /* --- MIDDLE --- */
 /* --- MIDDLE --- */
 
-.divMainMiddle {
-  /* height: 10rem; */
-  /* width: 100%; */
-  padding-bottom: 10rem;
-}
+/* .divMainMiddle {
+
+} */
 .divRequestGroup {
   display: flex;
   flex-direction: column;

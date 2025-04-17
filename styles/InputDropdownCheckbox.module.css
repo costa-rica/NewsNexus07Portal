@@ -55,3 +55,13 @@
 .dropdownItem:hover {
   background-color: #f0f0f0;
 }
+
+.searchInput {
+  width: 95%;
+  margin: 0 auto 8px auto;
+  display: block;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}

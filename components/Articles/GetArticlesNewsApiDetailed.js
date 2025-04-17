@@ -29,10 +29,9 @@ export default function GetArticlesNewsApiDetailed() {
   const [keywordsAnd, setKeywordsAnd] = useState("");
   const [keywordsOr, setKeywordsOr] = useState("");
   const [keywordsNot, setKeywordsNot] = useState("");
-  const [includeWebsiteDomainObjArray, setIncludeWebsiteDomainObjArray] =
-    useState([]);
-  const [excludeWebsiteDomainObjArray, setExcludeWebsiteDomainObjArray] =
-    useState([]);
+  const [websiteDomainObjArray, setWebsiteDomainObjArray] = useState([]);
+
+  const [includeExclude, setIncludeExclude] = useState("include");
 
   const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("NewsAPI");
@@ -50,9 +49,9 @@ export default function GetArticlesNewsApiDetailed() {
   const filteredKeywords = keywordsArray.filter((keyword) =>
     keyword.toLowerCase().includes(filterKeyword.toLowerCase())
   );
-  const exactMatch = keywordsArray.some(
-    (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
-  );
+  // const exactMatch = keywordsArray.some(
+  //   (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
+  // );
 
   const columnHelper = createColumnHelper();
   const columnsForRequestTable = [
@@ -162,21 +161,34 @@ export default function GetArticlesNewsApiDetailed() {
       setKeywordsArray([]);
     }
   };
-  const handleRequestArticles = () => {
-    // if filteredKeyword is not in keywordsArray, add it do not trigger
-    console.log(`newsOrg: ${newsOrg}`);
-    const errors = {
-      startDate: !startDate,
-      endDate: !endDate,
-      newsOrg: !newsOrg || newsOrg === "",
-    };
-    setInputErrors(errors);
 
-    requestNewsApi();
-  };
+  // const handleRequestArticles = () => {
+  //   // if filteredKeyword is not in keywordsArray, add it do not trigger
+  //   console.log(`newsOrg: ${newsOrg}`);
+  //   const errors = {
+  //     startDate: !startDate,
+  //     endDate: !endDate,
+  //     newsOrg: !newsOrg || newsOrg === "",
+  //   };
+  //   setInputErrors(errors);
+
+  //   requestNewsApi();
+  // };
 
   const requestNewsApi = async () => {
     try {
+      let includeWebsiteDomainObjArray = [];
+      let excludeWebsiteDomainObjArray = [];
+      if (includeExclude === "include") {
+        includeWebsiteDomainObjArray = websiteDomainObjArray.filter(
+          (domain) => domain.selected === true
+        );
+      } else {
+        excludeWebsiteDomainObjArray = websiteDomainObjArray.filter(
+          (domain) => domain.selected === true
+        );
+      }
+
       const bodyObj = {
         newsOrg,
         startDate,
@@ -184,13 +196,10 @@ export default function GetArticlesNewsApiDetailed() {
         keywordsAnd,
         keywordsOr,
         keywordsNot,
-        includeWebsiteDomainObjArray: includeWebsiteDomainObjArray.filter(
-          (domain) => domain.selected === true
-        ),
-        // excludeWebsiteDomainObjArray: excludeWebsiteDomainObjArray.filter(
-        //   (domain) => domain.selected === true
-        // ),
+        includeWebsiteDomainObjArray,
+        excludeWebsiteDomainObjArray,
       };
+      // alert(JSON.stringify(bodyObj));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-api/detailed-news-api`,
         {
@@ -281,6 +290,21 @@ export default function GetArticlesNewsApiDetailed() {
   };
 
   const handleCopyRequest = (rowData) => {
+    if (rowData.includeString) {
+      // if there is an includeString, loop over the existing includeWebsiteDomainObjArray and replace the selected property of any elements with matching websiteDomainId
+      const rowDataDomainIds = rowData.includeSourcesArray.map(
+        (domain) => domain.id
+      );
+      console.log(rowDataDomainIds);
+      let tempArray = websiteDomainObjArray;
+      for (let domain of tempArray) {
+        if (rowDataDomainIds.includes(domain.websiteDomainId)) {
+          domain.selected = true;
+        }
+      }
+      setWebsiteDomainObjArray(tempArray);
+    }
+
     setNewsOrg(rowData.nameOfOrg);
     // setFilterKeyword(rowData.keyword);
     setStartDate(rowData.startDate);
@@ -354,7 +378,7 @@ export default function GetArticlesNewsApiDetailed() {
             selected: false,
           });
         }
-        setIncludeWebsiteDomainObjArray(tempWebsiteDomainsArray);
+        setWebsiteDomainObjArray(tempWebsiteDomainsArray);
       }
     } catch (error) {
       console.error("Error fetching website domains:", error.message);
@@ -416,7 +440,7 @@ export default function GetArticlesNewsApiDetailed() {
                 <button
                   className={styles.btnSubmit}
                   onClick={() => {
-                    handleRequestArticles();
+                    requestNewsApi();
                     // You can call your submit logic or dispatch here
                   }}
                 >
@@ -482,18 +506,25 @@ export default function GetArticlesNewsApiDetailed() {
             </div>
             <div className={styles.divRequestGroupInputDropdownCheckbox}>
               {/* Do you see me? */}
-              {/* {userReducer.includeDomainsArray &&
-                Array.from(userReducer.includeDomainsArray).map(
-                  (domain, index) => <span key={index}>{domain.name}</span>
-                )} */}
-              <label htmlFor="includeDomains">Get Articles Only From: </label>
+
+              <label htmlFor="includeDomains">Domains: </label>
               <div style={{ width: "100%" }}>
                 <InputDropdownCheckbox
-                  inputObjectArray={includeWebsiteDomainObjArray}
-                  setInputObjectArray={setIncludeWebsiteDomainObjArray}
+                  inputObjectArray={websiteDomainObjArray}
+                  setInputObjectArray={setWebsiteDomainObjArray}
                   displayName="name"
-                  inputDefaultText="select sources ..."
+                  inputDefaultText="select domains ..."
                 />
+              </div>
+              <div className={styles.divRequestGroupSelectIncludeExclude}>
+                <select
+                  className={styles.inputRequestKeyword}
+                  value={includeExclude}
+                  onChange={(e) => setIncludeExclude(e.target.value)}
+                >
+                  <option value="include">Include</option>
+                  <option value="exclude">Exclude</option>
+                </select>
               </div>
             </div>
           </div>

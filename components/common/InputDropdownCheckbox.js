@@ -9,7 +9,7 @@ export default function InputDropdownCheckbox({
   inputDefaultText = "Select...",
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [searchText, setSearchText] = useState("");
   const handleToggleSelect = (stateId) => {
     const updated = inputObjectArray.map((elem) =>
       elem.id === stateId ? { ...elem, selected: !elem.selected } : elem
@@ -17,13 +17,18 @@ export default function InputDropdownCheckbox({
     setInputObjectArray(updated);
   };
 
-  const selectedStates = inputObjectArray.filter((st) => st.selected);
-
+  const selectedElements = inputObjectArray.filter((elem) => elem.selected);
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
+  const filteredItems = inputObjectArray.filter((elem) =>
+    elem[displayName].toLowerCase().includes(searchText.toLowerCase())
+  );
   return (
     <div className={styles.selectorContainer}>
       <div className={styles.selectorInput} onClick={() => setIsOpen(true)}>
-        {selectedStates.length > 0
-          ? selectedStates.map((st) => st.name).join(", ")
+        {selectedElements.length > 0
+          ? selectedElements.map((elem) => elem.name).join(", ")
           : inputDefaultText}
       </div>
 
@@ -37,8 +42,15 @@ export default function InputDropdownCheckbox({
               ×
             </button>
           </div>
+          <input
+            type="text"
+            value={searchText}
+            onChange={handleSearchChange}
+            className={styles.searchInput}
+            placeholder="Search..."
+          />
           <div className={styles.dropdownList}>
-            {inputObjectArray.map((elem) => (
+            {filteredItems.map((elem) => (
               <div
                 key={elem.id}
                 className={styles.dropdownItem}
