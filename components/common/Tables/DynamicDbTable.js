@@ -1,4 +1,4 @@
-import styles from "../../styles/DynamicDbTable.module.css";
+import styles from "../../../styles/DynamicDbTable.module.css";
 
 export default function DynamicDbTable({
   columnNames,
