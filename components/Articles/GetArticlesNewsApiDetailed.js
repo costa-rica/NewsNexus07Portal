@@ -13,6 +13,8 @@ import {
   updateExcludeDomainsArray,
 } from "../../reducers/user";
 
+import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
+
 export default function GetArticlesNewsApiDetailed() {
   const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
@@ -27,6 +29,10 @@ export default function GetArticlesNewsApiDetailed() {
   const [keywordsAnd, setKeywordsAnd] = useState("");
   const [keywordsOr, setKeywordsOr] = useState("");
   const [keywordsNot, setKeywordsNot] = useState("");
+  const [includeWebsiteDomainObjArray, setIncludeWebsiteDomainObjArray] =
+    useState([]);
+  const [excludeWebsiteDomainObjArray, setExcludeWebsiteDomainObjArray] =
+    useState([]);
 
   const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("NewsAPI");
@@ -119,6 +125,7 @@ export default function GetArticlesNewsApiDetailed() {
     requestNewsApiRequestsArray();
     fetchNewsOrgArray();
     fetchArticlesSummaryStatistics();
+    fetchWebsiteDomains();
   }, []);
   useEffect(() => {
     if (!endDate) {
@@ -177,6 +184,12 @@ export default function GetArticlesNewsApiDetailed() {
         keywordsAnd,
         keywordsOr,
         keywordsNot,
+        includeWebsiteDomainObjArray: includeWebsiteDomainObjArray.filter(
+          (domain) => domain.selected === true
+        ),
+        // excludeWebsiteDomainObjArray: excludeWebsiteDomainObjArray.filter(
+        //   (domain) => domain.selected === true
+        // ),
       };
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-api/detailed-news-api`,
@@ -269,9 +282,13 @@ export default function GetArticlesNewsApiDetailed() {
 
   const handleCopyRequest = (rowData) => {
     setNewsOrg(rowData.nameOfOrg);
-    setFilterKeyword(rowData.keyword);
+    // setFilterKeyword(rowData.keyword);
     setStartDate(rowData.startDate);
     setEndDate(rowData.endDate);
+    setKeywordsAnd(rowData.andArray);
+    setKeywordsNot(rowData.notArray);
+    setKeywordsOr(rowData.orArray);
+    // setIncludeWebsiteDomainObjArray(rowData.includeDomains);
   };
   const fetchArticlesSummaryStatistics = async () => {
     try {
@@ -304,6 +321,43 @@ export default function GetArticlesNewsApiDetailed() {
         "Error fetching articles summary statistics:",
         error.message
       );
+    }
+  };
+
+  const fetchWebsiteDomains = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/website-domains`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Log response text for debugging
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log("Fetched Data (website-domains):", result);
+
+      if (result.websiteDomains) {
+        // dispatch(updateIncludeDomainsArray(result.websiteDomains));
+        let tempWebsiteDomainsArray = [];
+        for (let i = 0; i < result.websiteDomains.length; i++) {
+          tempWebsiteDomainsArray.push({
+            id: i,
+            websiteDomainId: result.websiteDomains[i].id,
+            name: result.websiteDomains[i].name,
+            selected: false,
+          });
+        }
+        setIncludeWebsiteDomainObjArray(tempWebsiteDomainsArray);
+      }
+    } catch (error) {
+      console.error("Error fetching website domains:", error.message);
     }
   };
 
@@ -425,6 +479,22 @@ export default function GetArticlesNewsApiDetailed() {
                   ×
                 </button>
               )}
+            </div>
+            <div className={styles.divRequestGroupInputDropdownCheckbox}>
+              {/* Do you see me? */}
+              {/* {userReducer.includeDomainsArray &&
+                Array.from(userReducer.includeDomainsArray).map(
+                  (domain, index) => <span key={index}>{domain.name}</span>
+                )} */}
+              <label htmlFor="includeDomains">Get Articles Only From: </label>
+              <div style={{ width: "100%" }}>
+                <InputDropdownCheckbox
+                  inputObjectArray={includeWebsiteDomainObjArray}
+                  setInputObjectArray={setIncludeWebsiteDomainObjArray}
+                  displayName="name"
+                  inputDefaultText="select sources ..."
+                />
+              </div>
             </div>
           </div>
         </div>
