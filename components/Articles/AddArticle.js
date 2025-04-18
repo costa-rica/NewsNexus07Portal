@@ -11,95 +11,42 @@ export default function AddArticle() {
   const [article, setArticle] = useState({});
   const [stateArray, setStateArray] = useState(userReducer.stateArray);
 
-  useEffect(() => {}, []);
-
-  //   const handleClickedValidateState = async () => {
-  //     console.log("clicked validate state");
-
-  //     // const selectedStateIds = stateArray
-  //     //   .filter((st) => st.selected)
-  //     //   .map((st) => st.id);
-  //     const selectedStateObjs = stateArray.filter((st) => st.selected);
-  //     const selectedStateIds = selectedStateObjs.map((st) => st.id);
-  //     const selectedStateNamesString = selectedStateObjs
-  //       .map((st) => st.name)
-  //       .join(", ");
-  //     try {
-  //       const bodyObj = {
-  //         stateIdArray: selectedStateIds,
-  //       };
-  //       const response = await fetch(
-  //         `${process.env.NEXT_PUBLIC_API_BASE_URL}/states/${selectedArticle.id}`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${userReducer.token}`,
-  //           },
-  //           body: JSON.stringify(bodyObj),
-  //         }
-  //       );
-
-  //       console.log(`Response status: ${response.status}`);
-  //       let resJson = null;
-  //       const contentType = response.headers.get("Content-Type");
-
-  //       if (contentType?.includes("application/json")) {
-  //         resJson = await response.json();
-  //       }
-
-  //       if (resJson) {
-  //         console.log("Fetched Data:", resJson);
-  //         if (response.status === 400) {
-  //           setRequestResponseMessage(resJson.message);
-  //           setIsOpenRequestResponse(true);
-  //           return;
-  //         } else {
-  //           // fetchArticlesArray();
-  //           let updatedArticle = articlesArray.find(
-  //             (article) => article.id === selectedArticle.id
-  //           );
-  //           updatedArticle.States = selectedStateObjs;
-  //           updatedArticle.states = selectedStateNamesString;
-  //           setArticlesArray(
-  //             articlesArray.map((article) =>
-  //               article.id === selectedArticle.id ? updatedArticle : article
-  //             )
-  //           );
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.error("Error validating states:", error.message);
-  //     }
-  //     fetchArticlesSummaryStatistics();
-  //   };
+  useEffect(() => {
+    fetchArticlesSummaryStatistics();
+  }, []);
 
   const handleAddAndSubmitArticle = async () => {
     const selectedStateObjs = stateArray.filter((st) => st.selected);
 
-    // alert(JSON.stringify(selectedStateObjs));
-    setArticle({
+    // Validation first
+    if (selectedStateObjs.length === 0) {
+      alert("Please select at least one state");
+      return;
+    }
+
+    // Construct updated article
+    const updatedArticle = {
       ...article,
       stateObjArray: selectedStateObjs,
       isApproved: true,
       kmNotes: "added manually",
-    });
+    };
+
+    // Optional: Log for debug
+    console.log("Updated article object:", updatedArticle);
+
+    // Set state
+    setArticle(updatedArticle);
 
     if (
-      !article.publicationName ||
-      !article.title ||
-      !article.url ||
-      !article.publishedDate ||
-      !article.content
+      !updatedArticle.publicationName ||
+      !updatedArticle.title ||
+      !updatedArticle.publishedDate ||
+      !updatedArticle.content
     ) {
       alert(
-        "Please fill in all required fields: publication name, title, url, published date, content"
+        "Please fill in all required fields: publication name, title, published date, content"
       );
-      return;
-    }
-
-    if (!article.states || article.states.length === 0) {
-      alert("Please select at least one state");
       return;
     }
 
@@ -112,7 +59,7 @@ export default function AddArticle() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userReducer.token}`,
           },
-          body: JSON.stringify(article),
+          body: JSON.stringify(updatedArticle),
         }
       );
 
@@ -131,7 +78,26 @@ export default function AddArticle() {
           return;
         } else {
           alert("Successfully added article");
-          setArticle({});
+          // setArticle({});
+          const blankArticle = {
+            publicationName: "",
+            author: "",
+            title: "",
+            description: "",
+            url: "",
+            publishedDate: "",
+            content: "",
+            stateObjArray: [],
+          };
+
+          setArticle(blankArticle);
+
+          // Deselect all states
+          const clearedStateArray = stateArray.map((st) => ({
+            ...st,
+            selected: false,
+          }));
+          setStateArray(clearedStateArray);
         }
       }
     } catch (error) {
@@ -188,7 +154,7 @@ export default function AddArticle() {
             </span>
             <input
               type="text"
-              value={article?.publicationName}
+              value={article?.publicationName || ""}
               className={styles.inputArticleDetail}
               onChange={(e) =>
                 setArticle({ ...article, publicationName: e.target.value })
@@ -199,7 +165,7 @@ export default function AddArticle() {
             <span className={styles.lblArticleDetailMain}>Author:</span>
             <input
               type="text"
-              value={article?.author}
+              value={article?.author || ""}
               className={styles.inputArticleDetail}
               onChange={(e) =>
                 setArticle({ ...article, author: e.target.value })
@@ -210,7 +176,7 @@ export default function AddArticle() {
             <span className={styles.lblArticleDetailMain}>Title:</span>
             <input
               type="text"
-              value={article?.title}
+              value={article?.title || ""}
               className={styles.inputArticleDetail}
               onChange={(e) =>
                 setArticle({ ...article, title: e.target.value })
@@ -221,7 +187,7 @@ export default function AddArticle() {
             <span className={styles.lblArticleDetailMain}>Description:</span>
             <input
               type="text"
-              value={article?.description}
+              value={article?.description || ""}
               className={styles.inputArticleDetail}
               onChange={(e) =>
                 setArticle({ ...article, description: e.target.value })
@@ -232,7 +198,7 @@ export default function AddArticle() {
             <span className={styles.lblArticleDetailMain}>URL:</span>
             <input
               type="text"
-              value={article?.url}
+              value={article?.url || ""}
               className={styles.inputArticleDetail}
               onChange={(e) => setArticle({ ...article, url: e.target.value })}
             />
@@ -241,7 +207,7 @@ export default function AddArticle() {
             <span className={styles.lblArticleDetailMain}>Published Date:</span>
             <input
               type="date"
-              value={article?.publishedDate}
+              value={article?.publishedDate || ""}
               className={styles.inputArticleDetail}
               onChange={(e) =>
                 setArticle({ ...article, publishedDate: e.target.value })
@@ -269,7 +235,7 @@ export default function AddArticle() {
             <span className={styles.lblArticleDetailMain}>Content:</span>
 
             <textarea
-              value={article?.content}
+              value={article?.content || ""}
               className={styles.inputArticleDetailContent}
               onChange={(e) => {
                 setArticle({
