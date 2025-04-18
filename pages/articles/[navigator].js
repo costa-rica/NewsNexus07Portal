@@ -19,6 +19,10 @@ export default function GetArticlesNavigator() {
       return import(`../../components/Articles/ReviewArticles`).catch(
         () => () => <p>ReviewArticles Not Found</p>
       );
+    } else if (navigator === "reports") {
+      return import(`../../components/Articles/Reports`).catch(() => () => (
+        <p>Reports Not Found</p>
+      ));
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }

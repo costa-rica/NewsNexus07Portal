@@ -44,3 +44,8 @@
 .closeModalIcon:hover {
   color: var(--med-text-color);
 }
+.modalBottom {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+}

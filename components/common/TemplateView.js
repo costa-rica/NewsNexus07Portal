@@ -112,6 +112,12 @@ export default function TemplateView({ children }) {
             currentPath={currentPath}
           />
           <NavBarSideLink
+            href="/articles/reports"
+            // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+            label="Reports"
+            currentPath={currentPath}
+          />
+          <NavBarSideLink
             href="/login"
             iconFilenameAndPath="/images/menu/logout.svg"
             label="Logout"
