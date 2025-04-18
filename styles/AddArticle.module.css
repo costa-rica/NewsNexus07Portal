@@ -1,0 +1,67 @@
+.divMainMiddle {
+  /* height: 10rem; */
+  width: 100%;
+  display: flex;
+
+  /* border: 4px dashed gray; */
+  gap: 1rem;
+  padding: 1rem;
+  flex-direction: column;
+}
+.divArticleDetail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lblArticleDetailMain {
+  font-weight: bold;
+  /* color: var(--off-white); */
+}
+.lblArticleDetailSub {
+  font-size: 0.6rem;
+  text-align: center;
+}
+.inputArticleDetail {
+  flex: 1;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  /* background-color: var(--gray-medium); */
+  color: black;
+}
+.divManageStates {
+  flex: 1;
+}
+.divArticleDetailContent {
+  display: flex;
+  /* align-items: center; */
+  gap: 0.5rem;
+}
+.inputArticleDetailContent {
+  flex: 1;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  flex-wrap: wrap;
+  height: 10rem;
+}
+.divArticleContent {
+  background-color: var(--gray-medium);
+  padding: 0.5rem;
+}
+.btnSubmit {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  padding: 12px;
+  /* width: 100%; */
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnSubmit:active {
+  transform: scale(0.87);
+}
+.divMainMiddleBottom {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
