@@ -14,9 +14,11 @@ body {
   --gray-light: #d9d9d9;
   --gray-medium: #979797;
   --blue-dark: #283a59;
+  --green-approved-article: #02a031;
   --bg-login-left: #d9d9d9;
   --bg-navbar-top: #283a59;
   --bg-input-off-white: #f7f7f8;
+
   --width-side-menu: 15rem;
   --height-header: 7vh;
   --height-header-large: 11vh;

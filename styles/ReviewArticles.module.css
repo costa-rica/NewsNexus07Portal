@@ -44,8 +44,9 @@
 }
 .divMainMiddleLeftTitle {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.25rem;
+  flex-wrap: nowrap;
 }
 .divMainMiddleLeftTitle h2 {
   font-size: 1.2rem;

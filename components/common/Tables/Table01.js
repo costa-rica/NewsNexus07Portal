@@ -1,4 +1,4 @@
-import styles from "../../../styles/TableRequests.module.css";
+import styles from "../../../styles/Table01.module.css";
 import {
   useReactTable,
   getCoreRowModel,
@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-export default function Table01({ data, columns }) {
+export default function Table01({ data, columns, selectedRowId }) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -115,7 +115,12 @@ export default function Table01({ data, columns }) {
         {/* <div className={styles.divLine}></div> */}
         <tbody>
           {table.getPaginationRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              className={`${
+                row.original.id === selectedRowId ? styles.selectedRow : ""
+              } ${row.original.isApproved && styles.approvedRow}`}
+            >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

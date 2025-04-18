@@ -250,9 +250,14 @@ export default function ReviewArticles() {
   const handleClickedValidateState = async () => {
     console.log("clicked validate state");
 
-    const selectedStateIds = stateArray
-      .filter((st) => st.selected)
-      .map((st) => st.id);
+    // const selectedStateIds = stateArray
+    //   .filter((st) => st.selected)
+    //   .map((st) => st.id);
+    const selectedStateObjs = stateArray.filter((st) => st.selected);
+    const selectedStateIds = selectedStateObjs.map((st) => st.id);
+    const selectedStateNamesString = selectedStateObjs
+      .map((st) => st.name)
+      .join(", ");
     try {
       const bodyObj = {
         stateIdArray: selectedStateIds,
@@ -284,7 +289,17 @@ export default function ReviewArticles() {
           setIsOpenRequestResponse(true);
           return;
         } else {
-          fetchArticlesArray();
+          // fetchArticlesArray();
+          let updatedArticle = articlesArray.find(
+            (article) => article.id === selectedArticle.id
+          );
+          updatedArticle.States = selectedStateObjs;
+          updatedArticle.states = selectedStateNamesString;
+          setArticlesArray(
+            articlesArray.map((article) =>
+              article.id === selectedArticle.id ? updatedArticle : article
+            )
+          );
         }
       }
     } catch (error) {
@@ -295,11 +310,14 @@ export default function ReviewArticles() {
 
   const handleApproveArticle = async () => {
     console.log("clicked approve article");
-    if (!selectedArticle.id) {
-      setRequestResponseMessage("Please select an article to approve");
-      setIsOpenModalInfo(true);
-      return;
-    }
+    // if (!selectedArticle.id) {
+    // if (selectedArticle.id) {
+    //   setInfoModalContent(
+    //     JSON.stringify({ ...bodyObj, id: selectedArticle.id })
+    //   );
+    //   setIsOpenModalInfo(true);
+    //   return;
+    // }
     try {
       const bodyObj = {
         isApproved: !selectedArticle.isApproved,
@@ -310,6 +328,7 @@ export default function ReviewArticles() {
         urlForPdfReport: selectedArticle.url,
         kmNotes: "",
       };
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/approve/${selectedArticle.id}`,
         {
@@ -404,6 +423,7 @@ export default function ReviewArticles() {
           <div className={styles.divMainMiddleLeft}>
             <div className={`${styles.divMainMiddleLeftTitle} tooltipWrapper`}>
               <h2>Article Approval Details</h2>
+              <span>(article Id: {selectedArticle?.id})</span>
               <div className="tooltipText">
                 This is the content for CPSC report PDF
               </div>
@@ -533,6 +553,7 @@ export default function ReviewArticles() {
                     )
                   : articlesArray
               }
+              selectedRowId={selectedArticle?.id}
             />
           </div>
         </div>
