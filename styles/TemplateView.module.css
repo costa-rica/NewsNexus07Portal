@@ -10,6 +10,9 @@
   align-items: center;
   height: var(--height-header);
 }
+.headerCustomNonProduction {
+  background-color: orange;
+}
 .divMain {
   display: flex;
   flex-direction: row;

@@ -25,7 +25,13 @@ export default function TemplateView({ children }) {
 
   return (
     <>
-      <header className={styles.headerCustom}>
+      <header
+        className={`${styles.headerCustom} ${
+          process.env.NEXT_PUBLIC_MODE !== "production"
+            ? styles.headerCustomNonProduction
+            : ""
+        }`}
+      >
         <div className={styles.divHeaderLeft}>
           <img
             className={styles.imgNewsNexusLogo}
