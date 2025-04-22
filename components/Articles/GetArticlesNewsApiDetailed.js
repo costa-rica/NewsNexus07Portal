@@ -31,7 +31,7 @@ export default function GetArticlesNewsApiDetailed() {
   const [keywordsNot, setKeywordsNot] = useState("");
   const [websiteDomainObjArray, setWebsiteDomainObjArray] = useState([]);
 
-  const [includeExclude, setIncludeExclude] = useState("include");
+  const [includeExclude, setIncludeExclude] = useState("exclude");
 
   const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("NewsAPI");
@@ -295,9 +295,12 @@ export default function GetArticlesNewsApiDetailed() {
       for (let domain of tempArray) {
         if (rowDataDomainIds.includes(domain.websiteDomainId)) {
           domain.selected = true;
+        } else {
+          domain.selected = false;
         }
       }
       setWebsiteDomainObjArray(tempArray);
+      setIncludeExclude("exclude");
     }
     if (rowData.includeString) {
       const rowDataDomainIds = rowData.includeSourcesArray.map(
@@ -308,9 +311,12 @@ export default function GetArticlesNewsApiDetailed() {
       for (let domain of tempArray) {
         if (rowDataDomainIds.includes(domain.websiteDomainId)) {
           domain.selected = true;
+        } else {
+          domain.selected = false;
         }
       }
       setWebsiteDomainObjArray(tempArray);
+      setIncludeExclude("include");
     }
     if (!rowData.excludeString && !rowData.includeString) {
       let tempArray = websiteDomainObjArray;
@@ -318,6 +324,7 @@ export default function GetArticlesNewsApiDetailed() {
         domain.selected = false;
       }
       setWebsiteDomainObjArray(tempArray);
+      setIncludeExclude("exclude");
     }
   };
 
