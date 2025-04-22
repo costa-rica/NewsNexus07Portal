@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Table01 from "../common/Tables/Table01";
 import { createColumnHelper } from "@tanstack/react-table";
-import StateSelector from "../common/StateSelector";
+// import StateSelector from "../common/StateSelector";
+import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
 import Modal from "../common/Modal";
 import { useDispatch } from "react-redux";
 import {
@@ -484,9 +485,15 @@ export default function ReviewArticles() {
                 </span>
               </div>
               <div className={styles.divManageStates}>
-                <StateSelector
+                {/* <StateSelector
                   stateArray={stateArray}
                   setStateArray={setStateArray}
+                /> */}
+                <InputDropdownCheckbox
+                  inputObjectArray={stateArray}
+                  setInputObjectArray={setStateArray}
+                  displayName="name"
+                  inputDefaultText="select states ..."
                 />
               </div>
               <button

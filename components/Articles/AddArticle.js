@@ -1,7 +1,8 @@
 import styles from "../../styles/AddArticle.module.css";
 import { useEffect, useState } from "react";
 import TemplateView from "../common/TemplateView";
-import StateSelector from "../common/StateSelector";
+// import StateSelector from "../common/StateSelector";
+import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
 import Modal from "../common/Modal";
 import { useSelector } from "react-redux";
 import SummaryStatistics from "../common/SummaryStatistics";
@@ -224,9 +225,15 @@ export default function AddArticle() {
               </span>
             </div>
             <div className={styles.divManageStates}>
-              <StateSelector
+              {/* <StateSelector
                 stateArray={stateArray}
                 setStateArray={setStateArray}
+              /> */}
+              <InputDropdownCheckbox
+                inputObjectArray={stateArray}
+                setInputObjectArray={setStateArray}
+                displayName="name"
+                inputDefaultText="select states ..."
               />
             </div>
           </div>
