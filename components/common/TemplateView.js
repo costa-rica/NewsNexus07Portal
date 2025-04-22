@@ -125,7 +125,7 @@ export default function TemplateView({ children }) {
               currentPath={currentPath}
             />
             <NavBarSideLink
-              href="/articles/manage-article"
+              href="/articles/add-delete"
               // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
               label="Add / Delete Article"
               style={{ padding: "0.25rem" }}

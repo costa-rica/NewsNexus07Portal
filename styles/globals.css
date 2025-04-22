@@ -27,6 +27,9 @@ body {
   --height-content-main-large: 90vh;
 }
 
+.inputError {
+  outline: 2px solid red;
+}
 .btnOpaque {
   background-color: gray;
   opacity: 0.7;

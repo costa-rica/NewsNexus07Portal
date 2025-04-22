@@ -9,7 +9,7 @@ import SummaryStatistics from "../common/SummaryStatistics";
 import Table01 from "../common/Tables/Table01";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
-export default function AddArticle() {
+export default function AddDeleteArticle() {
   const userReducer = useSelector((state) => state.user);
   // const [article, setArticle] = useState({});
   const [newArticle, setNewArticle] = useState({});
@@ -17,7 +17,12 @@ export default function AddArticle() {
   const [articlesArray, setArticlesArray] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isOpenAreYouSure, setIsOpenAreYouSure] = useState(false);
-
+  const [inputErrors, setInputErrors] = useState({
+    publicationName: false,
+    title: false,
+    publishedDate: false,
+    content: false,
+  });
   useEffect(() => {
     fetchArticlesArray();
     fetchArticlesSummaryStatistics();
@@ -25,6 +30,25 @@ export default function AddArticle() {
 
   const handleAddAndSubmitArticle = async () => {
     const selectedStateObjs = stateArray.filter((st) => st.selected);
+    const errors = {
+      publicationName: !newArticle.publicationName,
+      title: !newArticle.title,
+      publishedDate: !newArticle.publishedDate,
+      content: !newArticle.content,
+    };
+    setInputErrors(errors);
+
+    if (
+      !newArticle.publicationName ||
+      !newArticle.title ||
+      !newArticle.publishedDate ||
+      !newArticle.content
+    ) {
+      alert(
+        "Please fill in all required fields: publication name, title, published date, content"
+      );
+      return;
+    }
 
     // Validation first
     if (selectedStateObjs.length === 0) {
@@ -40,24 +64,7 @@ export default function AddArticle() {
       kmNotes: "added manually",
     };
 
-    // Optional: Log for debug
-    console.log("Updated article object:", updatedArticle);
-
-    // Set state
-    // setArticle(updatedArticle);
     setNewArticle(updatedArticle);
-
-    if (
-      !updatedArticle.publicationName ||
-      !updatedArticle.title ||
-      !updatedArticle.publishedDate ||
-      !updatedArticle.content
-    ) {
-      alert(
-        "Please fill in all required fields: publication name, title, published date, content"
-      );
-      return;
-    }
 
     try {
       const response = await fetch(
@@ -90,9 +97,7 @@ export default function AddArticle() {
           // setArticle({});
           const blankArticle = {
             publicationName: "",
-            author: "",
             title: "",
-            description: "",
             url: "",
             publishedDate: "",
             content: "",
@@ -407,7 +412,9 @@ export default function AddArticle() {
             <input
               type="text"
               value={newArticle?.publicationName || ""}
-              className={styles.inputArticleDetail}
+              className={`${inputErrors.publicationName ? "inputError" : ""} ${
+                styles.inputArticleDetail
+              }`}
               onChange={(e) =>
                 setNewArticle({
                   ...newArticle,
@@ -422,7 +429,9 @@ export default function AddArticle() {
             <input
               type="text"
               value={newArticle?.title || ""}
-              className={styles.inputArticleDetail}
+              className={`${inputErrors.title ? "inputError" : ""} ${
+                styles.inputArticleDetail
+              }`}
               onChange={(e) =>
                 setNewArticle({ ...newArticle, title: e.target.value })
               }
@@ -445,7 +454,9 @@ export default function AddArticle() {
             <input
               type="date"
               value={newArticle?.publishedDate || ""}
-              className={styles.inputArticleDetail}
+              className={`${inputErrors.publishedDate ? "inputError" : ""} ${
+                styles.inputArticleDetail
+              }`}
               onChange={(e) =>
                 setNewArticle({ ...newArticle, publishedDate: e.target.value })
               }
@@ -475,7 +486,9 @@ export default function AddArticle() {
 
             <textarea
               value={newArticle?.content || ""}
-              className={styles.inputArticleDetailContent}
+              className={`${inputErrors.content ? "inputError" : ""} ${
+                styles.inputArticleDetailContent
+              }`}
               onChange={(e) => {
                 setNewArticle({
                   ...newArticle,
