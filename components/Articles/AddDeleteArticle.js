@@ -240,25 +240,25 @@ export default function AddDeleteArticle() {
       header: "State",
       enableSorting: true,
     }),
-    columnHelper.accessor("isRelevant", {
-      // header: "Relevant ?",
-      header: () => (
-        <div style={{ display: "flex", flexWrap: "nowrap" }}>Relevant ?</div>
-      ),
-      enableSorting: true,
-      cell: ({ getValue, row }) => (
-        <div className={styles.divBtnRelevant}>
-          <button
-            className={`${styles.btnRelevant} ${
-              getValue() === false ? "btnOpaque" : ""
-            }`}
-            onClick={() => handleClickIsRelevant(row.original.id)}
-          >
-            {getValue() === true ? "Yes" : "No"}
-          </button>
-        </div>
-      ),
-    }),
+    // columnHelper.accessor("isRelevant", {
+    //   // header: "Relevant ?",
+    //   header: () => (
+    //     <div style={{ display: "flex", flexWrap: "nowrap" }}>Relevant ?</div>
+    //   ),
+    //   enableSorting: true,
+    //   cell: ({ getValue, row }) => (
+    //     <div className={styles.divBtnRelevant}>
+    //       <button
+    //         className={`${styles.btnRelevant} ${
+    //           getValue() === false ? "btnOpaque" : ""
+    //         }`}
+    //         onClick={() => handleClickIsRelevant(row.original.id)}
+    //       >
+    //         {getValue() === true ? "Yes" : "No"}
+    //       </button>
+    //     </div>
+    //   ),
+    // }),
     // NOTE: for some reason keyword is different so it needs to be explicitly converted to a
     // string in order for the search to work in this column
     columnHelper.accessor((row) => row.keyword?.toString() ?? "", {
