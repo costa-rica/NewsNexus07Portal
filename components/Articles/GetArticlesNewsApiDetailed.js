@@ -312,6 +312,13 @@ export default function GetArticlesNewsApiDetailed() {
       }
       setWebsiteDomainObjArray(tempArray);
     }
+    if (!rowData.excludeString && !rowData.includeString) {
+      let tempArray = websiteDomainObjArray;
+      for (let domain of tempArray) {
+        domain.selected = false;
+      }
+      setWebsiteDomainObjArray(tempArray);
+    }
   };
 
   const fetchArticlesSummaryStatistics = async () => {
