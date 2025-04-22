@@ -61,7 +61,7 @@ export default function GetArticlesNewsApiDetailed() {
       enableSorting: true,
     }),
     columnHelper.accessor("keyword", {
-      header: "Keyword",
+      header: "Search Criteria",
       enableSorting: true,
     }),
     columnHelper.accessor("startDate", {
@@ -115,7 +115,9 @@ export default function GetArticlesNewsApiDetailed() {
       id: "copyRequest",
       header: "Copy Request",
       cell: ({ row }) => (
-        <button onClick={() => handleCopyRequest(row.original)}>Copy</button>
+        <div className={styles.columnCopyBtn}>
+          <button onClick={() => handleCopyRequest(row.original)}>Copy</button>
+        </div>
       ),
     }),
   ];
@@ -161,19 +163,6 @@ export default function GetArticlesNewsApiDetailed() {
       setKeywordsArray([]);
     }
   };
-
-  // const handleRequestArticles = () => {
-  //   // if filteredKeyword is not in keywordsArray, add it do not trigger
-  //   console.log(`newsOrg: ${newsOrg}`);
-  //   const errors = {
-  //     startDate: !startDate,
-  //     endDate: !endDate,
-  //     newsOrg: !newsOrg || newsOrg === "",
-  //   };
-  //   setInputErrors(errors);
-
-  //   requestNewsApi();
-  // };
 
   const requestNewsApi = async () => {
     try {
@@ -290,8 +279,27 @@ export default function GetArticlesNewsApiDetailed() {
   };
 
   const handleCopyRequest = (rowData) => {
+    setNewsOrg(rowData.nameOfOrg);
+    // setFilterKeyword(rowData.keyword);
+    setStartDate(rowData.startDate);
+    setEndDate(rowData.endDate);
+    setKeywordsAnd(rowData.andArray);
+    setKeywordsNot(rowData.notArray);
+    setKeywordsOr(rowData.orArray);
+    if (rowData.excludeString) {
+      const rowDataDomainIds = rowData.excludeSourcesArray.map(
+        (domain) => domain.id
+      );
+      console.log(rowDataDomainIds);
+      let tempArray = websiteDomainObjArray;
+      for (let domain of tempArray) {
+        if (rowDataDomainIds.includes(domain.websiteDomainId)) {
+          domain.selected = true;
+        }
+      }
+      setWebsiteDomainObjArray(tempArray);
+    }
     if (rowData.includeString) {
-      // if there is an includeString, loop over the existing includeWebsiteDomainObjArray and replace the selected property of any elements with matching websiteDomainId
       const rowDataDomainIds = rowData.includeSourcesArray.map(
         (domain) => domain.id
       );
@@ -304,16 +312,8 @@ export default function GetArticlesNewsApiDetailed() {
       }
       setWebsiteDomainObjArray(tempArray);
     }
-
-    setNewsOrg(rowData.nameOfOrg);
-    // setFilterKeyword(rowData.keyword);
-    setStartDate(rowData.startDate);
-    setEndDate(rowData.endDate);
-    setKeywordsAnd(rowData.andArray);
-    setKeywordsNot(rowData.notArray);
-    setKeywordsOr(rowData.orArray);
-    // setIncludeWebsiteDomainObjArray(rowData.includeDomains);
   };
+
   const fetchArticlesSummaryStatistics = async () => {
     try {
       const response = await fetch(

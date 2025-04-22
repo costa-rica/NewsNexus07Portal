@@ -175,6 +175,11 @@
   font-size: 0.8em;
   color: #555;
 }
+.columnCopyBtn {
+  /* background: green; */
+  display: flex;
+  justify-content: center;
+}
 
 /* Large screens (media query) */
 @media (min-width: 768px) {
