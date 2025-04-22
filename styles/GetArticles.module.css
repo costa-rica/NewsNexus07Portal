@@ -1,11 +1,14 @@
 .main {
-  /* min-height: 100vh; */
+  display: flex;
+  flex-direction: column;
   min-height: var(--height-content-main);
+  padding: 1rem;
+  gap: 1rem;
 }
 .divMainTop {
   /* display: none; */
   width: 100%;
-  height: 5rem;
+  /* height: 5rem; */
   /* border: 4px dashed gray; */
 }
 

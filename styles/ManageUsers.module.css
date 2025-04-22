@@ -40,7 +40,14 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
+.passwordContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.iconEyePassword {
+  width: 1.5rem;
+}
 .submitButton {
   width: 100%;
   padding: 10px;

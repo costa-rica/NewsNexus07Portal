@@ -143,6 +143,41 @@ export default function TemplateView({ children }) {
               currentPath={currentPath}
             />
           </NavBarSideDropdown>
+          {userReducer.isAdmin && (
+            <NavBarSideDropdown
+              iconFilenameAndPath="/images/menu/database-solid.svg"
+              label="Manage DB"
+              currentPath={currentPath}
+              toggleFunction={() => dispatch(toggleNavExpandDb())}
+              expanded={userReducer.navExpandDb}
+            >
+              <NavBarSideLink
+                href="/admin-db/manage-db-backups"
+                label="Backups"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/admin-db/manage-db-uploads"
+                label="Uploads"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/admin-db/manage-users"
+                label="Users"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/admin-db/manage-db-deletes"
+                label="Deletes"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+            </NavBarSideDropdown>
+          )}
+
           <NavBarSideLink
             href="/articles/reports"
             iconFilenameAndPath="/images/menu/file-invoice-solid.svg"
@@ -156,38 +191,6 @@ export default function TemplateView({ children }) {
             onEnterFunction={() => dispatch(logoutUser())}
             currentPath={currentPath}
           />
-          <NavBarSideDropdown
-            iconFilenameAndPath="/images/menu/database-solid.svg"
-            label="Manage DB"
-            currentPath={currentPath}
-            toggleFunction={() => dispatch(toggleNavExpandDb())}
-            expanded={userReducer.navExpandDb}
-          >
-            <NavBarSideLink
-              href="/admin-db/manage-db-backups"
-              label="Backups"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/admin-db/manage-db-uploads"
-              label="Uploads"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/admin-db/manage-users"
-              label="Users"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/admin-db/manage-db-deletes"
-              label="Deletes"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-          </NavBarSideDropdown>
         </div>
       </div>
     </>

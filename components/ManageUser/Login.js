@@ -71,7 +71,7 @@ export default function Login() {
       resJson.email = email;
       try {
         dispatch(loginUser(resJson));
-        router.push("/articles/get-from-api-services");
+        router.push("/articles/get-from-api-services-detailed");
       } catch (error) {
         console.error("Error logging in:", error.message);
         setRequestResponseMessage("There's a problem with the website");

@@ -4,6 +4,7 @@ const initialState = {
   token: null,
   username: null,
   email: null,
+  isAdmin: false,
   stateArray: [],
   articlesSummaryStatistics: {},
   hideIrrelevant: false,
@@ -22,6 +23,7 @@ export const userSlice = createSlice({
       state.token = action.payload.token;
       state.username = action.payload.user.username || "some_name";
       state.email = action.payload.user.email || "some_name@mail.com";
+      state.isAdmin = action.payload.user.isAdmin || false;
     },
     updateStateArray: (state, action) => {
       state.stateArray = action.payload;
@@ -29,12 +31,6 @@ export const userSlice = createSlice({
     updateArticlesSummaryStatistics: (state, action) => {
       state.articlesSummaryStatistics = action.payload;
     },
-    // updateIncludeDomainsArray: (state, action) => {
-    //   state.includeDomainsArray = action.payload;
-    // },
-    // updateExcludeDomainsArray: (state, action) => {
-    //   state.excludeDomainsArray = action.payload;
-    // },
     logoutUser: (state) => {
       state.token = null;
       state.username = null;
@@ -61,8 +57,7 @@ export const {
   updateStateArray,
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
-  // updateIncludeDomainsArray,
-  // updateExcludeDomainsArray,
+
   toggleNavExpandGetArticles,
   toggleNavExpandManageArticles,
   toggleNavExpandDb,
