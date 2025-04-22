@@ -26,7 +26,7 @@ export default function Login() {
     // fetchStateArray();
     if (userReducer.token) {
       // Redirect if token exists
-      router.push("/articles/get-from-api-services");
+      router.push("/articles/get-from-api-services-detailed");
     }
   }, [userReducer]); // Run effect if token changes
   useEffect(() => {

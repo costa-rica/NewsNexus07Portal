@@ -103,7 +103,9 @@ export default function GetArticles() {
       id: "copyRequest",
       header: "Copy Request",
       cell: ({ row }) => (
-        <button onClick={() => handleCopyRequest(row.original)}>Copy</button>
+        <div className={styles.columnCopyBtn}>
+          <button onClick={() => handleCopyRequest(row.original)}>Copy</button>
+        </div>
       ),
     }),
   ];
