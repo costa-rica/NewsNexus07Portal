@@ -25,11 +25,13 @@ export default function ManageDbDeletes() {
         }
       );
 
-      if (response.status !== 200) {
-        console.log(`There was a server error: ${response.status}`);
-        return;
-      }
+      // if (response.status !== 200) {
+      //   console.log(`There was a server error: ${response.status}`);
+      //   return;
+      // }
+
       const resJson = await response.json();
+      console.log(JSON.stringify(resJson.arrayRowCountsByTable));
       setArrayRowCountsByTable(resJson.arrayRowCountsByTable);
     } catch (error) {
       console.error("Error fetching row counts:", error);
