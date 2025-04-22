@@ -7,7 +7,7 @@ export default function ManageDbDeletes() {
   const [arrayRowCountsByTable, setArrayRowCountsByTable] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
-  const userReducer = useSelector((state) => state.user.value);
+  const userReducer = useSelector((state) => state.user);
 
   useEffect(() => {
     fetchRowCountsByTable();
