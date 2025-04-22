@@ -162,17 +162,7 @@ export default function AddArticle() {
               }
             />
           </div>
-          <div className={styles.divArticleDetail}>
-            <span className={styles.lblArticleDetailMain}>Author:</span>
-            <input
-              type="text"
-              value={article?.author || ""}
-              className={styles.inputArticleDetail}
-              onChange={(e) =>
-                setArticle({ ...article, author: e.target.value })
-              }
-            />
-          </div>
+
           <div className={styles.divArticleDetail}>
             <span className={styles.lblArticleDetailMain}>Title:</span>
             <input
@@ -184,17 +174,7 @@ export default function AddArticle() {
               }
             />
           </div>
-          <div className={styles.divArticleDetail}>
-            <span className={styles.lblArticleDetailMain}>Description:</span>
-            <input
-              type="text"
-              value={article?.description || ""}
-              className={styles.inputArticleDetail}
-              onChange={(e) =>
-                setArticle({ ...article, description: e.target.value })
-              }
-            />
-          </div>
+
           <div className={styles.divArticleDetail}>
             <span className={styles.lblArticleDetailMain}>URL:</span>
             <input
@@ -225,10 +205,6 @@ export default function AddArticle() {
               </span>
             </div>
             <div className={styles.divManageStates}>
-              {/* <StateSelector
-                stateArray={stateArray}
-                setStateArray={setStateArray}
-              /> */}
               <InputDropdownCheckbox
                 inputObjectArray={stateArray}
                 setInputObjectArray={setStateArray}
@@ -250,14 +226,12 @@ export default function AddArticle() {
                   content: e.target.value,
                 });
               }}
-              // disabled
             />
           </div>
           <div className={styles.divMainMiddleBottom}>
             <button
               className={styles.btnSubmit}
               onClick={() => {
-                // console.log("approve article");
                 handleAddAndSubmitArticle();
               }}
             >

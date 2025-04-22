@@ -32,3 +32,10 @@
   padding: 8px;
   border-bottom: 4px solid gray;
 }
+
+.tableRequest tbody tr {
+  background-color: white;
+}
+.tableRequest {
+  background-color: gray;
+}
