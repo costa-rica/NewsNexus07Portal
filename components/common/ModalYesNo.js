@@ -14,9 +14,7 @@ export default function ModalYesNo(props) {
           />
           <h2>{props.title}</h2>
         </div>
-        <div>
-          <p>{props.content}</p>
-        </div>
+        <div>{props.content}</div>
         <div className={styles.modalBottom}>
           <button
             className={styles.button}

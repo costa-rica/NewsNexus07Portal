@@ -23,10 +23,10 @@ export default function GetArticlesNavigator() {
       return import(`../../components/Articles/Reports`).catch(() => () => (
         <p>Reports Not Found</p>
       ));
-    } else if (navigator === "add") {
-      return import(`../../components/Articles/AddArticle`).catch(() => () => (
-        <p>AddArticle Not Found</p>
-      ));
+    } else if (navigator === "manage-article") {
+      return import(`../../components/Articles/ManageArticle`).catch(
+        () => () => <p>ManageArticle Not Found</p>
+      );
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }

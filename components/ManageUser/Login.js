@@ -10,12 +10,12 @@ export default function Login() {
   const [isOpenModalWarning, setIsOpenModalWarning] = useState(false);
   const [requestResponseMessage, setRequestResponseMessage] = useState("");
   const [email, emailSetter] = useState(
-    process.env.NEXT_PUBLIC_MODE === "development"
+    process.env.NEXT_PUBLIC_MODE === "workstation"
       ? "nickrodriguez@kineticmetrics.com"
       : ""
   );
   const [password, passwordSetter] = useState(
-    process.env.NEXT_PUBLIC_MODE === "development" ? "test" : ""
+    process.env.NEXT_PUBLIC_MODE === "workstation" ? "test" : ""
   );
   const dispatch = useDispatch();
   const router = useRouter();
@@ -89,10 +89,7 @@ export default function Login() {
   const fetchStateArray = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`,
-        {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
-        }
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`
       );
 
       console.log(`Response status: ${response.status}`);
@@ -103,7 +100,7 @@ export default function Login() {
       }
 
       const result = await response.json();
-      console.log("Fetched Data:", result);
+      console.log("Fetched Data (states):", result);
 
       if (result.statesArray && Array.isArray(result.statesArray)) {
         const tempStatesArray = result.statesArray.map((stateObj) => ({

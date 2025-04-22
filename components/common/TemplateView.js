@@ -111,21 +111,30 @@ export default function TemplateView({ children }) {
               currentPath={currentPath}
             />
           </NavBarSideDropdown>
-          <NavBarSideLink
-            href="/articles/review"
+
+          <NavBarSideDropdown
             iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
-            label="Review Articles"
+            label="Manage Articles"
             currentPath={currentPath}
-          />
-          <NavBarSideLink
-            href="/articles/add"
-            // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
-            label="Add Article"
-            currentPath={currentPath}
-          />
+          >
+            <NavBarSideLink
+              href="/articles/review"
+              // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+              label="Review Articles"
+              style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
+              href="/articles/manage-article"
+              // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+              label="Add / Delete Article"
+              style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
+            />
+          </NavBarSideDropdown>
           <NavBarSideLink
             href="/articles/reports"
-            // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+            iconFilenameAndPath="/images/menu/file-invoice-solid.svg"
             label="Reports"
             currentPath={currentPath}
           />

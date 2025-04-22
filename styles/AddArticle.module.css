@@ -65,3 +65,40 @@
   display: flex;
   justify-content: flex-end;
 }
+
+/* 
+
+Table 
+
+*/
+.divBtnRelevant {
+  display: flex;
+  justify-content: center;
+}
+.btnRelevant {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  padding: 0.5rem;
+  /* width: 100%; */
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnRelevant:active {
+  transform: scale(0.87);
+}
+.btnDelete {
+  background-color: red;
+  color: black;
+  /* border: none; */
+  border: 1px solid var(--gray-medium);
+  padding: 0.5rem;
+  /* width: 100%; */
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnDelete:active {
+  transform: scale(0.87);
+}
