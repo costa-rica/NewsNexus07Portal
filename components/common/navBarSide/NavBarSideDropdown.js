@@ -3,19 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
   faChevronRight,
-  faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 export default function NavBarSideDropdown({
   iconFilenameAndPath,
   label,
+  toggleFunction,
   children,
+  expanded,
 }) {
-  const [expanded, setExpanded] = useState(false);
+  // const [expanded, setExpanded] = useState(false);
 
   return (
     <div>
       <div
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => toggleFunction()}
         style={{
           display: "flex",
           alignItems: "center",

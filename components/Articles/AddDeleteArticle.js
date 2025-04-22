@@ -25,7 +25,7 @@ export default function AddDeleteArticle() {
   });
   useEffect(() => {
     fetchArticlesArray();
-    fetchArticlesSummaryStatistics();
+    // fetchArticlesSummaryStatistics();
   }, []);
 
   const handleAddAndSubmitArticle = async () => {
@@ -112,42 +112,42 @@ export default function AddDeleteArticle() {
     } catch (error) {
       console.error("Error adding article:", error.message);
     }
-    fetchArticlesSummaryStatistics();
+    // fetchArticlesSummaryStatistics();
     fetchArticlesArray();
   };
-  const fetchArticlesSummaryStatistics = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
-        {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
-        }
-      );
+  // const fetchArticlesSummaryStatistics = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
+  //       {
+  //         headers: { Authorization: `Bearer ${userReducer.token}` },
+  //       }
+  //     );
 
-      console.log(`Response status: ${response.status}`);
+  //     console.log(`Response status: ${response.status}`);
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Log response text for debugging
-        throw new Error(`Server Error: ${errorText}`);
-      }
+  //     if (!response.ok) {
+  //       const errorText = await response.text(); // Log response text for debugging
+  //       throw new Error(`Server Error: ${errorText}`);
+  //     }
 
-      const result = await response.json();
-      console.log(
-        "Fetched Data (articles/summary-statistics):",
-        result.summaryStatistics
-      );
+  //     const result = await response.json();
+  //     console.log(
+  //       "Fetched Data (articles/summary-statistics):",
+  //       result.summaryStatistics
+  //     );
 
-      if (result.summaryStatistics) {
-        console.log("-----> make summary statistics");
-        dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
-      }
-    } catch (error) {
-      console.error(
-        "Error fetching articles summary statistics:",
-        error.message
-      );
-    }
-  };
+  //     if (result.summaryStatistics) {
+  //       console.log("-----> make summary statistics");
+  //       dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Error fetching articles summary statistics:",
+  //       error.message
+  //     );
+  //   }
+  // };
 
   const fetchArticlesArray = async () => {
     try {

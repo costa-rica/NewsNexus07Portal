@@ -8,7 +8,14 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../../reducers/user";
 import NavBarSideLink from "./navBarSide/NavBarSideLink";
 import NavBarSideDropdown from "./navBarSide/NavBarSideDropdown";
+import {
+  toggleNavExpandGetArticles,
+  toggleNavExpandManageArticles,
+  toggleNavExpandDb,
+} from "../../reducers/user";
+import { useSelector } from "react-redux";
 export default function TemplateView({ children }) {
+  const userReducer = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const [menuOpen, setMenuOpen] = useState(true);
@@ -97,6 +104,8 @@ export default function TemplateView({ children }) {
             iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
             label="Get Articles"
             currentPath={currentPath}
+            toggleFunction={() => dispatch(toggleNavExpandGetArticles())}
+            expanded={userReducer.navExpandGetArticles}
           >
             <NavBarSideLink
               href="/articles/get-from-api-services"
@@ -116,6 +125,8 @@ export default function TemplateView({ children }) {
             iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
             label="Manage Articles"
             currentPath={currentPath}
+            toggleFunction={() => dispatch(toggleNavExpandManageArticles())}
+            expanded={userReducer.navExpandManageArticles}
           >
             <NavBarSideLink
               href="/articles/review"
@@ -149,6 +160,8 @@ export default function TemplateView({ children }) {
             iconFilenameAndPath="/images/menu/database-solid.svg"
             label="Manage DB"
             currentPath={currentPath}
+            toggleFunction={() => dispatch(toggleNavExpandDb())}
+            expanded={userReducer.navExpandDb}
           >
             <NavBarSideLink
               href="/admin-db/manage-db-backups"

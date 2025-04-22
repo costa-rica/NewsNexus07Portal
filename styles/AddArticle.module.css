@@ -1,9 +1,20 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--height-content-main);
+  padding: 1rem;
+  gap: 1rem;
+}
+/* .divMainTop {
+  padding: 1rem;
+} */
 .divMainMiddle {
   /* height: 10rem; */
   width: 100%;
   display: flex;
 
-  /* border: 4px dashed gray; */
+  border: 4px solid gray;
+  border-radius: 0.5rem;
   gap: 1rem;
   padding: 1rem;
   flex-direction: column;
@@ -71,6 +82,13 @@
 Table 
 
 */
+.divBottom {
+  width: 100%;
+  display: flex;
+  border: 4px solid gray;
+  border-radius: 0.5rem;
+  /* background-color: green; */
+}
 .divBtnRelevant {
   display: flex;
   justify-content: center;

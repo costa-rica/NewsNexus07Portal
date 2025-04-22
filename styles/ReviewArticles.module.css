@@ -1,4 +1,6 @@
 .main {
+  display: flex;
+  flex-direction: column;
   min-height: var(--height-content-main);
 }
 
@@ -10,7 +12,8 @@
 
 .divMainTop {
   width: 100%;
-  height: 5rem;
+  /* height: 5rem; */
+  padding-bottom: 1rem;
   /* background-color: gray; */
   /* border: 4px dashed gray; */
 }
@@ -29,6 +32,8 @@
   /* border: 4px dashed gray; */
   gap: 1rem;
   padding: 1rem;
+  border: 4px solid gray;
+  border-radius: 0.5rem;
 }
 
 .divMainMiddleLeft {
@@ -38,7 +43,7 @@
   flex-direction: column;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  border: 4px solid gray;
+  /* border: 4px solid gray; */
   /* max-width: 80%; */
   flex: 1;
 }
@@ -146,6 +151,7 @@
 
 .divMainBottom {
   width: 100%;
+  padding-top: 1rem;
   /* height: 20rem; */
   /* border: 4px dashed gray; */
 }

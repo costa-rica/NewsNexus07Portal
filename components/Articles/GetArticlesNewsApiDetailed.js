@@ -9,8 +9,8 @@ import SummaryStatistics from "../common/SummaryStatistics";
 import { useDispatch } from "react-redux";
 import {
   updateArticlesSummaryStatistics,
-  updateIncludeDomainsArray,
-  updateExcludeDomainsArray,
+  // updateIncludeDomainsArray,
+  // updateExcludeDomainsArray,
 } from "../../reducers/user";
 
 import InputDropdownCheckbox from "../common/InputDropdownCheckbox";

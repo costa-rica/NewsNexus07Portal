@@ -1,8 +1,49 @@
 import styles from "../../styles/SummaryStatistics.module.css";
-import { useSelector } from "react-redux";
-
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateArticlesSummaryStatistics } from "../../reducers/user";
 export default function SummaryStatistics() {
   const userReducer = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchArticlesSummaryStatistics();
+  }, []);
+
+  const fetchArticlesSummaryStatistics = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Log response text for debugging
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log(
+        "Fetched Data (articles/summary-statistics):",
+        result.summaryStatistics
+      );
+
+      if (result.summaryStatistics) {
+        console.log("-----> make summary statistics");
+        dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
+      }
+    } catch (error) {
+      console.error(
+        "Error fetching articles summary statistics:",
+        error.message
+      );
+    }
+  };
+
   return (
     <div className={styles.divArticleSummaryStatisticsGroupSuper}>
       <div className={styles.divArticleSummaryStatisticsGroup}>
@@ -36,6 +77,16 @@ export default function SummaryStatistics() {
         <div className={styles.divArticlesSummaryStatisticsMetric}>
           {userReducer.articlesSummaryStatistics?.hasStateAssigned}
         </div>
+      </div>
+      <div className={styles.divArticleSummaryStatisticsGroupTransparent}>
+        <button
+          className={styles.btnSubmit}
+          onClick={() => {
+            fetchArticlesSummaryStatistics();
+          }}
+        >
+          Refresh
+        </button>
       </div>
     </div>
   );

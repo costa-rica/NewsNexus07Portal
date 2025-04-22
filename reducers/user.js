@@ -7,8 +7,11 @@ const initialState = {
   stateArray: [],
   articlesSummaryStatistics: {},
   hideIrrelevant: false,
-  includeDomainsArray: [],
-  excludeDomainsArray: [],
+  // includeDomainsArray: [],
+  // excludeDomainsArray: [],
+  navExpandGetArticles: false,
+  navExpandManageArticles: false,
+  navExpandDb: false,
 };
 
 export const userSlice = createSlice({
@@ -26,12 +29,12 @@ export const userSlice = createSlice({
     updateArticlesSummaryStatistics: (state, action) => {
       state.articlesSummaryStatistics = action.payload;
     },
-    updateIncludeDomainsArray: (state, action) => {
-      state.includeDomainsArray = action.payload;
-    },
-    updateExcludeDomainsArray: (state, action) => {
-      state.excludeDomainsArray = action.payload;
-    },
+    // updateIncludeDomainsArray: (state, action) => {
+    //   state.includeDomainsArray = action.payload;
+    // },
+    // updateExcludeDomainsArray: (state, action) => {
+    //   state.excludeDomainsArray = action.payload;
+    // },
     logoutUser: (state) => {
       state.token = null;
       state.username = null;
@@ -39,6 +42,15 @@ export const userSlice = createSlice({
     },
     toggleHideIrrelevant: (state) => {
       state.hideIrrelevant = !state.hideIrrelevant;
+    },
+    toggleNavExpandGetArticles: (state) => {
+      state.navExpandGetArticles = !state.navExpandGetArticles;
+    },
+    toggleNavExpandManageArticles: (state) => {
+      state.navExpandManageArticles = !state.navExpandManageArticles;
+    },
+    toggleNavExpandDb: (state) => {
+      state.navExpandDb = !state.navExpandDb;
     },
   },
 });
@@ -49,7 +61,10 @@ export const {
   updateStateArray,
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
-  updateIncludeDomainsArray,
-  updateExcludeDomainsArray,
+  // updateIncludeDomainsArray,
+  // updateExcludeDomainsArray,
+  toggleNavExpandGetArticles,
+  toggleNavExpandManageArticles,
+  toggleNavExpandDb,
 } = userSlice.actions;
 export default userSlice.reducer;
