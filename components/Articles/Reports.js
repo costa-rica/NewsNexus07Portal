@@ -41,9 +41,10 @@ export default function Reports() {
   };
 
   const fetchReportZipFile = async (reportId) => {
+    console.log(`Fetching report zip file for report ID: ${reportId}`);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/send/${reportId}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/download/${reportId}`,
         {
           method: "GET",
           headers: {
@@ -57,11 +58,25 @@ export default function Reports() {
         return;
       }
 
+      // ✅ Extract filename from Content-Disposition header
+      const disposition = response.headers.get("Content-Disposition");
+      let filename = "report.zip";
+      console.log(response.headers);
+      if (disposition && disposition.includes("filename=")) {
+        console.log(`----> Filename: ${disposition}`);
+        filename = disposition
+          .split("filename=")[1]
+          .replace(/['"]/g, "")
+          .trim();
+      } else {
+        console.log(`----> Filename not found in header`);
+      }
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = report;
+      a.download = filename; // ✅ use the actual filename
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -69,6 +84,37 @@ export default function Reports() {
       console.error("Error downloading report:", error);
     }
   };
+
+  // const fetchReportZipFile = async (reportId) => {
+  //   console.log(`Fetching report zip file for report ID: ${reportId}`);
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/download/${reportId}`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${userReducer.token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status !== 200) {
+  //       console.log(`There was a server error: ${response.status}`);
+  //       return;
+  //     }
+  //     console.log(response);
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = reportId;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     document.body.removeChild(a);
+  //   } catch (error) {
+  //     console.error("Error downloading report:", error);
+  //   }
+  // };
   const createReport = async (includeAllArticles = false) => {
     const bodyObj = { includeAllArticles };
     try {
