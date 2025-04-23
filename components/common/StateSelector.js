@@ -1,7 +1,9 @@
 // components/common/StateSelector.js
 import { useState } from "react";
 import styles from "../../styles/StateSelector.module.css"; // optional
-
+// ---------------------------------------------
+// NOTE OBE - replaced by InputDropdownCheckbox
+// ---------------------------------------------
 export default function StateSelector({ stateArray, setStateArray }) {
   const [isOpen, setIsOpen] = useState(false);
 

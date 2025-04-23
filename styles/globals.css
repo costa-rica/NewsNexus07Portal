@@ -10,7 +10,7 @@ body {
 }
 
 :root {
-  --off-white: #f7f7f8;
+  --off-white: #ebebeb;
   --gray-light: #d9d9d9;
   --gray-medium: #979797;
   --blue-dark: #283a59;
@@ -18,7 +18,7 @@ body {
   --red: #da6b3b;
   --bg-login-left: #d9d9d9;
   --bg-navbar-top: #283a59;
-  --bg-input-off-white: #f7f7f8;
+  --bg-input-off-white: #dddddd;
 
   --width-side-menu: 15rem;
   --height-header: 7vh;

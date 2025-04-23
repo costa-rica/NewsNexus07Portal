@@ -1,6 +1,6 @@
-// components/common/StateSelector.js
-import { useState } from "react";
-import styles from "../../styles/StateSelector.module.css"; // optional
+// import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import styles from "../../styles/InputDropdownCheckbox.module.css"; // optional
 
 export default function InputDropdownCheckbox({
   inputObjectArray,
@@ -10,6 +10,7 @@ export default function InputDropdownCheckbox({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const dropdownRef = useRef(null);
   const handleToggleSelect = (stateId) => {
     const updated = inputObjectArray.map((elem) =>
       elem.id === stateId ? { ...elem, selected: !elem.selected } : elem
@@ -24,6 +25,25 @@ export default function InputDropdownCheckbox({
   const filteredItems = inputObjectArray.filter((elem) =>
     elem[displayName].toLowerCase().includes(searchText.toLowerCase())
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <div className={styles.selectorContainer}>
       <div className={styles.selectorInput} onClick={() => setIsOpen(true)}>
@@ -33,7 +53,8 @@ export default function InputDropdownCheckbox({
       </div>
 
       {isOpen && (
-        <div className={styles.dropdown}>
+        // <div className={styles.dropdown}>
+        <div className={styles.dropdown} ref={dropdownRef}>
           <div className={styles.dropdownHeader}>
             <button
               onClick={() => setIsOpen(false)}

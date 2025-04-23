@@ -37,7 +37,7 @@ export default function TableRequests({ data, columns }) {
     // <div className={styles.divRequestTableGroup}>
     <div className={styles.divTableMain}>
       <div className={styles.divTableButtonsAndInputs}>
-        <div>
+        <div className={styles.divShowRows}>
           Show rows:{" "}
           {[5, 10, 20].map((size) => (
             <button
@@ -55,19 +55,15 @@ export default function TableRequests({ data, columns }) {
           ))}
         </div>
         <div>
-          Search:{" "}
           <input
             type="text"
             value={globalFilter ?? ""}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            style={{
-              padding: "4px 8px",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-            }}
+            className={styles.inputSearchbar}
+            placeholder="Search..."
           />
         </div>
-        <div>
+        <div className={styles.divPagination}>
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
