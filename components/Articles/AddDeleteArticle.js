@@ -1,7 +1,6 @@
 import styles from "../../styles/AddArticle.module.css";
 import { useEffect, useState } from "react";
 import TemplateView from "../common/TemplateView";
-// import StateSelector from "../common/StateSelector";
 import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
 import ModalYesNo from "../common/ModalYesNo";
 import { useSelector } from "react-redux";
