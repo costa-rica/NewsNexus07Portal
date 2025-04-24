@@ -114,9 +114,15 @@ export default function TemplateView({ children }) {
               currentPath={currentPath}
             />
             <NavBarSideLink
-              href="/articles/get-from-api-services-detailed"
+              href="/articles/get-detailed-newsapi"
               style={{ padding: "0.25rem" }}
-              label="Detailed way"
+              label="News API Detailed"
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
+              href="/articles/get-detailed-gnews"
+              style={{ padding: "0.25rem" }}
+              label="GNews Detailed"
               currentPath={currentPath}
             />
           </NavBarSideDropdown>

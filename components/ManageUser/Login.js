@@ -26,7 +26,7 @@ export default function Login() {
     // fetchStateArray();
     if (userReducer.token) {
       // Redirect if token exists
-      router.push("/articles/get-from-api-services-detailed");
+      router.push("/articles/get-detailed-newsapi");
     }
   }, [userReducer]); // Run effect if token changes
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function Login() {
       resJson.email = email;
       try {
         dispatch(loginUser(resJson));
-        router.push("/articles/get-from-api-services-detailed");
+        router.push("/articles/get-detailed-newsapi");
       } catch (error) {
         console.error("Error logging in:", error.message);
         setRequestResponseMessage("There's a problem with the website");

@@ -11,10 +11,17 @@ export default function GetArticlesNavigator() {
       return import(`../../components/Articles/GetArticles`).catch(() => () => (
         <p>GetArticles Not Found</p>
       ));
-    } else if (navigator === "get-from-api-services-detailed") {
+    }
+
+    // else if (navigator === "get-from-api-services-detailed") {
+    else if (navigator === "get-detailed-newsapi") {
       return import(
         `../../components/Articles/GetArticlesNewsApiDetailed`
       ).catch(() => () => <p>GetArticlesNewsApiDetailed Not Found</p>);
+    } else if (navigator === "get-detailed-gnews") {
+      return import(`../../components/Articles/GetArticlesGNewsDetailed`).catch(
+        () => () => <p>GetArticlesGNewsDetailed Not Found</p>
+      );
     } else if (navigator === "review") {
       return import(`../../components/Articles/ReviewArticles`).catch(
         () => () => <p>ReviewArticles Not Found</p>
