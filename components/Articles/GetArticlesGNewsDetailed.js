@@ -7,13 +7,6 @@ import TableRequests from "../common/Tables/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import SummaryStatistics from "../common/SummaryStatistics";
 import { useDispatch } from "react-redux";
-import {
-  updateArticlesSummaryStatistics,
-  // updateIncludeDomainsArray,
-  // updateExcludeDomainsArray,
-} from "../../reducers/user";
-
-import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
 
 export default function GetArticlesGNewsDetailed() {
   const [keywordsArray, setKeywordsArray] = useState([]);
@@ -29,9 +22,6 @@ export default function GetArticlesGNewsDetailed() {
   const [keywordsAnd, setKeywordsAnd] = useState("");
   const [keywordsOr, setKeywordsOr] = useState("");
   const [keywordsNot, setKeywordsNot] = useState("");
-  const [websiteDomainObjArray, setWebsiteDomainObjArray] = useState([]);
-
-  const [includeExclude, setIncludeExclude] = useState("exclude");
 
   const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("GNews");
@@ -49,9 +39,6 @@ export default function GetArticlesGNewsDetailed() {
   const filteredKeywords = keywordsArray.filter((keyword) =>
     keyword.toLowerCase().includes(filterKeyword.toLowerCase())
   );
-  // const exactMatch = keywordsArray.some(
-  //   (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
-  // );
 
   const columnHelper = createColumnHelper();
   const columnsForRequestTable = [
@@ -125,8 +112,6 @@ export default function GetArticlesGNewsDetailed() {
     fetchKeywordsArray();
     requestNewsApiRequestsArray();
     fetchNewsOrgArray();
-    // fetchArticlesSummaryStatistics();
-    // fetchWebsiteDomains();
   }, []);
   useEffect(() => {
     if (!endDate) {
@@ -166,18 +151,6 @@ export default function GetArticlesGNewsDetailed() {
 
   const requestNewsApi = async () => {
     try {
-      // let includeWebsiteDomainObjArray = [];
-      // let excludeWebsiteDomainObjArray = [];
-      // if (includeExclude === "include") {
-      //   includeWebsiteDomainObjArray = websiteDomainObjArray.filter(
-      //     (domain) => domain.selected === true
-      //   );
-      // } else {
-      //   excludeWebsiteDomainObjArray = websiteDomainObjArray.filter(
-      //     (domain) => domain.selected === true
-      //   );
-      // }
-
       const bodyObj = {
         newsOrg,
         startDate,
@@ -185,8 +158,6 @@ export default function GetArticlesGNewsDetailed() {
         keywordsAnd,
         keywordsOr,
         keywordsNot,
-        // includeWebsiteDomainObjArray,
-        // excludeWebsiteDomainObjArray,
       };
       // alert(JSON.stringify(bodyObj));
       const response = await fetch(
@@ -286,118 +257,7 @@ export default function GetArticlesGNewsDetailed() {
     setKeywordsAnd(rowData.andArray);
     setKeywordsNot(rowData.notArray);
     setKeywordsOr(rowData.orArray);
-    // if (rowData.excludeString) {
-    //   const rowDataDomainIds = rowData.excludeSourcesArray.map(
-    //     (domain) => domain.id
-    //   );
-    //   console.log(rowDataDomainIds);
-    //   let tempArray = websiteDomainObjArray;
-    //   for (let domain of tempArray) {
-    //     if (rowDataDomainIds.includes(domain.websiteDomainId)) {
-    //       domain.selected = true;
-    //     } else {
-    //       domain.selected = false;
-    //     }
-    //   }
-    //   setWebsiteDomainObjArray(tempArray);
-    //   setIncludeExclude("exclude");
-    // }
-    // if (rowData.includeString) {
-    //   const rowDataDomainIds = rowData.includeSourcesArray.map(
-    //     (domain) => domain.id
-    //   );
-    //   console.log(rowDataDomainIds);
-    //   let tempArray = websiteDomainObjArray;
-    //   for (let domain of tempArray) {
-    //     if (rowDataDomainIds.includes(domain.websiteDomainId)) {
-    //       domain.selected = true;
-    //     } else {
-    //       domain.selected = false;
-    //     }
-    //   }
-    //   setWebsiteDomainObjArray(tempArray);
-    //   setIncludeExclude("include");
-    // }
-    // if (!rowData.excludeString && !rowData.includeString) {
-    //   let tempArray = websiteDomainObjArray;
-    //   for (let domain of tempArray) {
-    //     domain.selected = false;
-    //   }
-    //   setWebsiteDomainObjArray(tempArray);
-    //   setIncludeExclude("exclude");
-    // }
   };
-
-  // const fetchArticlesSummaryStatistics = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
-  //       {
-  //         headers: { Authorization: `Bearer ${userReducer.token}` },
-  //       }
-  //     );
-
-  //     console.log(`Response status: ${response.status}`);
-
-  //     if (!response.ok) {
-  //       const errorText = await response.text(); // Log response text for debugging
-  //       throw new Error(`Server Error: ${errorText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log(
-  //       "Fetched Data (articles/summary-statistics):",
-  //       result.summaryStatistics
-  //     );
-
-  //     if (result.summaryStatistics) {
-  //       console.log("-----> make summary statistics");
-  //       dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Error fetching articles summary statistics:",
-  //       error.message
-  //     );
-  //   }
-  // };
-
-  // const fetchWebsiteDomains = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/website-domains`,
-  //       {
-  //         headers: { Authorization: `Bearer ${userReducer.token}` },
-  //       }
-  //     );
-
-  //     console.log(`Response status: ${response.status}`);
-
-  //     if (!response.ok) {
-  //       const errorText = await response.text(); // Log response text for debugging
-  //       throw new Error(`Server Error: ${errorText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log("Fetched Data (website-domains):", result);
-
-  //     if (result.websiteDomains) {
-  //       // dispatch(updateIncludeDomainsArray(result.websiteDomains));
-  //       let tempWebsiteDomainsArray = [];
-  //       for (let i = 0; i < result.websiteDomains.length; i++) {
-  //         tempWebsiteDomainsArray.push({
-  //           id: i,
-  //           websiteDomainId: result.websiteDomains[i].id,
-  //           name: result.websiteDomains[i].name,
-  //           selected: false,
-  //         });
-  //       }
-  //       setWebsiteDomainObjArray(tempWebsiteDomainsArray);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching website domains:", error.message);
-  //   }
-  // };
 
   return (
     <TemplateView>
@@ -518,29 +378,6 @@ export default function GetArticlesGNewsDetailed() {
                 </button>
               )}
             </div>
-            {/* <div className={styles.divRequestGroupInputDropdownCheckbox}>
-             
-
-              <label htmlFor="includeDomains">Domains: </label>
-              <div style={{ width: "100%" }}>
-                <InputDropdownCheckbox
-                  inputObjectArray={websiteDomainObjArray}
-                  setInputObjectArray={setWebsiteDomainObjArray}
-                  displayName="name"
-                  inputDefaultText="select domains ..."
-                />
-              </div>
-              <div className={styles.divRequestGroupSelectIncludeExclude}>
-                <select
-                  className={styles.inputRequestKeyword}
-                  value={includeExclude}
-                  onChange={(e) => setIncludeExclude(e.target.value)}
-                >
-                  <option value="include">Include</option>
-                  <option value="exclude">Exclude</option>
-                </select>
-              </div>
-            </div> */}
           </div>
         </div>
 
