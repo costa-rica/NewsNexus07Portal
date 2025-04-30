@@ -231,7 +231,12 @@ export default function GetArticlesNewsApiDetailed() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/requests`,
         {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
+          headers: {
+            Authorization: `Bearer ${userReducer.token}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(userReducer.requestTableBodyParams),
         }
       );
 
