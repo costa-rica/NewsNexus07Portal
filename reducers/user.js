@@ -8,11 +8,15 @@ const initialState = {
   stateArray: [],
   articlesSummaryStatistics: {},
   hideIrrelevant: false,
-  // includeDomainsArray: [],
-  // excludeDomainsArray: [],
   navExpandGetArticles: false,
   navExpandManageArticles: false,
   navExpandDb: false,
+  requestTableBodyParams: {
+    includeIsFromAutomation: false,
+    dateLimitOnRequestMade: new Date().toISOString().split("T")[0],
+  },
+  // NOTE: dateLimitOnRequestMade: date; includeIsFromAutomation: boolean
+  articleTableBodyParams: {},
 };
 
 export const userSlice = createSlice({
@@ -48,6 +52,18 @@ export const userSlice = createSlice({
     toggleNavExpandDb: (state) => {
       state.navExpandDb = !state.navExpandDb;
     },
+    defaultRequestTableBodyParams: (state) => {
+      const defaultDay = new Date();
+      defaultDay.setDate(defaultDay.getDate() - 2);
+      state.requestTableBodyParams = {
+        includeIsFromAutomation: false,
+        dateLimitOnRequestMade: defaultDay.toISOString().split("T")[0],
+      };
+    },
+    updateRequestTableBodyParams: (state, action) => {
+      const newParams = { ...state.requestTableBodyParams, ...action.payload };
+      state.requestTableBodyParams = newParams;
+    },
   },
 });
 
@@ -57,9 +73,10 @@ export const {
   updateStateArray,
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
-
   toggleNavExpandGetArticles,
   toggleNavExpandManageArticles,
   toggleNavExpandDb,
+  defaultRequestTableBodyParams,
+  updateRequestTableBodyParams,
 } = userSlice.actions;
 export default userSlice.reducer;

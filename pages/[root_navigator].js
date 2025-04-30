@@ -14,6 +14,10 @@ export default function RootNavigator() {
       return import(`../components/ManageUser/Register`).catch(() => () => (
         <p>Table Not Found</p>
       ));
+    } else if (root_navigator === "user-settings") {
+      return import(`../components/ManageUser/UserSettings`).catch(() => () => (
+        <p>Table Not Found</p>
+      ));
     } else if (root_navigator === "forgot-password") {
       return import(`../components/ManageUser/ForgotPassword`).catch(
         () => () => <p>Table Not Found</p>

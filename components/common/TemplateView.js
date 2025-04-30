@@ -100,6 +100,11 @@ export default function TemplateView({ children }) {
             iconFilenameAndPath="/images/menu/house-solid.svg"
             label="Home"
           />
+          <NavBarSideLink
+            href="/user-settings"
+            iconFilenameAndPath="/images/menu/user-solid-white.svg"
+            label="User Settings"
+          />
           <NavBarSideDropdown
             iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
             label="Get Articles"
