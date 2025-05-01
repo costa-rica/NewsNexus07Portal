@@ -324,8 +324,14 @@ export default function Reports() {
       header: "Headline",
       enableSorting: true,
       cell: ({ row }) => (
-        <div className={styles.divColumnValueTitle}>
-          {row.original.title.substring(0, 20)}
+        // <div className={styles.divColumnValueTitle}>
+        //   {row.original.title.substring(0, 20)}
+        // </div>
+        <div className="tooltipWrapper">
+          <div className={styles.divColumnValueTitle}>
+            {row.original.title.substring(0, 20)}
+          </div>
+          <span className="tooltipText">{row.original.title}</span>
         </div>
       ),
     }),
@@ -455,8 +461,11 @@ export default function Reports() {
       header: "Headline",
       enableSorting: true,
       cell: ({ row }) => (
-        <div className={styles.divColumnValueTitle}>
-          {row.original.title.substring(0, 20)}
+        <div className="tooltipWrapper">
+          <div className={styles.divColumnValueTitle}>
+            {row.original.title.substring(0, 20)}
+          </div>
+          <span className="tooltipText">{row.original.title}</span>
         </div>
       ),
     }),
