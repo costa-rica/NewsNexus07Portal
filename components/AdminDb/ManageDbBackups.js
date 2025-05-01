@@ -147,7 +147,7 @@ export default function ManageDbBackups() {
   return (
     <TemplateView>
       <main className={styles.main}>
-        <div className={styles.divMain}>
+        <div className={styles.divMainSub}>
           <h1>Back up database</h1>
           <div>
             <button className={styles.button} onClick={createBackup}>

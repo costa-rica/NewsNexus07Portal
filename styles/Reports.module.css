@@ -7,10 +7,113 @@
   padding: 4rem 0;
 }
 
-.divMainSub {
+/* .divMainSub {
   width: 80%;
+} */
+
+.divTop {
+  display: flex;
+  /* background-color: blue; */
+}
+.divTopLeft {
+  width: 50%;
+}
+.divReportTable {
+  background-color: var(--off-white);
+  border-radius: 12px;
+}
+.divTopRight {
+  width: 50%;
+  background-color: green;
+}
+/* .divBottom {
+
+  background-color: yellow;
+} */
+
+/* 
+---------------------
+New Report Table 
+---------------------
+*/
+.divColumnHeader {
+  text-align: center;
+  font-size: small;
+  width: 6rem;
+}
+.divColumnValue {
+  text-align: center;
+  color: var(--gray-dark);
+}
+.btnDownload {
+  background-color: var(--green-approved-article);
+  cursor: pointer;
+  color: var(--gray-light);
+  padding: 0.25rem;
+  border-radius: 5px;
+}
+.btnDownload:hover {
+  background-color: darkgreen;
+}
+.btnDelete {
+  background-color: var(--red);
+  cursor: pointer;
+  color: var(--gray-light);
+  padding: 0.25rem;
+  border-radius: 5px;
+}
+.btnDelete:hover {
+  background-color: darkred;
 }
 
+/*
+---------------------
+Approved Articles Table
+---------------------
+*/
+.divColumnValueTitle {
+  text-align: center;
+  color: var(--gray-dark);
+  font-size: small;
+  width: 10rem;
+}
+.radioButtonInactive {
+  width: 16px;
+  height: 16px;
+  border: 2px solid darkslategray;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  display: inline-block;
+  margin: auto;
+}
+
+.radioButtonActive {
+  width: 16px;
+  height: 16px;
+  border: 2px solid darkslategray;
+  border-radius: 50%;
+  background-color: transparent;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  margin: auto;
+}
+
+.radioButtonActive::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--gray-medium);
+  transform: translate(-50%, -50%);
+}
+/* 
+--------------------
+OLD  Admin Db stuff 
+--------------------
+*/
 .divLinks {
   display: flex;
   margin-bottom: 20px;
@@ -53,7 +156,7 @@
 .liBackups {
   padding: 0.25rem;
 }
-.btnDownload {
+/* .btnDownload {
   background: none;
   border: none;
   color: blue;
@@ -65,7 +168,7 @@
 
 .btnDownload:hover {
   color: darkblue;
-}
+} */
 .btnDelete {
   background-color: red;
   color: white;
@@ -156,4 +259,11 @@
   cursor: pointer;
   font-size: 16px;
   margin-left: 1rem;
+}
+
+/* Large screens (media query) */
+@media (min-width: 768px) {
+  .divMainSub {
+    width: 95%;
+  }
 }

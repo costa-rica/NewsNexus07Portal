@@ -112,7 +112,7 @@ export default function ManageDbUploads() {
   return (
     <TemplateView>
       <main className={styles.main}>
-        <div className={styles.divMain}>
+        <div className={styles.divMainSub}>
           <h1>Upload to Database</h1>
 
           <div className={styles.divImportData}>
