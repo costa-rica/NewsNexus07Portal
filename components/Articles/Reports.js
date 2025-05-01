@@ -6,18 +6,22 @@ import ModalYesNo from "../common/ModalYesNo";
 import Table01 from "../common/Tables/Table01";
 import Table02Small from "../common/Tables/Table02Small";
 import { createColumnHelper } from "@tanstack/react-table";
+import { useDispatch } from "react-redux";
+import { updateApprovedArticlesArray } from "../../reducers/user";
 
 export default function Reports() {
   const userReducer = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [isOpenReportType, setIsOpenReportType] = useState(false);
   const [isOpenAreYouSure, setIsOpenAreYouSure] = useState(false);
   const [reportsArray, setReportsArray] = useState([]);
-  const [approvedArticlesArray, setApprovedArticlesArray] = useState([]);
   const [selectedReport, setSelectedReport] = useState(null);
 
   useEffect(() => {
     fetchReportsList();
-    fetchApprovedArticlesArray();
+    if (userReducer?.approvedArticlesArray?.length === 0) {
+      fetchApprovedArticlesArray();
+    }
   }, []);
 
   const fetchReportsList = async () => {
@@ -39,7 +43,7 @@ export default function Reports() {
       }
       const resJson = await response.json();
       console.log(resJson);
-      setReportsArray(resJson.reports);
+      setReportsArray(resJson.reportsArray);
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
@@ -90,8 +94,11 @@ export default function Reports() {
     }
   };
 
-  const createReport = async (includeAllArticles = false) => {
-    const bodyObj = { includeAllArticles };
+  const createReport = async () => {
+    const articlesIdArrayForReport = userReducer.approvedArticlesArray
+      .filter((article) => article.stageArticleForReport)
+      .map((article) => article.id);
+    const bodyObj = { articlesIdArrayForReport };
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/create`,
@@ -135,7 +142,7 @@ export default function Reports() {
         return;
       }
 
-      alert("Report deleted successfully!");
+      // alert("Report deleted successfully!");
       fetchReportsList();
     } catch (error) {
       console.error("Error deleting report:", error);
@@ -165,11 +172,14 @@ export default function Reports() {
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         let tempArray = result.articlesArray;
         tempArray.forEach((article) => {
-          article.includeInReport = false;
+          // article.includeInReport = false;
+          article.stageArticleForReport = false;
         });
-        setApprovedArticlesArray(tempArray);
+        // setApprovedArticlesArray(tempArray);
+        dispatch(updateApprovedArticlesArray(tempArray));
       } else {
-        setApprovedArticlesArray([]);
+        // setApprovedArticlesArray([]);
+        dispatch(updateApprovedArticlesArray([]));
       }
     } catch (error) {
       console.error("Error fetching data:", error.message);
@@ -186,7 +196,7 @@ export default function Reports() {
     }),
     columnHelper.accessor("dateSubmittedToClient", {
       header: () => <div>Submitted </div>,
-      cell: (info) => info.getValue().split("T")[0],
+      cell: (info) => info?.getValue().split("T")[0],
     }),
     columnHelper.accessor("ArticleReportContracts", {
       header: "Article Count",
@@ -215,7 +225,9 @@ export default function Reports() {
       cell: (info) => (
         <button
           onClick={() => {
-            handleDelete(info.row.original.id);
+            // handleDelete(info.row.original.id);
+            setIsOpenAreYouSure(true);
+            setSelectedReport(info.row.original);
             // alert(info.row.original.id);
           }}
           className={styles.btnDelete}
@@ -232,6 +244,140 @@ export default function Reports() {
       header: "ID",
       enableSorting: true,
       cell: ({ row }) => (
+        <div className={styles.divColumnValue}>
+          <button
+            onClick={() => handleSelectArticleFromTable(row.original)}
+            style={{
+              fontSize: "10px",
+              width: "100%",
+            }}
+          >
+            {row.original.id}
+          </button>
+        </div>
+      ),
+    }),
+    columnHelper.accessor("articleReferenceNumberInReport", {
+      header: "Ref #",
+      enableSorting: true,
+      cell: ({ row }) => (
+        <div className={styles.divColumnValue}>
+          <button
+            onClick={() =>
+              alert(JSON.stringify(row.original.ArticleReportContracts))
+            }
+            style={{
+              fontSize: "10px",
+              width: "100%",
+            }}
+          >
+            {row.original.articleReferenceNumberInReport || "not in api"}
+          </button>
+        </div>
+      ),
+    }),
+    columnHelper.accessor("isSubmitted", {
+      header: "Submitted",
+      enableSorting: true,
+      cell: ({ row }) => (
+        <div className={styles.divColumnValue}>{row.original.isSubmitted}</div>
+      ),
+    }),
+    columnHelper.accessor("title", {
+      header: "Headline",
+      enableSorting: true,
+      cell: ({ row }) => (
+        <div className={styles.divColumnValueTitle}>
+          {row.original.title.substring(0, 20)}
+        </div>
+      ),
+    }),
+    columnHelper.accessor("ArticleReportContracts", {
+      header: "Accepted",
+      enableSorting: true,
+      cell: ({ row }) => (
+        <div className={styles.divColumnValue}>
+          <button
+            onClick={() =>
+              alert(JSON.stringify(row.original.ArticleReportContracts))
+            }
+            style={{
+              fontSize: "10px",
+            }}
+          >
+            {row.original.ArticleReportContracts[
+              row.original.ArticleReportContracts.length - 1
+            ]?.articleAcceptedByCpsc
+              ? "Yes"
+              : "No"}
+          </button>
+        </div>
+      ),
+    }),
+    columnHelper.accessor("publicationName", {
+      header: "Pub Name",
+      enableSorting: true,
+      cell: ({ row }) => (
+        <div className={styles.divColumnValueTitle}>
+          {row.original.publicationName}
+        </div>
+      ),
+    }),
+    columnHelper.accessor("publishedDate", {
+      header: "Pub Date",
+      enableSorting: true,
+      cell: ({ row }) => (
+        <div className={styles.divColumnValueTitle}>
+          {row.original.publishedDate.split("T")[0]}
+        </div>
+      ),
+    }),
+    columnHelper.accessor("States", {
+      header: "State",
+      enableSorting: true,
+      cell: ({ row }) => (
+        <div className={styles.divColumnValueTitle}>
+          {row.original.States.length > 1
+            ? row.original.States.map((state) => state.abbreviation).join(", ")
+            : row.original?.States[0]?.abbreviation}
+        </div>
+      ),
+    }),
+    columnHelper.accessor("stageArticleForReport", {
+      header: "Stage",
+      enableSorting: false,
+      cell: ({ row }) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <button
+            className={
+              row.original.stageArticleForReport
+                ? styles.radioButtonActive
+                : styles.radioButtonInactive
+            }
+            onClick={() => {
+              const updatedArray = userReducer?.approvedArticlesArray.map(
+                (article) =>
+                  article.id === row.original.id
+                    ? {
+                        ...article,
+                        stageArticleForReport: !article.stageArticleForReport,
+                      }
+                    : article
+              );
+              // setApprovedArticlesArray(updatedArray);
+              dispatch(updateApprovedArticlesArray(updatedArray));
+            }}
+          />
+        </div>
+      ),
+    }),
+  ];
+  // Table: Staged Articles (Bottom)
+  const columnsStagedArticles = [
+    columnHelper.accessor("id", {
+      header: "ID",
+      enableSorting: true,
+      cell: ({ row }) => (
         <button
           onClick={() => handleSelectArticleFromTable(row.original)}
           style={{
@@ -243,6 +389,7 @@ export default function Reports() {
       ),
     }),
     columnHelper.accessor("ArticleReportContracts", {
+      id: "ArticleReportContracts-Staged",
       header: "Ref #",
       enableSorting: true,
       cell: ({ row }) => (
@@ -280,37 +427,21 @@ export default function Reports() {
       header: "Accepted",
       enableSorting: true,
       cell: ({ row }) => (
-        <button
-          onClick={() =>
-            alert(JSON.stringify(row.original.ArticleReportContracts))
-          }
-          style={{
-            fontSize: "10px",
-          }}
-        >
-          {row.original.ArticleReportContracts[
-            row.original.ArticleReportContracts.length - 1
-          ]?.articleAcceptedByCpsc
-            ? "Yes"
-            : "No"}
-        </button>
-      ),
-    }),
-    columnHelper.accessor("publicationName", {
-      header: "Pub Name",
-      enableSorting: true,
-      cell: ({ row }) => (
-        <div className={styles.divColumnValueTitle}>
-          {row.original.publicationName}
-        </div>
-      ),
-    }),
-    columnHelper.accessor("publishedDate", {
-      header: "Pub Date",
-      enableSorting: true,
-      cell: ({ row }) => (
-        <div className={styles.divColumnValueTitle}>
-          {row.original.publishedDate.split("T")[0]}
+        <div className={styles.divStagedColumnValue}>
+          <button
+            onClick={() =>
+              alert(JSON.stringify(row.original.ArticleReportContracts))
+            }
+            style={{
+              fontSize: "10px",
+            }}
+          >
+            {row.original.ArticleReportContracts[
+              row.original.ArticleReportContracts.length - 1
+            ]?.articleAcceptedByCpsc
+              ? "Yes"
+              : "No"}
+          </button>
         </div>
       ),
     }),
@@ -325,28 +456,28 @@ export default function Reports() {
         </div>
       ),
     }),
-    columnHelper.accessor("includeInReport", {
-      header: "Include",
-      enableSorting: false,
-      cell: ({ row }) => (
-        <button
-          className={
-            row.original.includeInReport
-              ? styles.radioButtonActive
-              : styles.radioButtonInactive
-          }
-          onClick={() => {
-            const updatedArray = approvedArticlesArray.map((article) =>
-              article.id === row.original.id
-                ? { ...article, includeInReport: !article.includeInReport }
-                : article
-            );
-            setApprovedArticlesArray(updatedArray);
-          }}
-        />
-      ),
-    }),
   ];
+
+  const toggleStageForNotInReport = () => {
+    const articles = userReducer.approvedArticlesArray;
+
+    const allNotInReportAreSelected = articles
+      .filter((a) => a.ArticleReportContracts.length === 0)
+      .every((a) => a.stageArticleForReport);
+
+    const updatedArray = articles.map((article) => {
+      if (article.ArticleReportContracts.length === 0) {
+        return {
+          ...article,
+          stageArticleForReport: !allNotInReportAreSelected,
+        };
+      }
+      return article;
+    });
+
+    dispatch(updateApprovedArticlesArray(updatedArray));
+  };
+
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -358,15 +489,97 @@ export default function Reports() {
                 <Table02Small columns={columnsReports} data={reportsArray} />
               </div>
             </div>
-            <div className={styles.divTopRight}></div>
+            <div className={styles.divTopRight}>
+              <div className={styles.divStagedArticles}>
+                <h3>
+                  Staged Articles (count:{" "}
+                  {
+                    userReducer?.approvedArticlesArray?.filter(
+                      (article) => article.stageArticleForReport
+                    ).length
+                  }
+                  )
+                </h3>
+                {userReducer?.approvedArticlesArray?.length > 0 && (
+                  <Table02Small
+                    columns={columnsStagedArticles}
+                    data={userReducer?.approvedArticlesArray?.filter(
+                      (article) => article.stageArticleForReport
+                    )}
+                  />
+                )}
+              </div>
+            </div>
           </div>
 
           <div className={styles.divBottom}>
-            <h3>Approved Articles (count: {approvedArticlesArray.length})</h3>
-            <Table01
-              columns={columnsApprovedArticles}
-              data={approvedArticlesArray}
-            />
+            <div className={styles.divApprovedArticlesHeader}>
+              <h3>
+                Approved Articles (count:{" "}
+                {userReducer?.approvedArticlesArray?.length})
+              </h3>
+              <div className={styles.divApprovedArticlesActions}>
+                <button
+                  className={styles.btnSubmit}
+                  onClick={() => {
+                    fetchApprovedArticlesArray();
+                  }}
+                >
+                  Refresh
+                </button>
+                <button
+                  className={`${styles.btnSubmit} ${
+                    userReducer.approvedArticlesArray.every(
+                      (article) => article.stageArticleForReport
+                    ) && "btnOpaque"
+                  }`}
+                  onClick={() => {
+                    const allSelected = userReducer.approvedArticlesArray.every(
+                      (article) => article.stageArticleForReport
+                    );
+
+                    const updatedArray = userReducer.approvedArticlesArray.map(
+                      (article) => ({
+                        ...article,
+                        stageArticleForReport: !allSelected, // toggle based on current state
+                      })
+                    );
+
+                    dispatch(updateApprovedArticlesArray(updatedArray));
+                  }}
+                >
+                  {userReducer.approvedArticlesArray.every(
+                    (article) => article.stageArticleForReport
+                  )
+                    ? "Unselect All"
+                    : "Select All"}
+                </button>
+                <button
+                  className={styles.btnSubmit}
+                  onClick={toggleStageForNotInReport}
+                >
+                  {userReducer.approvedArticlesArray
+                    .filter((a) => a.ArticleReportContracts.length === 0)
+                    .every((a) => a.stageArticleForReport)
+                    ? "Unselect All Not in a Report"
+                    : "Select All Not in a Report"}
+                </button>
+                <button
+                  className={styles.btnCreate}
+                  onClick={() => setIsOpenReportType(true)}
+                >
+                  Create Report
+                </button>
+              </div>
+            </div>
+
+            {userReducer?.approvedArticlesArray?.length > 0 && (
+              <Table01
+                columns={columnsApprovedArticles}
+                // data={approvedArticlesArray}
+                data={userReducer?.approvedArticlesArray}
+              />
+            )}
           </div>
         </div>
       </main>
@@ -374,11 +587,11 @@ export default function Reports() {
         <ModalYesNo
           isModalOpenSetter={setIsOpenReportType}
           title="Report Type"
-          content="Do you want to include all approved or only the ones that have not been sent yet?"
-          yesOptionText="All Approved"
-          noOptionText="Only Not Sent"
-          handleYes={() => createReport(true)}
-          handleNo={() => createReport(false)}
+          content="This will create a report with all the staged articles."
+          yesOptionText="Create Report"
+          noOptionText="Cancel"
+          handleYes={() => createReport()}
+          handleNo={() => setIsOpenReportType(false)}
         />
       )}
       {isOpenAreYouSure && (

@@ -1,7 +1,13 @@
-.divTableMain {
+/* .divTableMain {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
+} */
+.divTableMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* horizontally centers children */
 }
 .divTableButtonsAndInputs {
   display: flex;

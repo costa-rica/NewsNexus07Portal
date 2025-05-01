@@ -22,6 +22,7 @@ const initialState = {
     returnOnlyIsRelevant: true,
   },
   // NOTE: returnOnlyThisPublishedDateOrAfter, returnOnlyIsNotApproved, returnOnlyIsRelevant
+  approvedArticlesArray: [],
 };
 
 export const userSlice = createSlice({
@@ -65,6 +66,9 @@ export const userSlice = createSlice({
       const newParams = { ...state.articleTableBodyParams, ...action.payload };
       state.articleTableBodyParams = newParams;
     },
+    updateApprovedArticlesArray: (state, action) => {
+      state.approvedArticlesArray = action.payload;
+    },
   },
 });
 
@@ -79,5 +83,6 @@ export const {
   toggleNavExpandDb,
   updateRequestTableBodyParams,
   updateArticleTableBodyParams,
+  updateApprovedArticlesArray,
 } = userSlice.actions;
 export default userSlice.reducer;

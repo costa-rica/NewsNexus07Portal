@@ -13,18 +13,25 @@
 
 .divTop {
   display: flex;
-  /* background-color: blue; */
+  height: 26rem;
 }
-.divTopLeft {
+/* .divTopLeft {
   width: 50%;
-}
+  flex: 1;
+} */
 .divReportTable {
   background-color: var(--off-white);
   border-radius: 12px;
 }
 .divTopRight {
-  width: 50%;
-  background-color: green;
+  /* width: 50%; */
+  /* background-color: green; */
+  flex: 1;
+  border: 2px dashed gray;
+}
+.divStagedArticles {
+  display: flex;
+  flex-direction: column;
 }
 /* .divBottom {
 
@@ -68,9 +75,59 @@ New Report Table
 
 /*
 ---------------------
+Staged Articles Table
+---------------------
+*/
+
+.divStagedColumnValue {
+  text-align: center;
+  color: var(--gray-dark);
+}
+
+/*
+---------------------
 Approved Articles Table
 ---------------------
 */
+
+.divApprovedArticlesHeader {
+  display: flex;
+  flex-direction: row;
+}
+.divApprovedArticlesActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+  gap: 1rem;
+}
+
+.btnSubmit {
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.btnSubmit:active {
+  transform: scale(0.87);
+}
+
+.btnCreate {
+  background-color: var(--green-approved-article);
+  color: var(--gray-light);
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btnCreate:hover {
+  background-color: darkgreen;
+}
 .divColumnValueTitle {
   text-align: center;
   color: var(--gray-dark);
