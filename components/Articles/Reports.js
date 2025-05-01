@@ -187,12 +187,49 @@ export default function Reports() {
     }
   };
 
+  const updateStagedArticlesTableWithReportArticles = (articlesIdArray) => {
+    const articles = userReducer.approvedArticlesArray;
+
+    const updatedArray = articles.map((article) => {
+      if (articlesIdArray.includes(article.id)) {
+        return {
+          ...article,
+          stageArticleForReport: true,
+        };
+      }
+      return {
+        ...article,
+        stageArticleForReport: false,
+      };
+    });
+
+    dispatch(updateApprovedArticlesArray(updatedArray));
+  };
+
   // Table: Reports (top left)
   const columnHelper = createColumnHelper();
   const columnsReports = [
     columnHelper.accessor("id", {
       header: "ID",
-      cell: (info) => info.getValue(),
+      cell: ({ row }) => (
+        <div className={styles.divColumnValue}>
+          <button
+            onClick={() => {
+              updateStagedArticlesTableWithReportArticles(
+                row.original.ArticleReportContracts.map(
+                  (contract) => contract.articleId
+                )
+              );
+            }}
+            style={{
+              fontSize: "10px",
+              width: "100%",
+            }}
+          >
+            {row.original.id}
+          </button>
+        </div>
+      ),
     }),
     columnHelper.accessor("dateSubmittedToClient", {
       header: () => <div>Submitted </div>,

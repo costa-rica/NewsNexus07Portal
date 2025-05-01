@@ -8,35 +8,41 @@
 }
 
 /* .divMainSub {
-  width: 80%;
+
 } */
 
 .divTop {
   display: flex;
-  height: 26rem;
+  height: 27rem;
+  gap: 1rem;
 }
-/* .divTopLeft {
-  width: 50%;
-  flex: 1;
-} */
+.divTopLeft {
+  height: 27rem;
+  padding: 1rem;
+  border: 4px solid gray;
+  border-radius: 0.5rem;
+}
 .divReportTable {
-  background-color: var(--off-white);
+  /* background-color: var(--off-white); */
   border-radius: 12px;
 }
 .divTopRight {
   /* width: 50%; */
   /* background-color: green; */
   flex: 1;
-  border: 2px dashed gray;
+  padding: 1rem;
+  border: 4px solid gray;
+  border-radius: 0.5rem;
 }
 .divStagedArticles {
   display: flex;
   flex-direction: column;
 }
-/* .divBottom {
-
-  background-color: yellow;
-} */
+.divBottom {
+  padding: 1rem;
+  border: 4px solid gray;
+  border-radius: 0.5rem;
+}
 
 /* 
 ---------------------
@@ -321,6 +327,9 @@ OLD  Admin Db stuff
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .divMainSub {
+    display: flex;
+    flex-direction: column;
     width: 95%;
+    gap: 1rem;
   }
 }
