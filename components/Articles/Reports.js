@@ -529,9 +529,12 @@ export default function Reports() {
                 </button>
                 <button
                   className={`${styles.btnSubmit} ${
+                    userReducer.approvedArticlesArray?.length > 0 &&
                     userReducer.approvedArticlesArray.every(
                       (article) => article.stageArticleForReport
-                    ) && "btnOpaque"
+                    )
+                      ? "btnOpaque"
+                      : ""
                   }`}
                   onClick={() => {
                     const allSelected = userReducer.approvedArticlesArray.every(
@@ -560,7 +563,7 @@ export default function Reports() {
                   onClick={toggleStageForNotInReport}
                 >
                   {userReducer.approvedArticlesArray
-                    .filter((a) => a.ArticleReportContracts.length === 0)
+                    ?.filter((a) => a.ArticleReportContracts.length === 0)
                     .every((a) => a.stageArticleForReport)
                     ? "Unselect All Not in a Report"
                     : "Select All Not in a Report"}
