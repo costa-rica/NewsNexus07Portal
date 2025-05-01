@@ -548,7 +548,8 @@ export default function Reports() {
                     dispatch(updateApprovedArticlesArray(updatedArray));
                   }}
                 >
-                  {userReducer.approvedArticlesArray.every(
+                  {userReducer.approvedArticlesArray?.length > 0 &&
+                  userReducer.approvedArticlesArray.every(
                     (article) => article.stageArticleForReport
                   )
                     ? "Unselect All"
