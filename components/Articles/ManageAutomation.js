@@ -1,9 +1,11 @@
 import styles from "../../styles/articles/ManageAutomation.module.css";
 import TemplateView from "../common/TemplateView";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function ManageAutomation() {
   const userReducer = useSelector((state) => state.user);
-
+  const [selectedFile, setSelectedFile] = useState(null);
   const [filesArray, setFilesArray] = useState([]);
 
   useEffect(() => {
@@ -29,8 +31,11 @@ export default function ManageAutomation() {
       const result = await response.json();
       console.log("Fetched Data:", result);
 
-      if (result.filesArray && Array.isArray(result.filesArray)) {
-        setFilesArray(result.filesArray);
+      if (
+        result.excelFileNamesArray &&
+        Array.isArray(result.excelFileNamesArray)
+      ) {
+        setFilesArray(result.excelFileNamesArray);
       } else {
         setFilesArray([]);
       }
@@ -39,23 +44,130 @@ export default function ManageAutomation() {
       setFilesArray([]);
     }
   };
+
+  const downloadExcelFile = async (fileName) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/automations/excel-file/${fileName}`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Log response text for debugging
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading file:", error.message);
+    }
+  };
+
+  const sendExcelFile = async (file) => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/automations/excel-file/${file}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+          body: formData,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Upload response:", data);
+        })
+        .catch((err) => {
+          console.error("Upload error:", err);
+        });
+    }
+  };
+
   return (
     <TemplateView>
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Manage Automation!</h1>
+        <h1 className={styles.title}>Manage Automation</h1>
 
-        <div className={styles.divSettingsGroup}>
+        <div className={styles.divAutomationFileGroup}>
           <h3>Excel Spreadsheets</h3>
-          {filesArray.map((file) => (
-            <div key={file.id}>
-              <p>{file.name}</p>
-              <p>{file.createdAt}</p>
+
+          {/* <div className={styles.divAutomationFileDetail}> */}
+          {filesArray.map((file, index) => (
+            <div key={index}>
+              <button
+                className={styles.btnFileLink}
+                onClick={() => downloadExcelFile(file)}
+              >
+                {file}
+              </button>
             </div>
           ))}
-          <div className={styles.divSettingDetail}>
-            News API
-            <span className={styles.lblSettingDetailMain}>Upload Excel:</span>
-            <input type="file" />
+
+          <input
+            className={styles.inputAutomationFileDetail}
+            type="file"
+            accept=".xlsx"
+            onChange={(e) => {
+              const selectedFile = e.target.files[0];
+              setSelectedFile(selectedFile);
+            }}
+          />
+          <button
+            className={styles.btnUpload}
+            onClick={() => {
+              console.log("Upload button clicked – handled in input onChange.");
+              sendExcelFile(selectedFile);
+            }}
+          >
+            Upload
+          </button>
+
+          <div>
+            <h4>Guide to modifying the excel files</h4>
+            <ul>
+              <li>
+                andString column: will return all articles that have all the
+                words in the string
+              </li>
+              <li>
+                orString column: will return all articles that have any of the
+                words in the string
+              </li>
+              <li>
+                notString column: will return all articles that do not have any
+                of the words in the string
+              </li>
+              <li> no commas in these strings spaces seperate the words</li>
+              <li>
+                quote the strings for words with spaces or any special
+                characters !,?,$, etc.,
+              </li>
+              <li>
+                For News API includeDomains and excludeDomains columns use
+                commas, there is no https:// or www.
+              </li>
+              <li>
+                - if domains do not match with what is found in database they
+                will be omitted
+              </li>
+            </ul>
           </div>
         </div>
       </main>
