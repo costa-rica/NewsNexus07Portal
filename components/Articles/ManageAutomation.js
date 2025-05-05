@@ -78,6 +78,13 @@ export default function ManageAutomation() {
 
   const sendExcelFile = async (file) => {
     if (file) {
+      if (!filesArray.includes(file.name)) {
+        alert(
+          "Filename not recognized. Please select a file with a name from the list."
+        );
+        return;
+      }
+
       const formData = new FormData();
       formData.append("file", file);
 
