@@ -1,11 +1,12 @@
 import styles from "../../styles/articles/ManageAutomation.module.css";
 import TemplateView from "../common/TemplateView";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
 export default function ManageAutomation() {
   const userReducer = useSelector((state) => state.user);
   const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
   const [filesArray, setFilesArray] = useState([]);
 
   useEffect(() => {
@@ -96,6 +97,9 @@ export default function ManageAutomation() {
         .then((data) => {
           alert("File uploaded successfully!");
           setSelectedFile(null);
+          if (fileInputRef.current) {
+            fileInputRef.current.value = ""; // Clear the input
+          }
         })
         .catch((err) => {
           alert("Error uploading file: " + err.message);
@@ -124,6 +128,7 @@ export default function ManageAutomation() {
           ))}
 
           <input
+            ref={fileInputRef}
             className={styles.inputAutomationFileDetail}
             type="file"
             accept=".xlsx"
