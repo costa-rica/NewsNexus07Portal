@@ -133,7 +133,7 @@ export default function TemplateView({ children }) {
             <NavBarSideLink
               href="/articles/automation"
               style={{ padding: "0.25rem" }}
-              label="Automation"
+              label="Automation & Browser Extension"
               currentPath={currentPath}
             />
           </NavBarSideDropdown>
