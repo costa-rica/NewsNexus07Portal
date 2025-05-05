@@ -80,8 +80,10 @@ export default function ManageAutomation() {
       const formData = new FormData();
       formData.append("file", file);
 
+      const fileName = encodeURIComponent(file.name);
+
       fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/automations/excel-file/${file}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/automations/excel-file/${fileName}`,
         {
           method: "POST",
           headers: {
@@ -92,10 +94,11 @@ export default function ManageAutomation() {
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("Upload response:", data);
+          alert("File uploaded successfully!");
+          setSelectedFile(null);
         })
         .catch((err) => {
-          console.error("Upload error:", err);
+          alert("Error uploading file: " + err.message);
         });
     }
   };
