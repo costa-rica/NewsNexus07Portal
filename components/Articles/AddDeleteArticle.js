@@ -1,4 +1,4 @@
-import styles from "../../styles/AddArticle.module.css";
+import styles from "../../styles/articles/AddArticle.module.css";
 import { useEffect, useState } from "react";
 import TemplateView from "../common/TemplateView";
 import InputDropdownCheckbox from "../common/InputDropdownCheckbox";

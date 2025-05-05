@@ -1,4 +1,4 @@
-import styles from "../../../styles/TableRequests.module.css";
+import styles from "../../../styles/common/TableRequests.module.css";
 import {
   useReactTable,
   getCoreRowModel,

@@ -1,4 +1,4 @@
-import styles from "../../styles/GetArticlesDetailed.module.css";
+import styles from "../../styles/articles/GetArticlesDetailed.module.css";
 import TemplateView from "../common/TemplateView";
 import Modal from "../common/Modal";
 import { useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import styles from "../../../styles/Table02small.module.css";
+import styles from "../../../styles/common/Table02small.module.css";
 import {
   useReactTable,
   getCoreRowModel,

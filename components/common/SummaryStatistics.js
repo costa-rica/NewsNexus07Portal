@@ -1,4 +1,4 @@
-import styles from "../../styles/SummaryStatistics.module.css";
+import styles from "../../styles/common/SummaryStatistics.module.css";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateArticlesSummaryStatistics } from "../../reducers/user";

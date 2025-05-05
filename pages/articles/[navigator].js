@@ -34,6 +34,10 @@ export default function GetArticlesNavigator() {
       return import(`../../components/Articles/AddDeleteArticle`).catch(
         () => () => <p>AddDeleteArticle Not Found</p>
       );
+    } else if (navigator === "automation") {
+      return import(`../../components/Articles/ManageAutomation`).catch(
+        () => () => <p>ManageAutomation Not Found</p>
+      );
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }

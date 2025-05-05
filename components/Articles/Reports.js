@@ -233,7 +233,8 @@ export default function Reports() {
     }),
     columnHelper.accessor("dateSubmittedToClient", {
       header: () => <div>Submitted </div>,
-      cell: (info) => info?.getValue().split("T")[0],
+      cell: (info) =>
+        info?.getValue() ? info?.getValue().split("T")[0] : "missing value",
     }),
     columnHelper.accessor("ArticleReportContracts", {
       header: "Article Count",

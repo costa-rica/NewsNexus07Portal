@@ -1,4 +1,4 @@
-import styles from "../../styles/TemplateView.module.css";
+import styles from "../../styles/common/TemplateView.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
@@ -128,6 +128,12 @@ export default function TemplateView({ children }) {
               href="/articles/get-detailed-gnews"
               style={{ padding: "0.25rem" }}
               label="GNews Detailed"
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
+              href="/articles/automation"
+              style={{ padding: "0.25rem" }}
+              label="Automation"
               currentPath={currentPath}
             />
           </NavBarSideDropdown>
