@@ -23,13 +23,15 @@ export default function ReviewArticles() {
   // const [hideIrrelevant, setHideIrrelevant] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchArticlesArray();
-    fetchArticlesSummaryStatistics();
+    // fetchArticlesSummaryStatistics();
   }, []);
   const fetchArticlesArray = async () => {
     try {
+      setLoading(true);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
         // {
@@ -69,6 +71,7 @@ export default function ReviewArticles() {
       console.error("Error fetching data:", error.message);
       setArticlesArray([]);
     }
+    setLoading(false);
   };
 
   const handleSelectArticleFromTable = async (article) => {
@@ -568,6 +571,7 @@ export default function ReviewArticles() {
                   : articlesArray
               }
               selectedRowId={selectedArticle?.id}
+              loading={loading}
             />
           </div>
         </div>

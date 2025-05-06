@@ -1,4 +1,5 @@
 import styles from "../../../styles/common/Table01.module.css";
+import ModalLoading from "../modals/ModalLoading";
 import {
   useReactTable,
   getCoreRowModel,
@@ -9,7 +10,12 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-export default function Table01({ data, columns, selectedRowId }) {
+export default function Table01({
+  data,
+  columns,
+  selectedRowId,
+  loading = false,
+}) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -33,8 +39,13 @@ export default function Table01({ data, columns, selectedRowId }) {
     onGlobalFilterChange: setGlobalFilter,
     autoResetPageIndex: false, // ✅ ADD THIS
   });
+  // {loading && <ModalLoading isVisible={true} sizeOfParent={true} />}
 
-  return (
+  return loading ? (
+    <div className={styles.divTableMain}>
+      <ModalLoading isVisible={true} sizeOfParent={true} />
+    </div>
+  ) : (
     // <div className={styles.divRequestTableGroup}>
     <div className={styles.divTableMain}>
       <div className={styles.divTableButtonsAndInputs}>

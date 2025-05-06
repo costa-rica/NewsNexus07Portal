@@ -31,7 +31,7 @@ export default function Reports() {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isOpenModalReportRejected, setIsOpenModalReportRejected] =
     useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchReportsList();
     if (userReducer?.approvedArticlesArray?.length === 0) {
@@ -695,6 +695,7 @@ export default function Reports() {
               <Table01
                 columns={columnsApprovedArticles}
                 data={userReducer?.approvedArticlesArray}
+                loading={loading}
               />
             )}
           </div>
@@ -746,7 +747,7 @@ export default function Reports() {
           fetchApprovedArticlesArray={fetchApprovedArticlesArray}
         />
       )}
-      {loading && <ModalLoading isVisible={loading} />}
+      {/* {loading && <ModalLoading isVisible={loading} />} */}
     </TemplateView>
   );
 }

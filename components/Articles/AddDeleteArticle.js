@@ -22,6 +22,7 @@ export default function AddDeleteArticle() {
     publishedDate: false,
     content: false,
   });
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchArticlesArray();
     // fetchArticlesSummaryStatistics();
@@ -114,42 +115,10 @@ export default function AddDeleteArticle() {
     // fetchArticlesSummaryStatistics();
     fetchArticlesArray();
   };
-  // const fetchArticlesSummaryStatistics = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
-  //       {
-  //         headers: { Authorization: `Bearer ${userReducer.token}` },
-  //       }
-  //     );
-
-  //     console.log(`Response status: ${response.status}`);
-
-  //     if (!response.ok) {
-  //       const errorText = await response.text(); // Log response text for debugging
-  //       throw new Error(`Server Error: ${errorText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log(
-  //       "Fetched Data (articles/summary-statistics):",
-  //       result.summaryStatistics
-  //     );
-
-  //     if (result.summaryStatistics) {
-  //       console.log("-----> make summary statistics");
-  //       dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Error fetching articles summary statistics:",
-  //       error.message
-  //     );
-  //   }
-  // };
 
   const fetchArticlesArray = async () => {
     try {
+      setLoading(true);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
         {
@@ -186,6 +155,7 @@ export default function AddDeleteArticle() {
       console.error("Error fetching data:", error.message);
       setArticlesArray([]);
     }
+    setLoading(false);
   };
 
   // Table Articles
@@ -244,25 +214,7 @@ export default function AddDeleteArticle() {
       header: "State",
       enableSorting: true,
     }),
-    // columnHelper.accessor("isRelevant", {
-    //   // header: "Relevant ?",
-    //   header: () => (
-    //     <div style={{ display: "flex", flexWrap: "nowrap" }}>Relevant ?</div>
-    //   ),
-    //   enableSorting: true,
-    //   cell: ({ getValue, row }) => (
-    //     <div className={styles.divBtnRelevant}>
-    //       <button
-    //         className={`${styles.btnRelevant} ${
-    //           getValue() === false ? "btnOpaque" : ""
-    //         }`}
-    //         onClick={() => handleClickIsRelevant(row.original.id)}
-    //       >
-    //         {getValue() === true ? "Yes" : "No"}
-    //       </button>
-    //     </div>
-    //   ),
-    // }),
+
     // NOTE: for some reason keyword is different so it needs to be explicitly converted to a
     // string in order for the search to work in this column
     columnHelper.accessor((row) => row.keyword?.toString() ?? "", {
@@ -538,6 +490,7 @@ export default function AddDeleteArticle() {
                   : articlesArray
               }
               selectedRowId={selectedArticle?.id}
+              loading={loading}
             />
           </div>
         </div>
