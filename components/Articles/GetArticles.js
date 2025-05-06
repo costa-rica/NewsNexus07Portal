@@ -1,6 +1,6 @@
 import styles from "../../styles/articles/GetArticles.module.css";
 import TemplateView from "../common/TemplateView";
-import Modal from "../common/Modal";
+import ModalInformation from "../common/modals/ModalInformation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TableRequests from "../common/Tables/TableRequests";
@@ -516,21 +516,21 @@ export default function GetArticles() {
           </div>
         </div>
         {isOpenKeywordWarning && (
-          <Modal
+          <ModalInformation
             isModalOpenSetter={setIsOpenKeywordWarning}
             title="Must match keyword"
             content="If you're sure this keyword is correct, you can add it."
           />
         )}
         {isOpenRequestWarning && (
-          <Modal
+          <ModalInformation
             isModalOpenSetter={setIsOpenRequestWarning}
             title="Must fill all fields"
             content="Please fill all fields to make a request."
           />
         )}
         {isOpenRequestResponse && (
-          <Modal
+          <ModalInformation
             isModalOpenSetter={setIsOpenRequestResponse}
             title="Problem with request"
             content={requestResponseMessage}

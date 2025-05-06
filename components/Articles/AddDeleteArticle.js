@@ -2,7 +2,7 @@ import styles from "../../styles/articles/AddArticle.module.css";
 import { useEffect, useState } from "react";
 import TemplateView from "../common/TemplateView";
 import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
-import ModalYesNo from "../common/ModalYesNo";
+import ModalYesNo from "../common/modals/ModalYesNo";
 import { useSelector } from "react-redux";
 import SummaryStatistics from "../common/SummaryStatistics";
 import Table01 from "../common/Tables/Table01";

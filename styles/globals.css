@@ -15,7 +15,7 @@ body {
   --gray-medium: #979797;
   --blue-dark: #283a59;
   --green-approved-article: #02a031;
-  --red: #da6b3b;
+  --soft-red: #da6b3b;
   --bg-login-left: #d9d9d9;
   --bg-navbar-top: #283a59;
   --bg-input-off-white: #dddddd;
@@ -34,7 +34,9 @@ body {
   background-color: gray;
   opacity: 0.7;
 }
-
+.btnRed {
+  background-color: var(--soft-red);
+}
 .tooltipWrapper {
   position: relative;
   display: inline-block;

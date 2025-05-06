@@ -1,0 +1,92 @@
+.divOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Ensure it's above all other content */
+}
+
+/* Modal Content */
+.divContent {
+  background: black;
+  color: white;
+  padding: 3rem;
+  border-radius: 10px;
+  width: 60%;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.divTop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.divTop h2,
+.divTop p {
+  margin: 0;
+  padding: 0;
+}
+/* Close Icon */
+.faIconClose {
+  position: absolute;
+  top: -2rem;
+  right: -10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 2rem;
+}
+
+.faIconClose:hover {
+  color: var(--med-text-color);
+}
+.divMiddle {
+  /* background-color: green; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 4px solid gray;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.divArticleRejectionFormList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.divArticleRejectionForm {
+  display: flex;
+  flex-direction: row;
+}
+.inputDate {
+  border: none;
+  background-color: var(--bg-input-off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.btnWarningYellow {
+  background-color: yellow;
+}
+.btnActive {
+  background-color: green;
+}
+.divBottom {
+  padding-top: 1rem;
+}
+
+.btn {
+  border-radius: 0.25rem;
+  /* background-color: green; */
+}
+.btnWarning {
+  background-color: var(--soft-red);
+}

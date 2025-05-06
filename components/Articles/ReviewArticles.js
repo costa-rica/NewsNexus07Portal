@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import Table01 from "../common/Tables/Table01";
 import { createColumnHelper } from "@tanstack/react-table";
 import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
-import Modal from "../common/Modal";
+import ModalInformation from "../common/modals/ModalInformation";
 import { useDispatch } from "react-redux";
 import {
   updateArticlesSummaryStatistics,
@@ -572,18 +572,16 @@ export default function ReviewArticles() {
           </div>
         </div>
       </main>
-      {/* {isOpenApproveModal && (
-        <ModalApproveArticle setIsOpen={setIsOpenApproveModal} />
-      )} */}
+
       {isOpenStateWarning && (
-        <Modal
+        <ModalInformation
           isModalOpenSetter={setIsOpenStateWarning}
           title="Problem with state request"
           content="Maybe no selected states ?"
         />
       )}
       {isOpenModalInfo && (
-        <Modal
+        <ModalInformation
           isModalOpenSetter={setIsOpenModalInfo}
           title="Information"
           content={infoModalContent}

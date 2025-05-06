@@ -2,7 +2,7 @@ import styles from "../../styles/ManageUser.module.css";
 import InputPassword from "../common/InputPassword";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Modal from "../common/Modal";
+import ModalInformation from "../common/modals/ModalInformation";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, updateStateArray } from "../../reducers/user";
 
@@ -181,7 +181,7 @@ export default function Login() {
         </div>
       </main>
       {isOpenModalWarning && (
-        <Modal
+        <ModalInformation
           isModalOpenSetter={setIsOpenModalWarning}
           title="Login error"
           content={requestResponseMessage}

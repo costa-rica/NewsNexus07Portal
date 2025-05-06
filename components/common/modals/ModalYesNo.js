@@ -1,4 +1,4 @@
-import styles from "../../styles/Modal.module.css";
+import styles from "../../../styles/modals/ModalInformation.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 

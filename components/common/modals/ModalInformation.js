@@ -1,8 +1,8 @@
-import styles from "../../styles/Modal.module.css";
+import styles from "../../../styles/modals/ModalInformation.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 
-export default function Modal(props) {
+export default function ModalInformation(props) {
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>

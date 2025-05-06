@@ -2,12 +2,17 @@ import styles from "../../styles/Reports.module.css";
 import TemplateView from "../common/TemplateView";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import ModalYesNo from "../common/ModalYesNo";
+import ModalYesNo from "../common/modals/ModalYesNo";
 import Table01 from "../common/Tables/Table01";
 import Table02Small from "../common/Tables/Table02Small";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
 import { updateApprovedArticlesArray } from "../../reducers/user";
+import ModalReportDate from "../common/modals/ModalReportDate";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
+import ModalInformation from "../common/modals/ModalInformation";
+import ModalArticleRejected from "../common/modals/ModalArticleRejected";
 
 export default function Reports() {
   const userReducer = useSelector((state) => state.user);
@@ -16,6 +21,15 @@ export default function Reports() {
   const [isOpenAreYouSure, setIsOpenAreYouSure] = useState(false);
   const [reportsArray, setReportsArray] = useState([]);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [isOpenModalReportDate, setIsOpenModalReportDate] = useState(false);
+  const [isOpenModalInformation, setIsOpenModalInformation] = useState(false);
+  const [modalInformationContent, setModalInformationContent] = useState({
+    title: "Information",
+    content: "",
+  });
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [isOpenModalReportRejected, setIsOpenModalReportRejected] =
+    useState(false);
 
   useEffect(() => {
     fetchReportsList();
@@ -44,6 +58,7 @@ export default function Reports() {
       const resJson = await response.json();
       console.log(resJson);
       setReportsArray(resJson.reportsArray);
+      setRefreshTableWarning(false);
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
@@ -177,6 +192,7 @@ export default function Reports() {
         });
         // setApprovedArticlesArray(tempArray);
         dispatch(updateApprovedArticlesArray(tempArray));
+        console.log(tempArray);
       } else {
         // setApprovedArticlesArray([]);
         dispatch(updateApprovedArticlesArray([]));
@@ -206,6 +222,33 @@ export default function Reports() {
     dispatch(updateApprovedArticlesArray(updatedArray));
   };
 
+  const sendNewReportDate = async (dateSubmittedToClient) => {
+    console.log(dateSubmittedToClient);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/update-submitted-to-client-date/${selectedReport.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+          body: JSON.stringify({ dateSubmittedToClient }),
+        }
+      );
+
+      if (response.status !== 200) {
+        console.log(`There was a server error: ${response.status}`);
+        return;
+      }
+
+      alert("Report date updated successfully!");
+      fetchReportsList();
+    } catch (error) {
+      console.error("Error updating report date:", error);
+    }
+  };
+
   // Table: Reports (top left)
   const columnHelper = createColumnHelper();
   const columnsReports = [
@@ -233,8 +276,21 @@ export default function Reports() {
     }),
     columnHelper.accessor("dateSubmittedToClient", {
       header: () => <div>Submitted </div>,
-      cell: (info) =>
-        info?.getValue() ? info?.getValue().split("T")[0] : "missing value",
+      cell: (info) => (
+        <div className={styles.divColumnValue}>
+          <button
+            className={styles.btnDate}
+            onClick={() => {
+              setIsOpenModalReportDate(true);
+              setSelectedReport(info.row.original);
+            }}
+          >
+            {info?.getValue()
+              ? info?.getValue().split("T")[0]
+              : "missing value"}
+          </button>
+        </div>
+      ),
     }),
     columnHelper.accessor("ArticleReportContracts", {
       header: "Article Count",
@@ -244,16 +300,14 @@ export default function Reports() {
     }),
     columnHelper.display({
       id: "download",
-      // header: "Download",
       cell: (info) => (
         <button
           onClick={() => {
             fetchReportZipFile(info.row.original.id);
-            // alert(info.row.original.id);
           }}
           className={styles.btnDownload}
         >
-          Download
+          <FontAwesomeIcon icon={faDownload} className={styles.faDownload} />
         </button>
       ),
     }),
@@ -263,18 +317,23 @@ export default function Reports() {
       cell: (info) => (
         <button
           onClick={() => {
-            // handleDelete(info.row.original.id);
             setIsOpenAreYouSure(true);
             setSelectedReport(info.row.original);
-            // alert(info.row.original.id);
           }}
           className={styles.btnDelete}
         >
-          Delete
+          <FontAwesomeIcon icon={faTrash} className={styles.faTrash} />
         </button>
       ),
     }),
   ];
+
+  // Helper: Check if article has been rejected at least once
+  const articleHasBeenRejectedAtLeastOnce = (article) => {
+    return article.ArticleReportContracts?.some(
+      (contract) => contract.articleAcceptedByCpsc === false
+    );
+  };
 
   // Table: Approved Articles (Bottom)
   const columnsApprovedArticles = [
@@ -301,9 +360,17 @@ export default function Reports() {
       cell: ({ row }) => (
         <div className={styles.divColumnValue}>
           <button
-            onClick={() =>
-              alert(JSON.stringify(row.original.ArticleReportContracts))
-            }
+            onClick={() => {
+              setModalInformationContent({
+                title: "Article Report Contracts",
+                content: JSON.stringify(
+                  row.original.ArticleReportContracts,
+                  null,
+                  2
+                ),
+              });
+              setIsOpenModalInformation(true);
+            }}
             style={{
               fontSize: "10px",
               width: "100%",
@@ -325,9 +392,6 @@ export default function Reports() {
       header: "Headline",
       enableSorting: true,
       cell: ({ row }) => (
-        // <div className={styles.divColumnValueTitle}>
-        //   {row.original.title.substring(0, 20)}
-        // </div>
         <div className="tooltipWrapper">
           <div className={styles.divColumnValueTitle}>
             {row.original.title.substring(0, 20)}
@@ -342,18 +406,21 @@ export default function Reports() {
       cell: ({ row }) => (
         <div className={styles.divColumnValue}>
           <button
-            onClick={() =>
-              alert(JSON.stringify(row.original.ArticleReportContracts))
-            }
-            style={{
-              fontSize: "10px",
+            onClick={() => {
+              setSelectedArticle(row.original);
+              // alert(JSON.stringify(row.original.ArticleReportContracts))
+              setIsOpenModalReportRejected(true);
             }}
+            className={`${styles.btn} ${
+              articleHasBeenRejectedAtLeastOnce(row.original) ? "btnRed" : ""
+            }`}
           >
-            {row.original.ArticleReportContracts[
+            {articleHasBeenRejectedAtLeastOnce(row.original) ? "No" : "Yes"}
+            {/* {row.original.ArticleReportContracts[
               row.original.ArticleReportContracts.length - 1
             ]?.articleAcceptedByCpsc
               ? "Yes"
-              : "No"}
+              : "No"} */}
           </button>
         </div>
       ),
@@ -652,6 +719,32 @@ export default function Reports() {
           content="You are about to delete a report. This action cannot be undone."
           handleYes={() => handleDelete(selectedReport.id)}
           handleNo={() => setIsOpenAreYouSure(false)}
+        />
+      )}
+      {isOpenModalReportDate && (
+        <ModalReportDate
+          isModalOpenSetter={setIsOpenModalReportDate}
+          title="Update Report Submission Date"
+          content="Select the date the report was submitted to CPSC."
+          sendNewReportDate={sendNewReportDate}
+          selectedReport={selectedReport}
+        />
+      )}
+      {isOpenModalInformation && (
+        <ModalInformation
+          isModalOpenSetter={setIsOpenModalInformation}
+          title={modalInformationContent.title}
+          content={modalInformationContent.content}
+          handleNo={() => setIsOpenModalInformation(false)}
+        />
+      )}
+      {isOpenModalReportRejected && (
+        <ModalArticleRejected
+          isModalOpenSetter={setIsOpenModalReportRejected}
+          title="Article Rejected Modal"
+          content="Article Rejected Modal Content"
+          selectedReport={selectedArticle}
+          fetchApprovedArticlesArray={fetchApprovedArticlesArray}
         />
       )}
     </TemplateView>
