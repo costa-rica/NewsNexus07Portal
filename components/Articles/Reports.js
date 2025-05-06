@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ModalInformation from "../common/modals/ModalInformation";
 import ModalArticleRejected from "../common/modals/ModalArticleRejected";
+import ModalLoading from "../common/modals/ModalLoading";
 
 export default function Reports() {
   const userReducer = useSelector((state) => state.user);
@@ -30,7 +31,7 @@ export default function Reports() {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isOpenModalReportRejected, setIsOpenModalReportRejected] =
     useState(false);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetchReportsList();
     if (userReducer?.approvedArticlesArray?.length === 0) {
@@ -58,7 +59,7 @@ export default function Reports() {
       const resJson = await response.json();
       console.log(resJson);
       setReportsArray(resJson.reportsArray);
-      setRefreshTableWarning(false);
+      // setRefreshTableWarning(false);
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
@@ -165,7 +166,10 @@ export default function Reports() {
     // }
   };
 
+  // Top Right Table
   const fetchApprovedArticlesArray = async () => {
+    setLoading(true);
+    console.log("Fetching approved articles array...");
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/approved`,
@@ -201,6 +205,8 @@ export default function Reports() {
       console.error("Error fetching data:", error.message);
       setApprovedArticlesArray([]);
     }
+    console.log("Approved articles array fetched successfully!");
+    setLoading(false);
   };
 
   const updateStagedArticlesTableWithReportArticles = (articlesIdArray) => {
@@ -408,7 +414,6 @@ export default function Reports() {
           <button
             onClick={() => {
               setSelectedArticle(row.original);
-              // alert(JSON.stringify(row.original.ArticleReportContracts))
               setIsOpenModalReportRejected(true);
             }}
             className={`${styles.btn} ${
@@ -416,11 +421,6 @@ export default function Reports() {
             }`}
           >
             {articleHasBeenRejectedAtLeastOnce(row.original) ? "No" : "Yes"}
-            {/* {row.original.ArticleReportContracts[
-              row.original.ArticleReportContracts.length - 1
-            ]?.articleAcceptedByCpsc
-              ? "Yes"
-              : "No"} */}
           </button>
         </div>
       ),
@@ -694,7 +694,6 @@ export default function Reports() {
             {userReducer?.approvedArticlesArray?.length > 0 && (
               <Table01
                 columns={columnsApprovedArticles}
-                // data={approvedArticlesArray}
                 data={userReducer?.approvedArticlesArray}
               />
             )}
@@ -747,6 +746,7 @@ export default function Reports() {
           fetchApprovedArticlesArray={fetchApprovedArticlesArray}
         />
       )}
+      {loading && <ModalLoading isVisible={loading} />}
     </TemplateView>
   );
 }

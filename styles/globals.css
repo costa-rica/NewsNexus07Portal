@@ -20,6 +20,11 @@ body {
   --bg-navbar-top: #283a59;
   --bg-input-off-white: #dddddd;
 
+  --input-border-radius: 0.5rem;
+  --input-padding: 0.25rem;
+  --input-background-color: var(--gray-medium);
+  --input-color: black;
+
   --width-side-menu: 15rem;
   --height-header: 7vh;
   --height-header-large: 11vh;

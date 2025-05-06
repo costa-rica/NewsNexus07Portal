@@ -8,12 +8,6 @@ export default function ModalArticleRejected(props) {
   const userReducer = useSelector((state) => state.user);
   const [articleReportContractsArray, setArticleReportContractsArray] =
     useState(props.selectedReport?.ArticleReportContracts);
-  const [inputValue, setInputValue] = useState("");
-  const [tableData, setTableData] = useState([
-    { id: 1, reason: "" },
-    { id: 2, reason: "" },
-    { id: 3, reason: "" },
-  ]);
   const isOriginalValueSame = (rowOriginal, propertyName) => {
     const originalContract = props.selectedReport?.ArticleReportContracts.find(
       (contract) => contract.id === rowOriginal.id
@@ -84,7 +78,7 @@ export default function ModalArticleRejected(props) {
                 {articleReportContractsArray.map((contract) => (
                   <tr key={contract.id}>
                     <td>{contract.reportId}</td>
-                    <td>
+                    <td className={styles.divAccepted}>
                       <button
                         className={`${styles.btn} ${
                           isOriginalValueSame(contract, "articleAcceptedByCpsc")
@@ -111,6 +105,7 @@ export default function ModalArticleRejected(props) {
                     <td>
                       <input
                         type="text"
+                        className={styles.inputRejectionReason}
                         disabled={isOriginalValueSame(
                           contract,
                           "articleAcceptedByCpsc"
@@ -131,18 +126,32 @@ export default function ModalArticleRejected(props) {
                       />
                     </td>
                     <td>
-                      <button
-                        className={`${styles.btn} ${
-                          isOriginalValueSame(contract, "articleAcceptedByCpsc")
-                            ? ""
-                            : styles.btnActive
-                        }`}
-                        onClick={() =>
-                          handleUpdateArticleAcceptedByCpsc(contract)
-                        }
-                      >
-                        Submit
-                      </button>
+                      {isOriginalValueSame(
+                        contract,
+                        "articleAcceptedByCpsc"
+                      ) ? (
+                        <div className={styles.divPlaceHolder}></div>
+                      ) : (
+                        <button
+                          className={`${styles.btn} ${
+                            isOriginalValueSame(
+                              contract,
+                              "articleAcceptedByCpsc"
+                            )
+                              ? ""
+                              : styles.btnActive
+                          }`}
+                          onClick={() =>
+                            handleUpdateArticleAcceptedByCpsc(contract)
+                          }
+                          disabled={isOriginalValueSame(
+                            contract,
+                            "articleAcceptedByCpsc"
+                          )}
+                        >
+                          Submit
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

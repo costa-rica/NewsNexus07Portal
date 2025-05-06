@@ -85,8 +85,20 @@
 
 .btn {
   border-radius: 0.25rem;
-  /* background-color: green; */
 }
 .btnWarning {
   background-color: var(--soft-red);
+}
+.inputRejectionReason {
+  width: 80%;
+  border-radius: var(--input-border-radius);
+  padding: var(--input-padding);
+  background-color: var(--input-background-color);
+  color: var(--input-color);
+}
+.divPlaceHolder {
+  width: 2.5rem;
+}
+.divAccepted {
+  width: 1rem;
 }
