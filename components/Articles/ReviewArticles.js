@@ -41,7 +41,7 @@ export default function ReviewArticles() {
         table01: true,
       }));
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/with-ratings`,
         // {
         //   headers: { Authorization: `Bearer ${userReducer.token}` },
         // }
@@ -266,6 +266,31 @@ export default function ReviewArticles() {
       id: "keyword",
       header: "Keyword",
       enableSorting: true,
+    }),
+    columnHelper.accessor("keywordRating", {
+      header: () => (
+        <div style={{ display: "flex", flexWrap: "nowrap" }}>
+          Nexus Semantic Rating
+        </div>
+      ),
+      enableSorting: true,
+      cell: ({ getValue }) => {
+        const value = getValue();
+        const normalized = Math.max(0, Math.min(1, value)); // Clamp between 0 and 1
+        const green = Math.floor(normalized * 200); // max ~200 for readability
+        const color = `rgb(${128 - green / 3}, ${green}, ${128 - green / 3})`; // green to gray gradient
+        const percent = Math.round(normalized * 100);
+        return (
+          <div className={styles.divColumnCenter}>
+            <span
+              className={styles.circleRating}
+              style={{ backgroundColor: color }}
+            >
+              <span className={styles.circleRatingText}>{percent}%</span>
+            </span>
+          </div>
+        );
+      },
     }),
   ];
 

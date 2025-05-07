@@ -196,6 +196,32 @@
   background-color: gray;
   opacity: 0.7;
 }
+.divColumnCenter {
+  display: flex;
+  justify-content: center;
+}
+.circleRating {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+
+/* Text centered inside circle rating */
+.circleRatingText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+  user-select: none;
+}
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .main {
