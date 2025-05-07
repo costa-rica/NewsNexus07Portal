@@ -8,23 +8,16 @@ export default function ModalArticleReferenceNumber(props) {
   const userReducer = useSelector((state) => state.user);
   const [articleReportContractsArray, setArticleReportContractsArray] =
     useState(
-      props.selectedReport?.ArticleReportContracts.map((contract) => ({
+      props.selectedArticle?.ArticleReportContracts.map((contract) => ({
         ...contract,
         toggleEdit: true,
         originalArticleReferenceNumberInReport:
           contract.articleReferenceNumberInReport,
       }))
     );
-  // const [articleReportContractsArray, setArticleReportContractsArray] =
-  //   useState(
-  //     props.selectedReport?.ArticleReportContracts.map((contract) => ({
-  //       ...contract,
-  //       toggleEdit: true,
-  //     }))
-  //   );
 
   const isOriginalValueSame = (rowOriginal, propertyName) => {
-    const originalContract = props.selectedReport?.ArticleReportContracts.find(
+    const originalContract = props.selectedArticle?.ArticleReportContracts.find(
       (contract) => contract.id === rowOriginal.id
     );
 
@@ -77,8 +70,11 @@ export default function ModalArticleReferenceNumber(props) {
             className={styles.faIconClose}
           />
 
-          <h2>Report Rejected for Article ID: {props.selectedReport?.id}</h2>
-          <p>Title: {props.selectedReport?.title}</p>
+          <h2>
+            Article-Report Reference Numbers for Article ID:{" "}
+            {props.selectedArticle?.articleId}
+          </h2>
+          <p>Title: {props.selectedArticle?.title}</p>
         </div>
         <div className={styles.divMiddle}>
           This article was included in the following reports:

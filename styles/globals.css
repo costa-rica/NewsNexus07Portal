@@ -42,6 +42,9 @@ body {
 .btnRed {
   background-color: var(--soft-red);
 }
+.btnRed:hover {
+  background-color: darkred;
+}
 .tooltipWrapper {
   position: relative;
   display: inline-block;

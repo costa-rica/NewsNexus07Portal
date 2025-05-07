@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 export default function ModalArticleRejected(props) {
   const userReducer = useSelector((state) => state.user);
   const [articleReportContractsArray, setArticleReportContractsArray] =
-    useState(props.selectedReport?.ArticleReportContracts);
+    useState(props.selectedArticle?.ArticleReportContracts);
   const isOriginalValueSame = (rowOriginal, propertyName) => {
-    const originalContract = props.selectedReport?.ArticleReportContracts.find(
+    const originalContract = props.selectedArticle?.ArticleReportContracts.find(
       (contract) => contract.id === rowOriginal.id
     );
 
@@ -59,8 +59,8 @@ export default function ModalArticleRejected(props) {
             className={styles.faIconClose}
           />
 
-          <h2>Report Rejected for Article ID: {props.selectedReport?.id}</h2>
-          <p>Title: {props.selectedReport?.title}</p>
+          <h2>Report Rejected for Article ID: {props.selectedArticle?.id}</h2>
+          <p>Title: {props.selectedArticle?.title}</p>
         </div>
         <div className={styles.divMiddle}>
           This article was included in the following reports:

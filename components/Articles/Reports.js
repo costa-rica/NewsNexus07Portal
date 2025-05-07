@@ -381,17 +381,7 @@ export default function Reports() {
       header: "ID",
       enableSorting: true,
       cell: ({ row }) => (
-        <div className={styles.divColumnValue}>
-          <button
-            onClick={() => handleSelectArticleFromTable(row.original)}
-            style={{
-              fontSize: "10px",
-              width: "100%",
-            }}
-          >
-            {row.original.id}
-          </button>
-        </div>
+        <div className={styles.divColumnValue}>{row.original.id}</div>
       ),
     }),
     columnHelper.accessor("articleReferenceNumberInReport", {
@@ -418,7 +408,7 @@ export default function Reports() {
               width: "100%",
             }}
           >
-            {row.original.articleReferenceNumberInReport || "not in api"}
+            {row.original.articleReferenceNumberInReport || "Missing Ref #"}
           </button>
         </div>
       ),
@@ -525,35 +515,71 @@ export default function Reports() {
       header: "ID",
       enableSorting: true,
       cell: ({ row }) => (
-        <button
-          onClick={() => handleSelectArticleFromTable(row.original)}
-          style={{
-            fontSize: "10px",
-          }}
-        >
-          {row.original.id}
-        </button>
+        <div className={styles.divColumnValue}>{row.original.id}</div>
       ),
     }),
-    columnHelper.accessor("ArticleReportContracts", {
-      id: "ArticleReportContracts-Staged",
+    columnHelper.accessor("articleReferenceNumberInReport", {
       header: "Ref #",
       enableSorting: true,
       cell: ({ row }) => (
-        <button
-          onClick={() =>
-            alert(JSON.stringify(row.original.ArticleReportContracts))
-          }
-          style={{
-            fontSize: "10px",
-          }}
-        >
-          {row.original.ArticleReportContracts[
-            row.original.ArticleReportContracts.length - 1
-          ]?.articleReferenceNumberInReport || "N/A"}
-        </button>
+        <div className={styles.divColumnValue}>
+          <button
+            onClick={() => {
+              setSelectedArticle(row.original);
+              // setModalInformationContent({
+              //   title: "Article Report Contracts",
+              //   content: JSON.stringify(
+              //     row.original.ArticleReportContracts,
+              //     null,
+              //     2
+              //   ),
+              // });
+              // setIsOpenModalInformation(true);
+              setIsOpenModalArticleReferenceNumber(true);
+            }}
+            style={{
+              fontSize: "10px",
+              width: "100%",
+            }}
+          >
+            {row.original.articleReferenceNumberInReport || "Missing Ref #"}
+          </button>
+        </div>
       ),
     }),
+    // columnHelper.accessor("id", {
+    //   header: "ID",
+    //   enableSorting: true,
+    //   cell: ({ row }) => (
+    //     <button
+    //       onClick={() => handleSelectArticleFromTable(row.original)}
+    //       style={{
+    //         fontSize: "10px",
+    //       }}
+    //     >
+    //       {row.original.id}
+    //     </button>
+    //   ),
+    // }),
+    // columnHelper.accessor("ArticleReportContracts", {
+    //   id: "ArticleReportContracts-Staged",
+    //   header: "Ref #",
+    //   enableSorting: true,
+    //   cell: ({ row }) => (
+    //     <button
+    //       onClick={() =>
+    //         alert(JSON.stringify(row.original.ArticleReportContracts))
+    //       }
+    //       style={{
+    //         fontSize: "10px",
+    //       }}
+    //     >
+    //       {row.original.ArticleReportContracts[
+    //         row.original.ArticleReportContracts.length - 1
+    //       ]?.articleReferenceNumberInReport || "N/A"}
+    //     </button>
+    //   ),
+    // }),
     columnHelper.accessor("isSubmitted", {
       header: "Submitted",
       enableSorting: true,
@@ -577,24 +603,43 @@ export default function Reports() {
       header: "Accepted",
       enableSorting: true,
       cell: ({ row }) => (
-        <div className={styles.divStagedColumnValue}>
+        <div className={styles.divColumnValue}>
           <button
-            onClick={() =>
-              alert(JSON.stringify(row.original.ArticleReportContracts))
-            }
-            style={{
-              fontSize: "10px",
+            onClick={() => {
+              setSelectedArticle(row.original);
+              setIsOpenModalReportRejected(true);
             }}
+            className={`${styles.btn} ${
+              articleHasBeenRejectedAtLeastOnce(row.original) ? "btnRed" : ""
+            }`}
           >
-            {row.original.ArticleReportContracts[
-              row.original.ArticleReportContracts.length - 1
-            ]?.articleAcceptedByCpsc
-              ? "Yes"
-              : "No"}
+            {articleHasBeenRejectedAtLeastOnce(row.original) ? "No" : "Yes"}
           </button>
         </div>
       ),
     }),
+    // columnHelper.accessor("ArticleReportContracts", {
+    //   header: "Accepted",
+    //   enableSorting: true,
+    //   cell: ({ row }) => (
+    //     <div className={styles.divStagedColumnValue}>
+    //       <button
+    //         onClick={() =>
+    //           alert(JSON.stringify(row.original.ArticleReportContracts))
+    //         }
+    //         style={{
+    //           fontSize: "10px",
+    //         }}
+    //       >
+    //         {row.original.ArticleReportContracts[
+    //           row.original.ArticleReportContracts.length - 1
+    //         ]?.articleAcceptedByCpsc
+    //           ? "Yes"
+    //           : "No"}
+    //       </button>
+    //     </div>
+    //   ),
+    // }),
     columnHelper.accessor("States", {
       header: "State",
       enableSorting: true,
@@ -772,20 +817,13 @@ export default function Reports() {
           selectedReport={selectedReport}
         />
       )}
-      {/* {isOpenModalInformation && (
-        <ModalInformation
-          isModalOpenSetter={setIsOpenModalInformation}
-          title={modalInformationContent.title}
-          content={modalInformationContent.content}
-          handleNo={() => setIsOpenModalInformation(false)}
-        />
-      )} */}
+
       {isOpenModalArticleReferenceNumber && (
         <ModalArticleReferenceNumber
           isModalOpenSetter={setIsOpenModalArticleReferenceNumber}
           title="Article Reference Number"
           content="Article Reference Number Content"
-          selectedReport={selectedArticle}
+          selectedArticle={selectedArticle}
           fetchApprovedArticlesArray={fetchApprovedArticlesArray}
         />
       )}
@@ -794,7 +832,7 @@ export default function Reports() {
           isModalOpenSetter={setIsOpenModalReportRejected}
           title="Article Rejected Modal"
           content="Article Rejected Modal Content"
-          selectedReport={selectedArticle}
+          selectedArticle={selectedArticle}
           fetchApprovedArticlesArray={fetchApprovedArticlesArray}
         />
       )}

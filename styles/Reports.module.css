@@ -10,7 +10,9 @@
 /* .divMainSub {
 
 } */
-
+.btn {
+  border-radius: var(--input-border-radius);
+}
 .divTop {
   display: flex;
   height: 27rem;
