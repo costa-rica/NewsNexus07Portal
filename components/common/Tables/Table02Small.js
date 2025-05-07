@@ -8,8 +8,14 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import ModalLoading from "../modals/ModalLoading";
 
-export default function Table02Small({ data, columns, selectedRowId }) {
+export default function Table02Small({
+  data,
+  columns,
+  selectedRowId,
+  loading = false,
+}) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -34,8 +40,11 @@ export default function Table02Small({ data, columns, selectedRowId }) {
     autoResetPageIndex: false, // ✅ ADD THIS
   });
 
-  return (
-    // <div className={styles.divRequestTableGroup}>
+  return loading ? (
+    <div className={styles.divTableMain}>
+      <ModalLoading isVisible={true} sizeOfParent={true} />
+    </div>
+  ) : (
     <div className={styles.divTableMain}>
       {data.length > 10 && (
         <div className={styles.divTableButtonsAndInputs}>

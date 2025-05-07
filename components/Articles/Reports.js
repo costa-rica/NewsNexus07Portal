@@ -35,6 +35,8 @@ export default function Reports() {
   const [loadingComponents, setLoadingComponents] = useState({
     table01: false,
     summaryStatistics: false,
+    table02SmallReports: false,
+    pageLoading: false,
   });
   useEffect(() => {
     fetchReportsList();
@@ -45,6 +47,10 @@ export default function Reports() {
 
   const fetchReportsList = async () => {
     try {
+      setLoadingComponents((prev) => ({
+        ...prev,
+        table02SmallReports: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/`,
         {
@@ -67,6 +73,10 @@ export default function Reports() {
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      table02SmallReports: false,
+    }));
   };
 
   const fetchReportZipFile = async (reportId) => {
@@ -115,6 +125,10 @@ export default function Reports() {
   };
 
   const createReport = async () => {
+    setLoadingComponents((prev) => ({
+      ...prev,
+      pageLoading: true,
+    }));
     const articlesIdArrayForReport = userReducer.approvedArticlesArray
       .filter((article) => article.stageArticleForReport)
       .map((article) => article.id);
@@ -142,6 +156,10 @@ export default function Reports() {
     } catch (error) {
       console.error("Error creating report:", error);
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      pageLoading: false,
+    }));
   };
   const handleDelete = async (reportId) => {
     // if (window.confirm("Are you sure you want to delete this report?")) {
@@ -605,13 +623,19 @@ export default function Reports() {
 
   return (
     <TemplateView>
+      <ModalLoading isVisible={loadingComponents.pageLoading} />
       <main className={styles.main}>
         <div className={styles.divMainSub}>
           <h1>Create Report</h1>
           <div className={styles.divTop}>
             <div className={styles.divTopLeft}>
               <div className={styles.divReportTable}>
-                <Table02Small columns={columnsReports} data={reportsArray} />
+                <Table02Small
+                  columns={columnsReports}
+                  data={reportsArray}
+                  loading={loadingComponents.table02SmallReports}
+                  // loading={true}
+                />
               </div>
             </div>
             <div className={styles.divTopRight}>
