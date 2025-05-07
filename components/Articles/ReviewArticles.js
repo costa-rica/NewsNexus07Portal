@@ -1,4 +1,4 @@
-import styles from "../../styles/ReviewArticles.module.css";
+import styles from "../../styles/articles/ReviewArticles.module.css";
 import TemplateView from "../common/TemplateView";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -23,7 +23,11 @@ export default function ReviewArticles() {
   // const [hideIrrelevant, setHideIrrelevant] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  // const [loadingTable01, setLoadingTable01] = useState(false);
+  const [loadingComponents, setLoadingComponents] = useState({
+    table01: false,
+    summaryStatistics: false,
+  });
 
   useEffect(() => {
     fetchArticlesArray();
@@ -31,7 +35,11 @@ export default function ReviewArticles() {
   }, []);
   const fetchArticlesArray = async () => {
     try {
-      setLoading(true);
+      // setLoadingTable01(true);
+      setLoadingComponents((prev) => ({
+        ...prev,
+        table01: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
         // {
@@ -71,7 +79,10 @@ export default function ReviewArticles() {
       console.error("Error fetching data:", error.message);
       setArticlesArray([]);
     }
-    setLoading(false);
+    setLoadingComponents((prev) => ({
+      ...prev,
+      table01: false,
+    }));
   };
 
   const handleSelectArticleFromTable = async (article) => {
@@ -393,6 +404,10 @@ export default function ReviewArticles() {
 
   const fetchArticlesSummaryStatistics = async () => {
     try {
+      setLoadingComponents((prev) => ({
+        ...prev,
+        summaryStatistics: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
         {
@@ -423,12 +438,16 @@ export default function ReviewArticles() {
         error.message
       );
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      summaryStatistics: false,
+    }));
   };
   return (
     <TemplateView>
       <main className={styles.main}>
         <div className={styles.divMainTop}>
-          <SummaryStatistics />
+          <SummaryStatistics loading={loadingComponents.summaryStatistics} />
         </div>
         <div className={styles.divMainMiddle}>
           <div className={styles.divMainMiddleLeft}>
@@ -571,7 +590,7 @@ export default function ReviewArticles() {
                   : articlesArray
               }
               selectedRowId={selectedArticle?.id}
-              loading={loading}
+              loading={loadingComponents.table01}
             />
           </div>
         </div>

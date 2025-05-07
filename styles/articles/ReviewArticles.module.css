@@ -157,6 +157,7 @@
 }
 
 .divRequestTableGroupSuper {
+  flex: 1;
   border-radius: 10px;
   border: 4px solid gray;
   padding: 0.5rem;

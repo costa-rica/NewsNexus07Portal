@@ -7,6 +7,7 @@ import TableRequests from "../common/Tables/TableRequests";
 import { createColumnHelper } from "@tanstack/react-table";
 import SummaryStatistics from "../common/SummaryStatistics";
 import { useDispatch } from "react-redux";
+import ModalLoading from "../common/modals/ModalLoading";
 
 export default function GetArticlesGNewsDetailed() {
   const [keywordsArray, setKeywordsArray] = useState([]);
@@ -35,7 +36,12 @@ export default function GetArticlesGNewsDetailed() {
   const minDate = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)
     .toISOString()
     .split("T")[0];
-
+  // const [loadingTable01, setLoadingTable01] = useState(false);
+  const [loadingComponents, setLoadingComponents] = useState({
+    table01: false,
+    summaryStatistics: false,
+    pageLoading: false,
+  });
   const filteredKeywords = keywordsArray.filter((keyword) =>
     keyword.toLowerCase().includes(filterKeyword.toLowerCase())
   );
@@ -159,7 +165,10 @@ export default function GetArticlesGNewsDetailed() {
         keywordsOr,
         keywordsNot,
       };
-      // alert(JSON.stringify(bodyObj));
+      setLoadingComponents((prev) => ({
+        ...prev,
+        pageLoading: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/gnews/request-detailed`,
         {
@@ -196,9 +205,18 @@ export default function GetArticlesGNewsDetailed() {
       const result = await response.json();
       console.log("Error Data:", result);
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      pageLoading: false,
+    }));
   };
   const requestNewsApiRequestsArray = async () => {
     try {
+      // setLoadingTable01(true);
+      setLoadingComponents((prev) => ({
+        ...prev,
+        table01: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/requests`,
         {
@@ -228,6 +246,10 @@ export default function GetArticlesGNewsDetailed() {
       console.error("Error fetching data:", error.message);
       setNewsApiRequestsArray([]);
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      table01: false,
+    }));
   };
   const fetchNewsOrgArray = async () => {
     try {
@@ -269,7 +291,7 @@ export default function GetArticlesGNewsDetailed() {
       <main className={styles.main}>
         <div className={styles.divMainTop}>
           {/* Some tables with counts will go here */}
-          <SummaryStatistics />
+          <SummaryStatistics loading={loadingComponents.summaryStatistics} />
         </div>
 
         <div className={styles.divMainMiddle}>
@@ -436,6 +458,7 @@ export default function GetArticlesGNewsDetailed() {
               data={newsApiRequestsArray}
               columns={columnsForRequestTable}
               onCopyRequest={handleCopyRequest}
+              loading={loadingComponents.table01}
             />
           </div>
         </div>
@@ -454,6 +477,7 @@ export default function GetArticlesGNewsDetailed() {
             content={requestResponseMessage}
           />
         )}
+        <ModalLoading isVisible={loadingComponents.pageLoading} />
       </main>
     </TemplateView>
   );

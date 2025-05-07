@@ -31,7 +31,11 @@ export default function Reports() {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isOpenModalReportRejected, setIsOpenModalReportRejected] =
     useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loadingTable01, setLoadingTable01] = useState(false);
+  const [loadingComponents, setLoadingComponents] = useState({
+    table01: false,
+    summaryStatistics: false,
+  });
   useEffect(() => {
     fetchReportsList();
     if (userReducer?.approvedArticlesArray?.length === 0) {
@@ -168,7 +172,11 @@ export default function Reports() {
 
   // Top Right Table
   const fetchApprovedArticlesArray = async () => {
-    setLoading(true);
+    // setLoadingTable01(true);
+    setLoadingComponents((prev) => ({
+      ...prev,
+      table01: true,
+    }));
     console.log("Fetching approved articles array...");
     try {
       const response = await fetch(
@@ -206,7 +214,10 @@ export default function Reports() {
       setApprovedArticlesArray([]);
     }
     console.log("Approved articles array fetched successfully!");
-    setLoading(false);
+    setLoadingComponents((prev) => ({
+      ...prev,
+      table01: false,
+    }));
   };
 
   const updateStagedArticlesTableWithReportArticles = (articlesIdArray) => {
@@ -695,7 +706,7 @@ export default function Reports() {
               <Table01
                 columns={columnsApprovedArticles}
                 data={userReducer?.approvedArticlesArray}
-                loading={loading}
+                loading={loadingComponents.table01}
               />
             )}
           </div>

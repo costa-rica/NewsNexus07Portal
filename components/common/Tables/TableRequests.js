@@ -8,8 +8,9 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import ModalLoading from "../modals/ModalLoading";
 
-export default function TableRequests({ data, columns }) {
+export default function TableRequests({ data, columns, loading = false }) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -33,7 +34,11 @@ export default function TableRequests({ data, columns }) {
     onGlobalFilterChange: setGlobalFilter,
   });
 
-  return (
+  return loading ? (
+    <div className={styles.divTableMain}>
+      <ModalLoading isVisible={true} sizeOfParent={true} />
+    </div>
+  ) : (
     // <div className={styles.divRequestTableGroup}>
     <div className={styles.divTableMain}>
       <div className={styles.divTableButtonsAndInputs}>

@@ -22,7 +22,11 @@ export default function AddDeleteArticle() {
     publishedDate: false,
     content: false,
   });
-  const [loading, setLoading] = useState(false);
+  // const [loadingTable01, setLoadingTable01] = useState(false);
+  const [loadingComponents, setLoadingComponents] = useState({
+    table01: false,
+    summaryStatistics: false,
+  });
   useEffect(() => {
     fetchArticlesArray();
     // fetchArticlesSummaryStatistics();
@@ -118,7 +122,11 @@ export default function AddDeleteArticle() {
 
   const fetchArticlesArray = async () => {
     try {
-      setLoading(true);
+      // setLoadingTable01(true);
+      setLoadingComponents((prev) => ({
+        ...prev,
+        table01: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
         {
@@ -155,7 +163,10 @@ export default function AddDeleteArticle() {
       console.error("Error fetching data:", error.message);
       setArticlesArray([]);
     }
-    setLoading(false);
+    setLoadingComponents((prev) => ({
+      ...prev,
+      table01: false,
+    }));
   };
 
   // Table Articles
@@ -479,20 +490,20 @@ export default function AddDeleteArticle() {
         </div>
 
         <div className={styles.divBottom}>
-          <div className={styles.divArticlesTableSuper}>
-            <Table01
-              columns={columnsForArticlesTable}
-              data={
-                userReducer.hideIrrelevant
-                  ? articlesArray.filter(
-                      (article) => article.isRelevant !== false
-                    )
-                  : articlesArray
-              }
-              selectedRowId={selectedArticle?.id}
-              loading={loading}
-            />
-          </div>
+          {/* <div className={styles.divArticlesTableSuper}> */}
+          <Table01
+            columns={columnsForArticlesTable}
+            data={
+              userReducer.hideIrrelevant
+                ? articlesArray.filter(
+                    (article) => article.isRelevant !== false
+                  )
+                : articlesArray
+            }
+            selectedRowId={selectedArticle?.id}
+            loading={loadingComponents.table01}
+          />
+          {/* </div> */}
         </div>
       </main>
 

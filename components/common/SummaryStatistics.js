@@ -1,16 +1,20 @@
 import styles from "../../styles/common/SummaryStatistics.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateArticlesSummaryStatistics } from "../../reducers/user";
+import ModalLoading from "./modals/ModalLoading";
 export default function SummaryStatistics() {
   const userReducer = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [loadingSummaryStatistics, setLoadingSummaryStatistics] =
+    useState(false);
 
   useEffect(() => {
     fetchArticlesSummaryStatistics();
   }, []);
 
   const fetchArticlesSummaryStatistics = async () => {
+    setLoadingSummaryStatistics(true);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
@@ -42,9 +46,14 @@ export default function SummaryStatistics() {
         error.message
       );
     }
+    setLoadingSummaryStatistics(false);
   };
 
-  return (
+  return loadingSummaryStatistics ? (
+    <div className={styles.divTableMain}>
+      <ModalLoading isVisible={true} sizeOfParent={true} />
+    </div>
+  ) : (
     <div className={styles.divArticleSummaryStatisticsGroupSuper}>
       <div className={styles.divArticleSummaryStatisticsGroup}>
         <div className={styles.divArticlesSummaryStatisticsTitle}>

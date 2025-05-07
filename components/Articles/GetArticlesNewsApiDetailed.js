@@ -12,8 +12,8 @@ import {
   // updateIncludeDomainsArray,
   // updateExcludeDomainsArray,
 } from "../../reducers/user";
-
 import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
+import ModalLoading from "../common/modals/ModalLoading";
 
 export default function GetArticlesNewsApiDetailed() {
   const [keywordsArray, setKeywordsArray] = useState([]);
@@ -49,9 +49,12 @@ export default function GetArticlesNewsApiDetailed() {
   const filteredKeywords = keywordsArray.filter((keyword) =>
     keyword.toLowerCase().includes(filterKeyword.toLowerCase())
   );
-  // const exactMatch = keywordsArray.some(
-  //   (keyword) => keyword.toLowerCase() === filterKeyword.toLowerCase()
-  // );
+  // const [loadingTableRequests, setLoadingTableRequests] = useState(false);
+  const [loadingComponents, setLoadingComponents] = useState({
+    tableRequests: false,
+    summaryStatistics: false,
+    pageLoading: false,
+  });
 
   const columnHelper = createColumnHelper();
   const columnsForRequestTable = [
@@ -165,6 +168,10 @@ export default function GetArticlesNewsApiDetailed() {
   };
 
   const requestNewsApi = async () => {
+    setLoadingComponents((prev) => ({
+      ...prev,
+      pageLoading: true,
+    }));
     try {
       let includeWebsiteDomainObjArray = [];
       let excludeWebsiteDomainObjArray = [];
@@ -225,9 +232,17 @@ export default function GetArticlesNewsApiDetailed() {
       const result = await response.json();
       console.log("Error Data:", result);
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      pageLoading: false,
+    }));
   };
   const requestNewsApiRequestsArray = async () => {
     try {
+      setLoadingComponents((prev) => ({
+        ...prev,
+        tableRequests: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/requests`,
         {
@@ -257,6 +272,10 @@ export default function GetArticlesNewsApiDetailed() {
       console.error("Error fetching data:", error.message);
       setNewsApiRequestsArray([]);
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      tableRequests: false,
+    }));
   };
   const fetchNewsOrgArray = async () => {
     try {
@@ -335,6 +354,10 @@ export default function GetArticlesNewsApiDetailed() {
 
   const fetchArticlesSummaryStatistics = async () => {
     try {
+      setLoadingComponents((prev) => ({
+        ...prev,
+        summaryStatistics: true,
+      }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
         {
@@ -365,6 +388,10 @@ export default function GetArticlesNewsApiDetailed() {
         error.message
       );
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      summaryStatistics: false,
+    }));
   };
 
   const fetchWebsiteDomains = async () => {
@@ -409,7 +436,7 @@ export default function GetArticlesNewsApiDetailed() {
       <main className={styles.main}>
         <div className={styles.divMainTop}>
           {/* Some tables with counts will go here */}
-          <SummaryStatistics />
+          <SummaryStatistics loading={loadingComponents.summaryStatistics} />
         </div>
 
         <div className={styles.divMainMiddle}>
@@ -599,6 +626,7 @@ export default function GetArticlesNewsApiDetailed() {
               data={newsApiRequestsArray}
               columns={columnsForRequestTable}
               onCopyRequest={handleCopyRequest}
+              loading={loadingComponents.tableRequests}
             />
           </div>
         </div>
@@ -617,6 +645,7 @@ export default function GetArticlesNewsApiDetailed() {
             content={requestResponseMessage}
           />
         )}
+        <ModalLoading isVisible={loadingComponents.pageLoading} />
       </main>
     </TemplateView>
   );

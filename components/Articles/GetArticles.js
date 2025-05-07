@@ -34,6 +34,11 @@ export default function GetArticles() {
     .toISOString()
     .split("T")[0];
 
+  const [loadingComponents, setLoadingComponents] = useState({
+    table01: false,
+    summaryStatistics: false,
+  });
+
   const filteredKeywords = keywordsArray.filter((keyword) =>
     keyword.toLowerCase().includes(filterKeyword.toLowerCase())
   );
@@ -268,6 +273,12 @@ export default function GetArticles() {
   };
   const requestNewsApiRequestsArray = async () => {
     try {
+      // setLoadingTable01(true);
+      setLoadingComponents((prev) => ({
+        ...prev,
+        table01: true,
+      }));
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/requests`,
         {
@@ -297,6 +308,11 @@ export default function GetArticles() {
       console.error("Error fetching data:", error.message);
       setNewsApiRequestsArray([]);
     }
+    // setLoadingTable01(false);
+    setLoadingComponents((prev) => ({
+      ...prev,
+      table01: false,
+    }));
   };
   const fetchNewsOrgArray = async () => {
     try {
@@ -330,6 +346,11 @@ export default function GetArticles() {
     setEndDate(rowData.endDate);
   };
   const fetchArticlesSummaryStatistics = async () => {
+    // setLoadingSummaryStatistics(true);
+    setLoadingComponents((prev) => ({
+      ...prev,
+      summaryStatistics: true,
+    }));
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
@@ -361,6 +382,11 @@ export default function GetArticles() {
         error.message
       );
     }
+    // setLoadingSummaryStatistics(false);
+    setLoadingComponents((prev) => ({
+      ...prev,
+      summaryStatistics: false,
+    }));
   };
 
   return (
@@ -368,7 +394,7 @@ export default function GetArticles() {
       <main className={styles.main}>
         <div className={styles.divMainTop}>
           {/* Some tables with counts will go here */}
-          <SummaryStatistics />
+          <SummaryStatistics loading={loadingComponents.summaryStatistics} />
         </div>
 
         <div className={styles.divMainMiddle}>
@@ -512,6 +538,7 @@ export default function GetArticles() {
               data={newsApiRequestsArray}
               columns={columnsForRequestTable}
               onCopyRequest={handleCopyRequest}
+              loading={loadingComponents.table01}
             />
           </div>
         </div>
