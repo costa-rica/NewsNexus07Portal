@@ -14,6 +14,7 @@ import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ModalInformation from "../common/modals/ModalInformation";
 import ModalArticleRejected from "../common/modals/ModalArticleRejected";
 import ModalLoading from "../common/modals/ModalLoading";
+import ModalArticleReferenceNumber from "../common/modals/ModalArticleReferenceNumber";
 
 export default function Reports() {
   const userReducer = useSelector((state) => state.user);
@@ -38,6 +39,10 @@ export default function Reports() {
     table02SmallReports: false,
     pageLoading: false,
   });
+  const [
+    isOpenModalArticleReferenceNumber,
+    setIsOpenModalArticleReferenceNumber,
+  ] = useState(false);
   useEffect(() => {
     fetchReportsList();
     if (userReducer?.approvedArticlesArray?.length === 0) {
@@ -396,15 +401,17 @@ export default function Reports() {
         <div className={styles.divColumnValue}>
           <button
             onClick={() => {
-              setModalInformationContent({
-                title: "Article Report Contracts",
-                content: JSON.stringify(
-                  row.original.ArticleReportContracts,
-                  null,
-                  2
-                ),
-              });
-              setIsOpenModalInformation(true);
+              setSelectedArticle(row.original);
+              // setModalInformationContent({
+              //   title: "Article Report Contracts",
+              //   content: JSON.stringify(
+              //     row.original.ArticleReportContracts,
+              //     null,
+              //     2
+              //   ),
+              // });
+              // setIsOpenModalInformation(true);
+              setIsOpenModalArticleReferenceNumber(true);
             }}
             style={{
               fontSize: "10px",
@@ -765,12 +772,21 @@ export default function Reports() {
           selectedReport={selectedReport}
         />
       )}
-      {isOpenModalInformation && (
+      {/* {isOpenModalInformation && (
         <ModalInformation
           isModalOpenSetter={setIsOpenModalInformation}
           title={modalInformationContent.title}
           content={modalInformationContent.content}
           handleNo={() => setIsOpenModalInformation(false)}
+        />
+      )} */}
+      {isOpenModalArticleReferenceNumber && (
+        <ModalArticleReferenceNumber
+          isModalOpenSetter={setIsOpenModalArticleReferenceNumber}
+          title="Article Reference Number"
+          content="Article Reference Number Content"
+          selectedReport={selectedArticle}
+          fetchApprovedArticlesArray={fetchApprovedArticlesArray}
         />
       )}
       {isOpenModalReportRejected && (

@@ -1,13 +1,28 @@
-import styles from "../../../styles/modals/ModalReportArticleRejected.module.css";
+import styles from "../../../styles/modals/ModalReportArticleReferenceNumber.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-export default function ModalArticleRejected(props) {
+export default function ModalArticleReferenceNumber(props) {
   const userReducer = useSelector((state) => state.user);
   const [articleReportContractsArray, setArticleReportContractsArray] =
-    useState(props.selectedReport?.ArticleReportContracts);
+    useState(
+      props.selectedReport?.ArticleReportContracts.map((contract) => ({
+        ...contract,
+        toggleEdit: true,
+        originalArticleReferenceNumberInReport:
+          contract.articleReferenceNumberInReport,
+      }))
+    );
+  // const [articleReportContractsArray, setArticleReportContractsArray] =
+  //   useState(
+  //     props.selectedReport?.ArticleReportContracts.map((contract) => ({
+  //       ...contract,
+  //       toggleEdit: true,
+  //     }))
+  //   );
+
   const isOriginalValueSame = (rowOriginal, propertyName) => {
     const originalContract = props.selectedReport?.ArticleReportContracts.find(
       (contract) => contract.id === rowOriginal.id
@@ -16,14 +31,17 @@ export default function ModalArticleRejected(props) {
     return rowOriginal[propertyName] === originalContract?.[propertyName];
   };
 
-  const handleUpdateArticleAcceptedByCpsc = async (articleReportContract) => {
+  const handleUpdateArticleReportReferenceNumber = async (
+    articleReportContract
+  ) => {
     const bodyObj = {
-      articleRejectionReason: articleReportContract.articleRejectionReason,
+      articleReferenceNumberInReport:
+        articleReportContract.articleReferenceNumberInReport,
     };
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/toggle-article-rejection/${articleReportContract.id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/update-article-report-reference-number/${articleReportContract.id}`,
         {
           method: "POST",
           headers: {
@@ -69,8 +87,8 @@ export default function ModalArticleRejected(props) {
               <thead>
                 <tr>
                   <th>Report Id</th>
-                  <th>Accepted</th>
-                  <th>Reason</th>
+                  <th>Reference Number</th>
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -78,46 +96,25 @@ export default function ModalArticleRejected(props) {
                 {articleReportContractsArray.map((contract) => (
                   <tr key={contract.id}>
                     <td>{contract.reportId}</td>
-                    <td className={styles.divAccepted}>
-                      <button
-                        className={`${styles.btn} ${
-                          isOriginalValueSame(contract, "articleAcceptedByCpsc")
-                            ? ""
-                            : styles.btnWarningYellow
-                        } ${contract.articleAcceptedByCpsc ? "" : "btnRed"}`}
-                        onClick={() => {
-                          const updatedArray = articleReportContractsArray.map(
-                            (item) =>
-                              item.id === contract.id
-                                ? {
-                                    ...item,
-                                    articleAcceptedByCpsc:
-                                      !item.articleAcceptedByCpsc,
-                                  }
-                                : item
-                          );
-                          setArticleReportContractsArray(updatedArray);
-                        }}
-                      >
-                        {contract.articleAcceptedByCpsc ? "Yes" : "No"}
-                      </button>
-                    </td>
+
                     <td>
                       <input
                         type="text"
-                        className={styles.inputRejectionReason}
-                        disabled={isOriginalValueSame(
-                          contract,
-                          "articleAcceptedByCpsc"
-                        )}
-                        value={contract.articleRejectionReason || ""}
+                        className={`${styles.inputArticleReferenceNumber} ${
+                          contract.toggleEdit
+                            ? ""
+                            : styles.inputArticleReferenceNumberEditable
+                        }`}
+                        disabled={contract.toggleEdit}
+                        value={contract.articleReferenceNumberInReport || ""}
                         onChange={(e) => {
                           const updatedArray = articleReportContractsArray.map(
                             (item) =>
                               item.id === contract.id
                                 ? {
                                     ...item,
-                                    articleRejectionReason: e.target.value,
+                                    articleReferenceNumberInReport:
+                                      e.target.value,
                                   }
                                 : item
                           );
@@ -125,10 +122,66 @@ export default function ModalArticleRejected(props) {
                         }}
                       />
                     </td>
+                    <td className={styles.tdEditButton}>
+                      <button
+                        className={`${styles.btn} ${
+                          isOriginalValueSame(
+                            contract,
+                            "articleReferenceNumberInReport"
+                          )
+                            ? ""
+                            : styles.btnWarningYellow
+                        } ${
+                          contract.articleReferenceNumberInReport
+                            ? ""
+                            : "btnRed"
+                        }`}
+                        onClick={() => {
+                          const updatedArray = articleReportContractsArray.map(
+                            (item) => {
+                              if (item.id === contract.id) {
+                                const isCurrentlyEditing = !item.toggleEdit;
+
+                                return {
+                                  ...item,
+                                  toggleEdit: !item.toggleEdit,
+                                  articleReferenceNumberInReport:
+                                    isCurrentlyEditing
+                                      ? item.originalArticleReferenceNumberInReport // reset on Undo
+                                      : item.articleReferenceNumberInReport,
+                                };
+                              }
+                              return item;
+                            }
+                          );
+
+                          setArticleReportContractsArray(updatedArray);
+                        }}
+                        // onClick={() => {
+                        //   const updatedArray = articleReportContractsArray.map(
+                        //     (item) =>
+                        //       item.id === contract.id
+                        //         ? {
+                        //             ...item,
+                        //             toggleEdit: !item.toggleEdit,
+                        //           }
+                        //         : item
+                        //   );
+                        //   setArticleReportContractsArray(updatedArray);
+                        // }}
+                      >
+                        {isOriginalValueSame(
+                          contract,
+                          "articleReferenceNumberInReport"
+                        )
+                          ? "Edit"
+                          : "Undo"}
+                      </button>
+                    </td>
                     <td>
                       {isOriginalValueSame(
                         contract,
-                        "articleAcceptedByCpsc"
+                        "articleReferenceNumberInReport"
                       ) ? (
                         <div className={styles.divPlaceHolder}></div>
                       ) : (
@@ -136,17 +189,17 @@ export default function ModalArticleRejected(props) {
                           className={`${styles.btn} ${
                             isOriginalValueSame(
                               contract,
-                              "articleAcceptedByCpsc"
+                              "articleReferenceNumberInReport"
                             )
                               ? ""
                               : styles.btnActive
                           }`}
                           onClick={() =>
-                            handleUpdateArticleAcceptedByCpsc(contract)
+                            handleUpdateArticleReportReferenceNumber(contract)
                           }
                           disabled={isOriginalValueSame(
                             contract,
-                            "articleAcceptedByCpsc"
+                            "articleReferenceNumberInReport"
                           )}
                         >
                           Submit
