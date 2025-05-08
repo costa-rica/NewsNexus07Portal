@@ -34,24 +34,25 @@ export default function ReviewArticles() {
     // fetchArticlesSummaryStatistics();
   }, []);
   const fetchArticlesArray = async () => {
+    const bodyParams = {
+      ...userReducer.articleTableBodyParams,
+      entityWhoCategorizesIdSemantic: 1,
+    };
+
     try {
-      // setLoadingTable01(true);
       setLoadingComponents((prev) => ({
         ...prev,
         table01: true,
       }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/with-ratings`,
-        // {
-        //   headers: { Authorization: `Bearer ${userReducer.token}` },
-        // }
         {
           headers: {
             Authorization: `Bearer ${userReducer.token}`,
             "Content-Type": "application/json",
           },
           method: "POST",
-          body: JSON.stringify(userReducer.articleTableBodyParams),
+          body: JSON.stringify(bodyParams),
         }
       );
 
@@ -262,12 +263,15 @@ export default function ReviewArticles() {
     }),
     // NOTE: for some reason keyword is different so it needs to be explicitly converted to a
     // string in order for the search to work in this column
-    columnHelper.accessor((row) => row.keyword?.toString() ?? "", {
-      id: "keyword",
-      header: "Keyword",
-      enableSorting: true,
-    }),
-    columnHelper.accessor("keywordRating", {
+    columnHelper.accessor(
+      (row) => row.semanticRatingMaxLabel?.toString() ?? "",
+      {
+        id: "semanticRatingMaxLabel",
+        header: "Keyword",
+        enableSorting: true,
+      }
+    ),
+    columnHelper.accessor("semanticRatingMax", {
       header: () => (
         <div style={{ display: "flex", flexWrap: "nowrap" }}>
           Nexus Semantic Rating
