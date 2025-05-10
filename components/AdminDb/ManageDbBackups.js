@@ -159,7 +159,8 @@ export default function ManageDbBackups() {
             <ul>
               {arrayRowCountsByTable.map((item, index) => (
                 <li key={index}>
-                  {item.tableName}: {item.rowCount}
+                  {/* //TODO: make item.rowCount  number with commas */}
+                  {item.tableName}: {item.rowCount.toLocaleString()}
                 </li>
               ))}
             </ul>

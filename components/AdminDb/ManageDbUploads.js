@@ -166,7 +166,7 @@ export default function ManageDbUploads() {
               {arrayRowCountsByTable.length > 0 &&
                 arrayRowCountsByTable.map((item, index) => (
                   <li key={index}>
-                    {item.tableName}: {item.rowCount}
+                    {item.tableName}: {item.rowCount.toLocaleString()}
                   </li>
                 ))}
             </ul>

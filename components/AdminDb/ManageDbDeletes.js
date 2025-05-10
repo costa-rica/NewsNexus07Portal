@@ -95,7 +95,7 @@ export default function ManageDbDeletes() {
                   arrayRowCountsByTable.map((item, index) => (
                     <tr key={index} className={styles.tableRow}>
                       <td>{item.tableName}</td>
-                      <td>{item.rowCount}</td>
+                      <td>{item.rowCount.toLocaleString()}</td>
                       <td>
                         {item.tableName != "User" &&
                           item.tableName != "State" &&
