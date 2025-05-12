@@ -12,6 +12,7 @@ import {
   toggleNavExpandGetArticles,
   toggleNavExpandManageArticles,
   toggleNavExpandDb,
+  toggleNavExpandAdminGeneral,
 } from "../../reducers/user";
 import { useSelector } from "react-redux";
 export default function TemplateView({ children }) {
@@ -180,12 +181,7 @@ export default function TemplateView({ children }) {
                 style={{ padding: "0.25rem" }}
                 currentPath={currentPath}
               />
-              <NavBarSideLink
-                href="/admin-db/manage-users"
-                label="Users"
-                style={{ padding: "0.25rem" }}
-                currentPath={currentPath}
-              />
+
               <NavBarSideLink
                 href="/admin-db/manage-db-deletes"
                 label="Deletes"
@@ -194,7 +190,28 @@ export default function TemplateView({ children }) {
               />
             </NavBarSideDropdown>
           )}
-
+          {userReducer.isAdmin && (
+            <NavBarSideDropdown
+              iconFilenameAndPath="/images/menu/user-tie-solid-white.svg"
+              label="Admin"
+              currentPath={currentPath}
+              toggleFunction={() => dispatch(toggleNavExpandAdminGeneral())}
+              expanded={userReducer.navExpandAdminGeneral}
+            >
+              <NavBarSideLink
+                href="/admin-general/manage-users"
+                label="Users"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/admin-general/manage-news-aggregators"
+                label="News Aggregators"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+            </NavBarSideDropdown>
+          )}
           <NavBarSideLink
             href="/articles/reports"
             iconFilenameAndPath="/images/menu/file-invoice-solid.svg"

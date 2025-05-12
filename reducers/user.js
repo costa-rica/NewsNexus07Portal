@@ -11,6 +11,7 @@ const initialState = {
   navExpandGetArticles: false,
   navExpandManageArticles: false,
   navExpandDb: false,
+  navExpandAdminGeneral: false,
   requestTableBodyParams: {
     includeIsFromAutomation: false,
     dateLimitOnRequestMade: null,
@@ -58,6 +59,9 @@ export const userSlice = createSlice({
     toggleNavExpandDb: (state) => {
       state.navExpandDb = !state.navExpandDb;
     },
+    toggleNavExpandAdminGeneral: (state) => {
+      state.navExpandAdminGeneral = !state.navExpandAdminGeneral;
+    },
     updateRequestTableBodyParams: (state, action) => {
       const newParams = { ...state.requestTableBodyParams, ...action.payload };
       state.requestTableBodyParams = newParams;
@@ -81,6 +85,7 @@ export const {
   toggleNavExpandGetArticles,
   toggleNavExpandManageArticles,
   toggleNavExpandDb,
+  toggleNavExpandAdminGeneral,
   updateRequestTableBodyParams,
   updateArticleTableBodyParams,
   updateApprovedArticlesArray,
