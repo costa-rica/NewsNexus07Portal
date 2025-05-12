@@ -19,7 +19,7 @@ export default function Login() {
   useEffect(() => {
     if (userReducer.token) {
       // Redirect if token exists
-      router.push("/articles/get-from-api-services");
+      router.push("/articles/review");
     }
   }, [userReducer]); // Run effect if token changes
 
@@ -55,7 +55,7 @@ export default function Login() {
       // if (resJson.user.isAdminForKvManagerWebsite) {
       resJson.email = email;
       dispatch(loginUser(resJson));
-      router.push("/articles/get-from-api-services");
+      router.push("/articles/review");
       // } else {
       //   alert("You are not authorized to login.");
       // }

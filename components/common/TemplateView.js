@@ -113,22 +113,22 @@ export default function TemplateView({ children }) {
             toggleFunction={() => dispatch(toggleNavExpandGetArticles())}
             expanded={userReducer.navExpandGetArticles}
           >
-            <NavBarSideLink
+            {/* <NavBarSideLink
               href="/articles/get-from-api-services"
               style={{ padding: "0.25rem" }}
               label="Old way"
               currentPath={currentPath}
-            />
+            /> */}
             <NavBarSideLink
-              href="/articles/get-detailed-newsapi"
+              href="/articles/get-newsapi"
               style={{ padding: "0.25rem" }}
-              label="News API Detailed"
+              label="News API"
               currentPath={currentPath}
             />
             <NavBarSideLink
-              href="/articles/get-detailed-gnews"
+              href="/articles/get-gnews"
               style={{ padding: "0.25rem" }}
-              label="GNews Detailed"
+              label="GNews"
               currentPath={currentPath}
             />
             <NavBarSideLink
