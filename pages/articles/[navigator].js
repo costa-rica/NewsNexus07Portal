@@ -16,11 +16,15 @@ export default function GetArticlesNavigator() {
     // else if (navigator === "get-from-api-services-detailed") {
     if (navigator === "get-newsapi") {
       return import(`../../components/Articles/GetArticlesNewsApi`).catch(
-        () => () => <p>GetArticlesNewsApiDetailed Not Found</p>
+        () => () => <p>GetArticlesNewsApi Not Found</p>
       );
     } else if (navigator === "get-gnews") {
       return import(`../../components/Articles/GetArticlesGNews`).catch(
-        () => () => <p>GetArticlesGNewsDetailed Not Found</p>
+        () => () => <p>GetArticlesGNews Not Found</p>
+      );
+    } else if (navigator === "get-newsdataio") {
+      return import(`../../components/Articles/GetArticlesNewsDataIo`).catch(
+        () => () => <p>GetArticlesNewsDataIo Not Found</p>
       );
     } else if (navigator === "review") {
       return import(`../../components/Articles/ReviewArticles`).catch(

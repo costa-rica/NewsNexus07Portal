@@ -132,6 +132,12 @@ export default function TemplateView({ children }) {
               currentPath={currentPath}
             />
             <NavBarSideLink
+              href="/articles/get-newsdataio"
+              style={{ padding: "0.25rem" }}
+              label="NewsDataIO"
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
               href="/articles/automation"
               style={{ padding: "0.25rem" }}
               label="Automation & Browser Extension"

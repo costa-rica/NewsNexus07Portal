@@ -9,7 +9,7 @@ import SummaryStatistics from "../common/SummaryStatistics";
 import { useDispatch } from "react-redux";
 import ModalLoading from "../common/modals/ModalLoading";
 
-export default function GetArticlesGNewsDetailed() {
+export default function GetArticlesGNews() {
   const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -170,7 +170,7 @@ export default function GetArticlesGNewsDetailed() {
         pageLoading: true,
       }));
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/gnews/request-detailed`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/gnews/get-articles`,
         {
           method: "POST",
           headers: {
@@ -277,7 +277,7 @@ export default function GetArticlesGNewsDetailed() {
   };
 
   const handleCopyRequest = (rowData) => {
-    setNewsOrg(rowData.nameOfOrg);
+    // setNewsOrg(rowData.nameOfOrg);
     // setFilterKeyword(rowData.keyword);
     setStartDate(rowData.startDate);
     setEndDate(rowData.endDate);
