@@ -36,7 +36,8 @@ export default function ReviewArticles() {
   const fetchArticlesArray = async () => {
     const bodyParams = {
       ...userReducer.articleTableBodyParams,
-      entityWhoCategorizesIdSemantic: 1,
+      // entityWhoCategorizesIdSemantic: 1,
+      semanticScorerEntityName: "NewsNexusSemanticScorer02",
     };
 
     try {
@@ -284,7 +285,11 @@ export default function ReviewArticles() {
         const green = Math.floor(normalized * 200); // max ~200 for readability
         const color = `rgb(${128 - green / 3}, ${green}, ${128 - green / 3})`; // green to gray gradient
         const percent = Math.round(normalized * 100);
-        return (
+        return value === "N/A" ? (
+          <div className={styles.divColumnCenter}>
+            <span>N/A</span>
+          </div>
+        ) : (
           <div className={styles.divColumnCenter}>
             <span
               className={styles.circleRating}
