@@ -25,10 +25,14 @@
 .divArticlesSummaryStatisticsMetric {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .divArticleSummaryStatisticsGroupTransparent {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+}
+.divArticlesSummaryStatisticsMetricParenthesesDiv {
+  font-size: 12px;
 }

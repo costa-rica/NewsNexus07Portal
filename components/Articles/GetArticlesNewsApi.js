@@ -33,22 +33,22 @@ export default function GetArticlesNewsApi() {
 
   const [includeExclude, setIncludeExclude] = useState("exclude");
 
-  const [newsOrgArray, setNewsOrgArray] = useState([]);
+  // const [newsOrgArray, setNewsOrgArray] = useState([]);
   const [newsOrg, setNewsOrg] = useState("NewsAPI");
-  const [inputErrors, setInputErrors] = useState({
-    startDate: false,
-    endDate: false,
-    newsOrg: false,
-  });
+  // const [inputErrors, setInputErrors] = useState({
+  //   startDate: false,
+  //   endDate: false,
+  //   newsOrg: false,
+  // });
   const userReducer = useSelector((state) => state.user);
   const todayDate = new Date().toISOString().split("T")[0];
   const minDate = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000)
     .toISOString()
     .split("T")[0];
 
-  const filteredKeywords = keywordsArray.filter((keyword) =>
-    keyword.toLowerCase().includes(filterKeyword.toLowerCase())
-  );
+  // const filteredKeywords = keywordsArray.filter((keyword) =>
+  //   keyword.toLowerCase().includes(filterKeyword.toLowerCase())
+  // );
   // const [loadingTableRequests, setLoadingTableRequests] = useState(false);
   const [loadingComponents, setLoadingComponents] = useState({
     tableRequests: false,
@@ -125,10 +125,10 @@ export default function GetArticlesNewsApi() {
     }),
   ];
   useEffect(() => {
-    fetchKeywordsArray();
+    // fetchKeywordsArray();
     requestNewsApiRequestsArray();
-    fetchNewsOrgArray();
-    fetchArticlesSummaryStatistics();
+    // fetchNewsOrgArray();
+    // fetchArticlesSummaryStatistics();
     fetchWebsiteDomains();
   }, []);
   useEffect(() => {
@@ -137,35 +137,35 @@ export default function GetArticlesNewsApi() {
       setEndDate(today);
     }
   }, []);
-  const fetchKeywordsArray = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/keywords`,
-        {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
-        }
-      );
+  // const fetchKeywordsArray = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/keywords`,
+  //       {
+  //         headers: { Authorization: `Bearer ${userReducer.token}` },
+  //       }
+  //     );
 
-      console.log(`Response status: ${response.status}`);
+  //     console.log(`Response status: ${response.status}`);
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Log response text for debugging
-        throw new Error(`Server Error: ${errorText}`);
-      }
+  //     if (!response.ok) {
+  //       const errorText = await response.text(); // Log response text for debugging
+  //       throw new Error(`Server Error: ${errorText}`);
+  //     }
 
-      const result = await response.json();
-      console.log("Fetched Data:", result);
+  //     const result = await response.json();
+  //     console.log("Fetched Data:", result);
 
-      if (result.keywordsArray && Array.isArray(result.keywordsArray)) {
-        setKeywordsArray(result.keywordsArray);
-      } else {
-        setKeywordsArray([]);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-      setKeywordsArray([]);
-    }
-  };
+  //     if (result.keywordsArray && Array.isArray(result.keywordsArray)) {
+  //       setKeywordsArray(result.keywordsArray);
+  //     } else {
+  //       setKeywordsArray([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error.message);
+  //     setKeywordsArray([]);
+  //   }
+  // };
 
   const requestNewsApi = async () => {
     setLoadingComponents((prev) => ({
@@ -277,30 +277,30 @@ export default function GetArticlesNewsApi() {
       tableRequests: false,
     }));
   };
-  const fetchNewsOrgArray = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/news-org-apis`,
-        {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
-        }
-      );
+  // const fetchNewsOrgArray = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/news-org-apis`,
+  //       {
+  //         headers: { Authorization: `Bearer ${userReducer.token}` },
+  //       }
+  //     );
 
-      console.log(`Response status: ${response.status}`);
+  //     console.log(`Response status: ${response.status}`);
 
-      const result = await response.json();
-      console.log("Fetched Data:", result);
+  //     const result = await response.json();
+  //     console.log("Fetched Data:", result);
 
-      if (result.newsOrgArray && Array.isArray(result.newsOrgArray)) {
-        setNewsOrgArray(result.newsOrgArray);
-      } else {
-        setNewsOrgArray([]);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-      setNewsOrgArray([]);
-    }
-  };
+  //     if (result.newsOrgArray && Array.isArray(result.newsOrgArray)) {
+  //       setNewsOrgArray(result.newsOrgArray);
+  //     } else {
+  //       setNewsOrgArray([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error.message);
+  //     setNewsOrgArray([]);
+  //   }
+  // };
 
   const handleCopyRequest = (rowData) => {
     // setNewsOrg(rowData.nameOfOrg);
@@ -352,47 +352,47 @@ export default function GetArticlesNewsApi() {
     }
   };
 
-  const fetchArticlesSummaryStatistics = async () => {
-    try {
-      setLoadingComponents((prev) => ({
-        ...prev,
-        summaryStatistics: true,
-      }));
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
-        {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
-        }
-      );
+  // const fetchArticlesSummaryStatistics = async () => {
+  //   try {
+  //     setLoadingComponents((prev) => ({
+  //       ...prev,
+  //       summaryStatistics: true,
+  //     }));
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
+  //       {
+  //         headers: { Authorization: `Bearer ${userReducer.token}` },
+  //       }
+  //     );
 
-      console.log(`Response status: ${response.status}`);
+  //     console.log(`Response status: ${response.status}`);
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Log response text for debugging
-        throw new Error(`Server Error: ${errorText}`);
-      }
+  //     if (!response.ok) {
+  //       const errorText = await response.text(); // Log response text for debugging
+  //       throw new Error(`Server Error: ${errorText}`);
+  //     }
 
-      const result = await response.json();
-      console.log(
-        "Fetched Data (articles/summary-statistics):",
-        result.summaryStatistics
-      );
+  //     const result = await response.json();
+  //     console.log(
+  //       "Fetched Data (articles/summary-statistics):",
+  //       result.summaryStatistics
+  //     );
 
-      if (result.summaryStatistics) {
-        console.log("-----> make summary statistics");
-        dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
-      }
-    } catch (error) {
-      console.error(
-        "Error fetching articles summary statistics:",
-        error.message
-      );
-    }
-    setLoadingComponents((prev) => ({
-      ...prev,
-      summaryStatistics: false,
-    }));
-  };
+  //     if (result.summaryStatistics) {
+  //       console.log("-----> make summary statistics");
+  //       dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Error fetching articles summary statistics:",
+  //       error.message
+  //     );
+  //   }
+  //   setLoadingComponents((prev) => ({
+  //     ...prev,
+  //     summaryStatistics: false,
+  //   }));
+  // };
 
   const fetchWebsiteDomains = async () => {
     try {
@@ -458,9 +458,7 @@ export default function GetArticlesNewsApi() {
                 <label htmlFor="startDate">Start Date</label>
                 <input
                   // className={styles.inputRequestStartDate}
-                  className={`${styles.inputRequestStartDate} ${
-                    inputErrors.startDate ? styles.inputError : ""
-                  }`}
+                  className={styles.inputRequestStartDate}
                   min={minDate}
                   max={todayDate}
                   value={startDate}
@@ -472,9 +470,7 @@ export default function GetArticlesNewsApi() {
                 <label htmlFor="endDate">End Date</label>
                 <input
                   // className={styles.inputRequestEndDate}
-                  className={`${styles.inputRequestEndDate} ${
-                    inputErrors.endDate ? styles.inputError : ""
-                  }`}
+                  className={styles.inputRequestEndDate}
                   min={minDate}
                   max={todayDate}
                   value={endDate}
@@ -577,50 +573,6 @@ export default function GetArticlesNewsApi() {
         </div>
 
         <div className={styles.divMainBottom}>
-          <div className={styles.divKeywordsGroup}>
-            <div className={styles.divKeywordInputGroup}>
-              <label htmlFor="keyword">Keyword</label>
-              <input
-                className={`${styles.inputRequestKeyword} ${
-                  inputErrors.keyword ? styles.inputError : ""
-                }`}
-                type="text"
-                placeholder="enter word"
-                value={filterKeyword}
-                onChange={(e) => setFilterKeyword(e.target.value)}
-              />
-              {filterKeyword && (
-                <button
-                  className={styles.btnClearKeyword}
-                  onClick={() => setFilterKeyword("")}
-                >
-                  ×
-                </button>
-              )}
-            </div>
-            <div className={styles.divKeywordsTableSuper}>
-              <div className={styles.divKeywordsTable}>
-                <table className={styles.tableKeywords}>
-                  {/* <thead>
-                    <tr>
-                      <th>Keywords</th>
-                    </tr>
-                  </thead> */}
-                  <tbody>
-                    {filteredKeywords.map((keyword, index) => (
-                      <tr
-                        key={index}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setFilterKeyword(keyword)}
-                      >
-                        <td>{keyword}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
           <div className={styles.divRequestTableGroup}>
             <TableRequests
               data={newsApiRequestsArray}

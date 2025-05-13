@@ -60,23 +60,28 @@ export default function SummaryStatistics() {
           Article count
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.articlesCount}
+          {userReducer.articlesSummaryStatistics?.articlesCount.toLocaleString()}
         </div>
       </div>
-      <div className={styles.divArticleSummaryStatisticsGroup}>
+      {/* <div className={styles.divArticleSummaryStatisticsGroup}>
         <div className={styles.divArticlesSummaryStatisticsTitle}>
-          Relevant articles
+          Approved This week articles
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.articlesIsRelevantCount}
+          {userReducer.articlesSummaryStatistics?.approvedThisWeek}
         </div>
-      </div>
+      </div> */}
       <div className={styles.divArticleSummaryStatisticsGroup}>
         <div className={styles.divArticlesSummaryStatisticsTitle}>
           Approved articles
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
           {userReducer.articlesSummaryStatistics?.articlesIsApprovedCount}
+          <div
+            className={styles.divArticlesSummaryStatisticsMetricParenthesesDiv}
+          >
+            (Week: {userReducer.articlesSummaryStatistics?.approvedThisWeek})
+          </div>
         </div>
       </div>
       <div className={styles.divArticleSummaryStatisticsGroup}>
@@ -85,6 +90,14 @@ export default function SummaryStatistics() {
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
           {userReducer.articlesSummaryStatistics?.hasStateAssigned}
+        </div>
+      </div>
+      <div className={styles.divArticleSummaryStatisticsGroup}>
+        <div className={styles.divArticlesSummaryStatisticsTitle}>
+          Articles added Yesterday
+        </div>
+        <div className={styles.divArticlesSummaryStatisticsMetric}>
+          {userReducer.articlesSummaryStatistics?.addedYesterday}
         </div>
       </div>
       <div className={styles.divArticleSummaryStatisticsGroupTransparent}>
