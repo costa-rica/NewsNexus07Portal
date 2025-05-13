@@ -582,7 +582,9 @@ export default function ReviewArticles() {
                   setStateArray={setStateArray}
                 /> */}
                 <InputDropdownCheckbox
-                  inputObjectArray={userReducer.stateArray}
+                  inputObjectArray={
+                    loadingComponents.table01 ? [] : userReducer.stateArray
+                  }
                   setInputObjectArray={(value) =>
                     dispatch(updateStateArray(value))
                   }
