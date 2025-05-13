@@ -17,14 +17,11 @@ import SummaryStatistics from "../common/SummaryStatistics";
 export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
-  // const [stateArray, setStateArray] = useState(userReducer.stateArray);
   const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
   const [infoModalContent, setInfoModalContent] = useState("");
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
-  // const [hideIrrelevant, setHideIrrelevant] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const dispatch = useDispatch();
-  // const [loadingTable01, setLoadingTable01] = useState(false);
   const [loadingComponents, setLoadingComponents] = useState({
     table01: false,
     summaryStatistics: false,
@@ -32,7 +29,6 @@ export default function ReviewArticles() {
 
   useEffect(() => {
     fetchArticlesArray();
-    // fetchArticlesSummaryStatistics();
   }, []);
 
   useEffect(() => {
@@ -45,6 +41,7 @@ export default function ReviewArticles() {
         ...filteredArticles[0],
         content: filteredArticles[0].description,
       });
+      updateStateArrayWithArticleState(filteredArticles[0]);
     }
   }, [articlesArray, userReducer.hideIrrelevant]);
 
@@ -203,18 +200,20 @@ export default function ReviewArticles() {
     // fetchArticlesSummaryStatistics();
   };
 
-  // const updateStateArrayWithArticleState = (article) => {
-  //   console.log(article.States);
-  //   const articleStateIds = article.States.map((state) => state.id);
-  //   const tempStatesArray = stateArray.map((stateObj) => {
-  //     if (articleStateIds.includes(stateObj.id)) {
-  //       return { ...stateObj, selected: true };
-  //     } else {
-  //       return { ...stateObj, selected: false };
-  //     }
-  //   });
-  //   setStateArray(tempStatesArray);
-  // };
+  const updateStateArrayWithArticleState = (article) => {
+    if (!article?.States) {
+      return;
+    }
+    const articleStateIds = article.States.map((state) => state.id);
+    const tempStatesArray = userReducer.stateArray.map((stateObj) => {
+      if (articleStateIds.includes(stateObj.id)) {
+        return { ...stateObj, selected: true };
+      } else {
+        return { ...stateObj, selected: false };
+      }
+    });
+    dispatch(updateStateArray(tempStatesArray));
+  };
 
   const columnHelper = createColumnHelper();
   const columnsForArticlesTable = [
