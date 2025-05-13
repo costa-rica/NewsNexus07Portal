@@ -132,9 +132,8 @@ export default function ReviewArticles() {
           content: result.content,
         });
         // modify the stateArray with the states that the article is associated with
-        // updateStateArrayWithArticleState(article);
+
         const articleStateIds = result.article.States.map((state) => state.id);
-        console.log("🚨 about to update state array");
         const tempStatesArray = userReducer.stateArray.map((stateObj) => {
           if (articleStateIds.includes(stateObj.id)) {
             return { ...stateObj, selected: true };
@@ -143,8 +142,11 @@ export default function ReviewArticles() {
           }
         });
         dispatch(updateStateArray(tempStatesArray));
-        console.log("🚨 Updated stateArray successfully");
       } else {
+        const tempStatesArray = userReducer.stateArray.map((stateObj) => {
+          return { ...stateObj, selected: false };
+        });
+        dispatch(updateStateArray(tempStatesArray));
         setSelectedArticle({ ...article, content: article.description });
       }
     } catch (error) {
