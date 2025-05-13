@@ -151,12 +151,32 @@ export default function Reports() {
         }
       );
 
-      if (response.status !== 200) {
-        console.log(`There was a server error: ${response.status}`);
-        return;
-      }
+      // let resJson = null;
+      // const contentType = response.headers.get("Content-Type");
 
-      alert("Report created successfully!");
+      // if (contentType?.includes("application/json")) {
+      //   resJson = await response.json();
+      // }
+      let resJson = null;
+      try {
+        resJson = await response.json();
+      } catch (e) {
+        console.warn("Could not parse JSON response:", e);
+      }
+      if (response.status !== 200) {
+        if (resJson?.error) {
+          setIsOpenModalInformation(true);
+          setModalInformationContent({
+            title: "Error Creating Report",
+            content: resJson.error,
+          });
+        } else {
+          console.log(`${response.status}`);
+        }
+        // return;
+      } else {
+        alert("Report created successfully!");
+      }
       fetchReportsList();
     } catch (error) {
       console.error("Error creating report:", error);
@@ -182,7 +202,7 @@ export default function Reports() {
 
       if (response.status !== 200) {
         console.log(`There was a server error: ${response.status}`);
-        return;
+        // return;
       }
 
       // alert("Report deleted successfully!");
@@ -526,15 +546,7 @@ export default function Reports() {
           <button
             onClick={() => {
               setSelectedArticle(row.original);
-              // setModalInformationContent({
-              //   title: "Article Report Contracts",
-              //   content: JSON.stringify(
-              //     row.original.ArticleReportContracts,
-              //     null,
-              //     2
-              //   ),
-              // });
-              // setIsOpenModalInformation(true);
+
               setIsOpenModalArticleReferenceNumber(true);
             }}
             style={{
@@ -547,39 +559,7 @@ export default function Reports() {
         </div>
       ),
     }),
-    // columnHelper.accessor("id", {
-    //   header: "ID",
-    //   enableSorting: true,
-    //   cell: ({ row }) => (
-    //     <button
-    //       onClick={() => handleSelectArticleFromTable(row.original)}
-    //       style={{
-    //         fontSize: "10px",
-    //       }}
-    //     >
-    //       {row.original.id}
-    //     </button>
-    //   ),
-    // }),
-    // columnHelper.accessor("ArticleReportContracts", {
-    //   id: "ArticleReportContracts-Staged",
-    //   header: "Ref #",
-    //   enableSorting: true,
-    //   cell: ({ row }) => (
-    //     <button
-    //       onClick={() =>
-    //         alert(JSON.stringify(row.original.ArticleReportContracts))
-    //       }
-    //       style={{
-    //         fontSize: "10px",
-    //       }}
-    //     >
-    //       {row.original.ArticleReportContracts[
-    //         row.original.ArticleReportContracts.length - 1
-    //       ]?.articleReferenceNumberInReport || "N/A"}
-    //     </button>
-    //   ),
-    // }),
+
     columnHelper.accessor("isSubmitted", {
       header: "Submitted",
       enableSorting: true,
@@ -618,28 +598,7 @@ export default function Reports() {
         </div>
       ),
     }),
-    // columnHelper.accessor("ArticleReportContracts", {
-    //   header: "Accepted",
-    //   enableSorting: true,
-    //   cell: ({ row }) => (
-    //     <div className={styles.divStagedColumnValue}>
-    //       <button
-    //         onClick={() =>
-    //           alert(JSON.stringify(row.original.ArticleReportContracts))
-    //         }
-    //         style={{
-    //           fontSize: "10px",
-    //         }}
-    //       >
-    //         {row.original.ArticleReportContracts[
-    //           row.original.ArticleReportContracts.length - 1
-    //         ]?.articleAcceptedByCpsc
-    //           ? "Yes"
-    //           : "No"}
-    //       </button>
-    //     </div>
-    //   ),
-    // }),
+
     columnHelper.accessor("States", {
       header: "State",
       enableSorting: true,
@@ -836,7 +795,14 @@ export default function Reports() {
           fetchApprovedArticlesArray={fetchApprovedArticlesArray}
         />
       )}
-      {/* {loading && <ModalLoading isVisible={loading} />} */}
+      {/* Modal Information - used for failed report creation */}
+      {isOpenModalInformation && (
+        <ModalInformation
+          isModalOpenSetter={setIsOpenModalInformation}
+          title={modalInformationContent.title}
+          content={modalInformationContent.content}
+        />
+      )}
     </TemplateView>
   );
 }
