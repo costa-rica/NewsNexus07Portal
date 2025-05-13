@@ -11,12 +11,13 @@ import { useDispatch } from "react-redux";
 import {
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
+  updateStateArray,
 } from "../../reducers/user";
 import SummaryStatistics from "../common/SummaryStatistics";
 export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
-  const [stateArray, setStateArray] = useState(userReducer.stateArray);
+  // const [stateArray, setStateArray] = useState(userReducer.stateArray);
   const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
   const [infoModalContent, setInfoModalContent] = useState("");
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
@@ -33,6 +34,20 @@ export default function ReviewArticles() {
     fetchArticlesArray();
     // fetchArticlesSummaryStatistics();
   }, []);
+
+  useEffect(() => {
+    const filteredArticles = userReducer.hideIrrelevant
+      ? articlesArray.filter((article) => article.isRelevant !== false)
+      : articlesArray;
+
+    if (filteredArticles.length > 0) {
+      setSelectedArticle({
+        ...filteredArticles[0],
+        content: filteredArticles[0].description,
+      });
+    }
+  }, [articlesArray, userReducer.hideIrrelevant]);
+
   const fetchArticlesArray = async () => {
     const bodyParams = {
       ...userReducer.articleTableBodyParams,
@@ -69,10 +84,10 @@ export default function ReviewArticles() {
 
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         setArticlesArray(result.articlesArray);
-        setSelectedArticle({
-          ...result.articlesArray[0],
-          content: result.articlesArray[0].description,
-        });
+        // setSelectedArticle({
+        //   ...result.articlesArray[0],
+        //   content: result.articlesArray[0].description,
+        // });
         // updateStateArrayWithArticleState(result.articlesArray[0]);
       } else {
         setArticlesArray([]);
@@ -116,11 +131,22 @@ export default function ReviewArticles() {
           approved: result.result,
           content: result.content,
         });
+        // modify the stateArray with the states that the article is associated with
+        // updateStateArrayWithArticleState(article);
+        const articleStateIds = result.article.States.map((state) => state.id);
+        console.log("🚨 about to update state array");
+        const tempStatesArray = userReducer.stateArray.map((stateObj) => {
+          if (articleStateIds.includes(stateObj.id)) {
+            return { ...stateObj, selected: true };
+          } else {
+            return { ...stateObj, selected: false };
+          }
+        });
+        dispatch(updateStateArray(tempStatesArray));
+        console.log("🚨 Updated stateArray successfully");
       } else {
         setSelectedArticle({ ...article, content: article.description });
       }
-      // modify the stateArray with the states that the article is associated with
-      updateStateArrayWithArticleState(article);
     } catch (error) {
       console.error("Error fetching data:", error.message);
     }
@@ -172,21 +198,21 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error validating states:", error.message);
     }
-    fetchArticlesSummaryStatistics();
+    // fetchArticlesSummaryStatistics();
   };
 
-  const updateStateArrayWithArticleState = (article) => {
-    console.log(article.States);
-    const articleStateIds = article.States.map((state) => state.id);
-    const tempStatesArray = stateArray.map((stateObj) => {
-      if (articleStateIds.includes(stateObj.id)) {
-        return { ...stateObj, selected: true };
-      } else {
-        return { ...stateObj, selected: false };
-      }
-    });
-    setStateArray(tempStatesArray);
-  };
+  // const updateStateArrayWithArticleState = (article) => {
+  //   console.log(article.States);
+  //   const articleStateIds = article.States.map((state) => state.id);
+  //   const tempStatesArray = stateArray.map((stateObj) => {
+  //     if (articleStateIds.includes(stateObj.id)) {
+  //       return { ...stateObj, selected: true };
+  //     } else {
+  //       return { ...stateObj, selected: false };
+  //     }
+  //   });
+  //   setStateArray(tempStatesArray);
+  // };
 
   const columnHelper = createColumnHelper();
   const columnsForArticlesTable = [
@@ -309,7 +335,9 @@ export default function ReviewArticles() {
     // const selectedStateIds = stateArray
     //   .filter((st) => st.selected)
     //   .map((st) => st.id);
-    const selectedStateObjs = stateArray.filter((st) => st.selected);
+    const selectedStateObjs = userReducer.stateArray.filter(
+      (st) => st.selected
+    );
     const selectedStateIds = selectedStateObjs.map((st) => st.id);
     const selectedStateNamesString = selectedStateObjs
       .map((st) => st.name)
@@ -361,7 +389,7 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error validating states:", error.message);
     }
-    fetchArticlesSummaryStatistics();
+    // fetchArticlesSummaryStatistics();
   };
 
   const handleApproveArticle = async () => {
@@ -553,8 +581,10 @@ export default function ReviewArticles() {
                   setStateArray={setStateArray}
                 /> */}
                 <InputDropdownCheckbox
-                  inputObjectArray={stateArray}
-                  setInputObjectArray={setStateArray}
+                  inputObjectArray={userReducer.stateArray}
+                  setInputObjectArray={(value) =>
+                    dispatch(updateStateArray(value))
+                  }
                   displayName="name"
                   inputDefaultText="select states ..."
                 />

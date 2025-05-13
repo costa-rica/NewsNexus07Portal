@@ -8,11 +8,14 @@ import SummaryStatistics from "../common/SummaryStatistics";
 import Table01 from "../common/Tables/Table01";
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { updateStateArray } from "../../reducers/user";
 export default function AddDeleteArticle() {
   const userReducer = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   // const [article, setArticle] = useState({});
   const [newArticle, setNewArticle] = useState({});
-  const [stateArray, setStateArray] = useState(userReducer.stateArray);
+  // const [stateArray, setStateArray] = useState(userReducer.stateArray);
   const [articlesArray, setArticlesArray] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isOpenAreYouSure, setIsOpenAreYouSure] = useState(false);
@@ -29,7 +32,7 @@ export default function AddDeleteArticle() {
   });
   useEffect(() => {
     fetchArticlesArray();
-    // fetchArticlesSummaryStatistics();
+    fetchStateArray();
   }, []);
 
   const handleAddAndSubmitArticle = async () => {
@@ -168,7 +171,36 @@ export default function AddDeleteArticle() {
       table01: false,
     }));
   };
+  const fetchStateArray = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`
+      );
 
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Log response text for debugging
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log("Fetched Data (states):", result);
+
+      if (result.statesArray && Array.isArray(result.statesArray)) {
+        const tempStatesArray = result.statesArray.map((stateObj) => ({
+          ...stateObj,
+          selected: false,
+        }));
+        dispatch(updateStateArray(tempStatesArray));
+      } else {
+        dispatch(updateStateArray([]));
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+      // dispatch(updateStateArray([]));
+    }
+  };
   // Table Articles
   const columnHelper = createColumnHelper();
   const columnsForArticlesTable = [
@@ -363,6 +395,7 @@ export default function AddDeleteArticle() {
       <p>This action cannot be undone.</p>
     </div>
   );
+
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -440,8 +473,10 @@ export default function AddDeleteArticle() {
             </div>
             <div className={styles.divManageStates}>
               <InputDropdownCheckbox
-                inputObjectArray={stateArray}
-                setInputObjectArray={setStateArray}
+                inputObjectArray={userReducer.stateArray}
+                setInputObjectArray={(value) =>
+                  dispatch(updateStateArray(value))
+                }
                 displayName="name"
                 inputDefaultText="select states ..."
               />

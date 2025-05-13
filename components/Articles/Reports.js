@@ -335,7 +335,12 @@ export default function Reports() {
       ),
     }),
     columnHelper.accessor("dateSubmittedToClient", {
-      header: () => <div>Submitted </div>,
+      header: () => (
+        <div>
+          Submitted
+          <div style={{ fontSize: "12px" }}>(ET)</div>
+        </div>
+      ),
       cell: (info) => (
         <div className={styles.divColumnValue}>
           <button
