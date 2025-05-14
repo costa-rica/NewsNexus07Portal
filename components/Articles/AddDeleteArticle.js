@@ -32,11 +32,13 @@ export default function AddDeleteArticle() {
   });
   useEffect(() => {
     fetchArticlesArray();
-    fetchStateArray();
+    // fetchStateArray();
   }, []);
 
   const handleAddAndSubmitArticle = async () => {
-    const selectedStateObjs = stateArray.filter((st) => st.selected);
+    const selectedStateObjs = userReducer.stateArray.filter(
+      (st) => st.selected
+    );
     const errors = {
       publicationName: !newArticle.publicationName,
       title: !newArticle.title,
@@ -108,12 +110,13 @@ export default function AddDeleteArticle() {
             url: "",
             publishedDate: "",
             content: "",
-            stateObjArray: [],
+            States: [],
           };
 
           setNewArticle(blankArticle);
           // Deselect all states
-          setStateArray(userReducer.stateArray);
+          // setStateArray(userReducer.stateArray);
+          updateStateArrayWithArticleState(blankArticle);
         }
       }
     } catch (error) {
@@ -150,7 +153,7 @@ export default function AddDeleteArticle() {
       }
 
       const result = await response.json();
-      console.log("Fetched Data:", result);
+      console.log("Fetched (from POST /articles):", result);
 
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         setArticlesArray(result.articlesArray);
@@ -171,35 +174,49 @@ export default function AddDeleteArticle() {
       table01: false,
     }));
   };
-  const fetchStateArray = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`
-      );
+  // const fetchStateArray = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`
+  //     );
 
-      console.log(`Response status: ${response.status}`);
+  //     console.log(`Response status: ${response.status}`);
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Log response text for debugging
-        throw new Error(`Server Error: ${errorText}`);
-      }
+  //     if (!response.ok) {
+  //       const errorText = await response.text(); // Log response text for debugging
+  //       throw new Error(`Server Error: ${errorText}`);
+  //     }
 
-      const result = await response.json();
-      console.log("Fetched Data (states):", result);
+  //     const result = await response.json();
+  //     console.log("Fetched Data (states):", result);
 
-      if (result.statesArray && Array.isArray(result.statesArray)) {
-        const tempStatesArray = result.statesArray.map((stateObj) => ({
-          ...stateObj,
-          selected: false,
-        }));
-        dispatch(updateStateArray(tempStatesArray));
-      } else {
-        dispatch(updateStateArray([]));
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-      // dispatch(updateStateArray([]));
+  //     if (result.statesArray && Array.isArray(result.statesArray)) {
+  //       const tempStatesArray = result.statesArray.map((stateObj) => ({
+  //         ...stateObj,
+  //         selected: false,
+  //       }));
+  //       dispatch(updateStateArray(tempStatesArray));
+  //     } else {
+  //       dispatch(updateStateArray([]));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error.message);
+  //     // dispatch(updateStateArray([]));
+  //   }
+  // };
+  const updateStateArrayWithArticleState = (article) => {
+    if (!article?.States) {
+      return;
     }
+    const articleStateIds = article.States.map((state) => state.id);
+    const tempStatesArray = userReducer.stateArray.map((stateObj) => {
+      if (articleStateIds.includes(stateObj.id)) {
+        return { ...stateObj, selected: true };
+      } else {
+        return { ...stateObj, selected: false };
+      }
+    });
+    dispatch(updateStateArray(tempStatesArray));
   };
   // Table Articles
   const columnHelper = createColumnHelper();
@@ -253,7 +270,7 @@ export default function AddDeleteArticle() {
         </div>
       ),
     }),
-    columnHelper.accessor("states", {
+    columnHelper.accessor("statesStringCommaSeparated", {
       header: "State",
       enableSorting: true,
     }),
@@ -323,7 +340,9 @@ export default function AddDeleteArticle() {
           approved: result.result,
           content: result.content,
         });
-        let tempStateArray = stateArray;
+        alert(JSON.stringify(selectedArticle.States));
+        let tempStateArray = userReducer.stateArray;
+        // let tempStateArray = stateArray;
         // alert(JSON.stringify(article.States));
 
         tempStateArray.forEach((state) => {
@@ -334,18 +353,20 @@ export default function AddDeleteArticle() {
             }
           });
         });
-        setStateArray(tempStateArray);
+        // setStateArray(tempStateArray);
+        updateStateArrayWithArticleState(article);
       } else {
         setSelectedArticle({ ...article, content: article.description });
         setNewArticle({ ...article, content: article.description });
-        let tempStateArray = stateArray;
+        // let tempStateArray = stateArray;
         // alert(JSON.stringify(article.States));
 
         // tempStateArray.forEach((state) => {
         //   state.selected = false;
         // });
         // setStateArray(tempStateArray);
-        setStateArray(userReducer.stateArray);
+        // setStateArray(userReducer.stateArray);
+        updateStateArrayWithArticleState(article);
       }
       // // modify the stateArray with the states that the article is associated with
       // updateStateArrayWithArticleState(article);
@@ -381,7 +402,8 @@ export default function AddDeleteArticle() {
       setArticlesArray(tempArticlesArray);
       setSelectedArticle(null);
       setNewArticle({});
-      setStateArray(userReducer.stateArray);
+      // setStateArray(userReducer.stateArray);
+      updateStateArrayWithArticleState(article);
       alert("Article deleted successfully!");
     } catch (error) {
       console.error("Error deleting article:", error);
@@ -506,6 +528,7 @@ export default function AddDeleteArticle() {
                   className={styles.btnClear}
                   onClick={() => {
                     setNewArticle({});
+                    updateStateArrayWithArticleState({ States: [] });
                   }}
                 >
                   Clear

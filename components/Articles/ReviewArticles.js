@@ -388,7 +388,7 @@ export default function ReviewArticles() {
         </div>
       ),
     }),
-    columnHelper.accessor("states", {
+    columnHelper.accessor("statesStringCommaSeparated", {
       header: "State",
       enableSorting: true,
     }),
