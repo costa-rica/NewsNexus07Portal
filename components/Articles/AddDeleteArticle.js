@@ -32,7 +32,7 @@ export default function AddDeleteArticle() {
   });
   useEffect(() => {
     fetchArticlesArray();
-    // fetchStateArray();
+    updateStateArrayWithArticleState({ States: [] });
   }, []);
 
   const handleAddAndSubmitArticle = async () => {
@@ -206,6 +206,7 @@ export default function AddDeleteArticle() {
   // };
   const updateStateArrayWithArticleState = (article) => {
     if (!article?.States) {
+      // alert("There are no states associated with this article");
       return;
     }
     const articleStateIds = article.States.map((state) => state.id);
@@ -341,18 +342,18 @@ export default function AddDeleteArticle() {
           content: result.content,
         });
         // alert(JSON.stringify(selectedArticle.States));
-        let tempStateArray = userReducer.stateArray;
-        // let tempStateArray = stateArray;
-        // alert(JSON.stringify(article.States));
+        // let tempStateArray = userReducer.stateArray;
+        // // let tempStateArray = stateArray;
+        // // alert(JSON.stringify(article.States));
 
-        tempStateArray.forEach((state) => {
-          state.selected = false;
-          article.States.forEach((articleState) => {
-            if (state.id === articleState.id) {
-              state.selected = true;
-            }
-          });
-        });
+        // tempStateArray.forEach((state) => {
+        //   state.selected = false;
+        //   article.States.forEach((articleState) => {
+        //     if (state.id === articleState.id) {
+        //       state.selected = true;
+        //     }
+        //   });
+        // });
         // setStateArray(tempStateArray);
         updateStateArrayWithArticleState(article);
       } else {
