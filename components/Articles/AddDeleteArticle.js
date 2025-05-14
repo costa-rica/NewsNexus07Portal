@@ -340,7 +340,7 @@ export default function AddDeleteArticle() {
           approved: result.result,
           content: result.content,
         });
-        alert(JSON.stringify(selectedArticle.States));
+        // alert(JSON.stringify(selectedArticle.States));
         let tempStateArray = userReducer.stateArray;
         // let tempStateArray = stateArray;
         // alert(JSON.stringify(article.States));
