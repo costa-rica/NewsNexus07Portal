@@ -18,7 +18,12 @@ export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
   const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
-  const [infoModalContent, setInfoModalContent] = useState("");
+  // const [infoModalContent, setInfoModalContent] = useState("");
+  const [isOpenModalInformation, setIsOpenModalInformation] = useState(false);
+  const [modalInformationContent, setModalInformationContent] = useState({
+    title: "Information",
+    content: "",
+  });
   const [isOpenStateWarning, setIsOpenStateWarning] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const dispatch = useDispatch();
@@ -197,7 +202,105 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error validating states:", error.message);
     }
-    // fetchArticlesSummaryStatistics();
+  };
+  const handleClickIsReviewed = async (articleId) => {
+    console.log("Clicked is reviewed for article:", articleId);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/is-being-reviewed/${articleId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+          body: JSON.stringify({
+            isBeingReviewed: !articlesArray.find(
+              (article) => article.id === articleId
+            ).isBeingReviewed,
+          }),
+        }
+      );
+
+      // console.log(`Response status: ${response.status}`);
+      // let resJson = null;
+      // const contentType = response.headers.get("Content-Type");
+
+      // if (contentType?.includes("application/json")) {
+      //   resJson = await response.json();
+      // }
+
+      // if (resJson) {
+      //   console.log("Fetched Data:", resJson);
+      //   if (response.status === 400) {
+      //     setRequestResponseMessage(resJson.message);
+      //     setIsOpenRequestResponse(true);
+      //     return;
+      //   } else {
+      //     let updatedArticle = articlesArray.find(
+      //       (article) => article.id === articleId
+      //     );
+      //     updatedArticle.isRelevant = !updatedArticle.isRelevant;
+      //     setArticlesArray(
+      //       articlesArray.map((article) =>
+      //         article.id === articleId ? updatedArticle : article
+      //       )
+      //     );
+      //     if (selectedArticle.id === articleId) {
+      //       setSelectedArticle(updatedArticle);
+      //     }
+      //   }
+      // }
+
+      let resJson = null;
+      try {
+        resJson = await response.json();
+      } catch (e) {
+        console.warn("Could not parse JSON response:", e);
+      }
+      if (response.status !== 200) {
+        if (resJson?.error) {
+          setIsOpenModalInformation(true);
+          setModalInformationContent({
+            title: "Error Toggling Is Reviewed",
+            content: resJson.error,
+          });
+          return;
+        } else {
+          console.log(`${response.status}`);
+          let updatedArticle = articlesArray.find(
+            (article) => article.id === articleId
+          );
+          updatedArticle.isBeingReviewed = !updatedArticle.isBeingReviewed;
+          setArticlesArray(
+            articlesArray.map((article) =>
+              article.id === articleId ? updatedArticle : article
+            )
+          );
+          if (selectedArticle.id === articleId) {
+            setSelectedArticle(updatedArticle);
+          }
+        }
+        // return;
+      } else {
+        // alert("Report created successfully!");
+        console.log(`${response.status}`);
+        let updatedArticle = articlesArray.find(
+          (article) => article.id === articleId
+        );
+        updatedArticle.isBeingReviewed = !updatedArticle.isBeingReviewed;
+        setArticlesArray(
+          articlesArray.map((article) =>
+            article.id === articleId ? updatedArticle : article
+          )
+        );
+        if (selectedArticle.id === articleId) {
+          setSelectedArticle(updatedArticle);
+        }
+      }
+    } catch (error) {
+      console.error("Error validating states:", error.message);
+    }
   };
 
   const updateStateArrayWithArticleState = (article) => {
@@ -229,6 +332,25 @@ export default function ReviewArticles() {
         >
           {row.original.id}
         </button>
+      ),
+    }),
+    columnHelper.accessor("isBeingReviewed", {
+      // header: "Relevant ?",
+      header: () => (
+        <div style={{ display: "flex", flexWrap: "nowrap" }}>Watched</div>
+      ),
+      enableSorting: true,
+      cell: ({ getValue, row }) => (
+        <div className={styles.divBtnRelevant}>
+          <button
+            className={`${styles.btnRelevant} ${
+              getValue() === false ? "btnOpaque" : ""
+            }`}
+            onClick={() => handleClickIsReviewed(row.original.id)}
+          >
+            {getValue() === true ? "Yes" : "No"}
+          </button>
+        </div>
       ),
     }),
     columnHelper.accessor("title", { header: "Title", enableSorting: true }),
@@ -670,11 +792,11 @@ export default function ReviewArticles() {
           content="Maybe no selected states ?"
         />
       )}
-      {isOpenModalInfo && (
+      {isOpenModalInformation && (
         <ModalInformation
-          isModalOpenSetter={setIsOpenModalInfo}
-          title="Information"
-          content={infoModalContent}
+          isModalOpenSetter={setIsOpenModalInformation}
+          title={modalInformationContent.title}
+          content={modalInformationContent.content}
         />
       )}
     </TemplateView>
