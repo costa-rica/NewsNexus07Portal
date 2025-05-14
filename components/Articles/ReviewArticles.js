@@ -135,20 +135,22 @@ export default function ReviewArticles() {
         });
         // modify the stateArray with the states that the article is associated with
 
-        const articleStateIds = result.article.States.map((state) => state.id);
-        const tempStatesArray = userReducer.stateArray.map((stateObj) => {
-          if (articleStateIds.includes(stateObj.id)) {
-            return { ...stateObj, selected: true };
-          } else {
-            return { ...stateObj, selected: false };
-          }
-        });
-        dispatch(updateStateArray(tempStatesArray));
+        // const articleStateIds = result.article.States.map((state) => state.id);
+        // const tempStatesArray = userReducer.stateArray.map((stateObj) => {
+        //   if (articleStateIds.includes(stateObj.id)) {
+        //     return { ...stateObj, selected: true };
+        //   } else {
+        //     return { ...stateObj, selected: false };
+        //   }
+        // });
+        // dispatch(updateStateArray(tempStatesArray));
+        updateStateArrayWithArticleState(result.article);
       } else {
-        const tempStatesArray = userReducer.stateArray.map((stateObj) => {
-          return { ...stateObj, selected: false };
-        });
-        dispatch(updateStateArray(tempStatesArray));
+        // const tempStatesArray = userReducer.stateArray.map((stateObj) => {
+        //   return { ...stateObj, selected: false };
+        // });
+        // dispatch(updateStateArray(tempStatesArray));
+        updateStateArrayWithArticleState(article);
         setSelectedArticle({ ...article, content: article.description });
       }
     } catch (error) {
