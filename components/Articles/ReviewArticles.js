@@ -340,9 +340,7 @@ export default function ReviewArticles() {
     }),
     columnHelper.accessor("isBeingReviewed", {
       // header: "Relevant ?",
-      header: () => (
-        <div style={{ display: "flex", flexWrap: "nowrap" }}>Watched</div>
-      ),
+      header: () => <div className={styles.columnHeaderSmall}>Watched ?</div>,
       enableSorting: true,
       cell: ({ getValue, row }) => (
         <div className={styles.divBtnRelevant}>
@@ -378,29 +376,33 @@ export default function ReviewArticles() {
     columnHelper.accessor("url", {
       header: "URL",
       enableSorting: true,
-      cell: ({ getValue }) => (
-        <div
-          style={{
-            fontSize: "12px",
-            maxWidth: "150px",
-          }}
-        >
-          {/* {getValue()} */}
-          {getValue() && (
-            <Link href={getValue()}>{getValue().slice(0, 40)}</Link>
-          )}
-        </div>
-      ),
+      cell: ({ getValue }) => {
+        const rawUrl = getValue();
+        if (!rawUrl) return null;
+
+        // const strippedUrl = rawUrl.replace(/^https?:\/\//, "");
+        const strippedUrl = rawUrl
+          .replace(/^https?:\/\//, "") // remove http:// or https://
+          .replace(/^www\./, ""); // then remove www. if present
+
+        return (
+          <div className={styles.columnHeaderUrl}>
+            <div className="tooltipWrapper">
+              <Link href={rawUrl}>{strippedUrl.slice(0, 20)}</Link>
+              <span className="tooltipText">{rawUrl}</span>
+            </div>
+          </div>
+        );
+      },
     }),
+
     columnHelper.accessor("statesStringCommaSeparated", {
       header: "State",
       enableSorting: true,
     }),
     columnHelper.accessor("isRelevant", {
       // header: "Relevant ?",
-      header: () => (
-        <div style={{ display: "flex", flexWrap: "nowrap" }}>Relevant ?</div>
-      ),
+      header: () => <div className={styles.columnHeaderSmall}>Relevant ?</div>,
       enableSorting: true,
       cell: ({ getValue, row }) => (
         <div className={styles.divBtnRelevant}>
@@ -417,19 +419,28 @@ export default function ReviewArticles() {
     }),
     // NOTE: for some reason keyword is different so it needs to be explicitly converted to a
     // string in order for the search to work in this column
-    columnHelper.accessor(
-      (row) => row.semanticRatingMaxLabel?.toString() ?? "",
-      {
-        id: "semanticRatingMaxLabel",
-        header: "Keyword",
-        enableSorting: true,
-      }
-    ),
+    columnHelper.accessor((row) => row.requestQueryString?.toString() ?? "", {
+      id: "requestQueryString",
+      // header: "Request Query String",
+      header: () => (
+        <div className={styles.columnHeaderSmall}>Request Query String</div>
+      ),
+      enableSorting: true,
+      cell: ({ getValue }) => {
+        return <div className={styles.columnCellSmall}>{getValue()}</div>;
+      },
+    }),
+    columnHelper.accessor("nameOfOrg", {
+      id: "nameOfOrg",
+      header: () => <div className={styles.columnHeaderSmall}>Added by:</div>,
+      enableSorting: true,
+      cell: ({ getValue }) => {
+        return <div className={styles.columnCellSmall}>{getValue()}</div>;
+      },
+    }),
     columnHelper.accessor("semanticRatingMax", {
       header: () => (
-        <div style={{ display: "flex", flexWrap: "nowrap" }}>
-          Nexus Semantic Rating
-        </div>
+        <div className={styles.columnHeaderSmall}>Nexus Semantic Rating</div>
       ),
       enableSorting: true,
       cell: ({ getValue }) => {
