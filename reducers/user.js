@@ -19,10 +19,11 @@ const initialState = {
   // NOTE: dateLimitOnRequestMade: date; includeIsFromAutomation: boolean
   articleTableBodyParams: {
     returnOnlyThisPublishedDateOrAfter: null,
+    returnOnlyThisCreatedAtDateOrAfter: null,
     returnOnlyIsNotApproved: true,
     returnOnlyIsRelevant: true,
   },
-  // NOTE: returnOnlyThisPublishedDateOrAfter, returnOnlyIsNotApproved, returnOnlyIsRelevant
+  // NOTE: returnOnlyThisPublishedDateOrAfter, returnOnlyThisCreatedAtDateOrAfter, returnOnlyIsNotApproved, returnOnlyIsRelevant
   approvedArticlesArray: [],
 };
 

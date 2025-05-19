@@ -65,7 +65,7 @@ export default function UserSettings() {
           </div>
         </div>
 
-        <div className={styles.divSettingsGroup}>
+        {/* <div className={styles.divSettingsGroup}>
           <h3>Article Tables</h3>
           <div className={styles.divSettingDetail}>
             <span className={styles.lblSettingDetailMain}>
@@ -88,7 +88,7 @@ export default function UserSettings() {
             />
           </div>
 
-          {/* <div className={styles.divSettingDetail}>
+          <div className={styles.divSettingDetail}>
             <span className={styles.lblSettingDetailMain}>
               Include Approved Articles :
             </span>
@@ -139,8 +139,8 @@ export default function UserSettings() {
                 ⚠️ This could slow down the website
               </span>
             )}
-          </div> */}
-        </div>
+          </div>
+        </div> */}
       </main>
     </TemplateView>
   );

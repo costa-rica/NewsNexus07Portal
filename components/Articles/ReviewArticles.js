@@ -13,6 +13,7 @@ import {
   toggleHideIrrelevant,
   toggleHideApproved,
   updateStateArray,
+  updateArticleTableBodyParams,
 } from "../../reducers/user";
 import SummaryStatistics from "../common/SummaryStatistics";
 export default function ReviewArticles() {
@@ -763,18 +764,44 @@ export default function ReviewArticles() {
         <div className={styles.divMainBottom}>
           <div className={styles.divRequestTableGroupSuper}>
             <div className={styles.divRequestTableParameters}>
-              <button
-                className={`${styles.btnSubmit} ${
-                  userReducer.hideIrrelevant ? styles.btnOpaque : ""
-                }`}
-                onClick={() => {
-                  dispatch(toggleHideIrrelevant());
-                }}
-              >
-                {userReducer.hideIrrelevant
-                  ? "Show All Articles"
-                  : "Hide Irrelevant Articles"}
-              </button>
+              <div className={styles.divParametersDetail}>
+                <span className={styles.lblParametersDetailMain}>
+                  Article Added to NewsNexus Db Date Limit:
+                </span>
+                <input
+                  type="date"
+                  value={
+                    userReducer.articleTableBodyParams
+                      ?.returnOnlyThisCreatedAtDateOrAfter
+                  }
+                  onChange={(e) =>
+                    dispatch(
+                      updateArticleTableBodyParams({
+                        returnOnlyThisCreatedAtDateOrAfter: e.target.value,
+                      })
+                    )
+                  }
+                />
+              </div>
+              <div className={styles.divParametersDetail}>
+                <span className={styles.lblParametersDetailMain}>
+                  Article Published Date Limit:
+                </span>
+                <input
+                  type="date"
+                  value={
+                    userReducer.articleTableBodyParams
+                      ?.returnOnlyThisPublishedDateOrAfter
+                  }
+                  onChange={(e) =>
+                    dispatch(
+                      updateArticleTableBodyParams({
+                        returnOnlyThisPublishedDateOrAfter: e.target.value,
+                      })
+                    )
+                  }
+                />
+              </div>
               <button
                 className={`${styles.btnSubmit} ${
                   userReducer.hideApproved ? styles.btnOpaque : ""
@@ -787,17 +814,22 @@ export default function ReviewArticles() {
                   ? "Show All Articles"
                   : "Hide Approved Articles"}
               </button>
+              <button
+                className={`${styles.btnSubmit} ${
+                  userReducer.hideIrrelevant ? styles.btnOpaque : ""
+                }`}
+                onClick={() => {
+                  dispatch(toggleHideIrrelevant());
+                }}
+              >
+                {userReducer.hideIrrelevant
+                  ? "Show All Articles"
+                  : "Hide Irrelevant Articles"}
+              </button>
             </div>
             <Table01
               columns={columnsForArticlesTable}
               data={filteredArticlesArray}
-              // data={
-              //   userReducer.hideIrrelevant
-              //     ? articlesArray.filter(
-              //         (article) => article.isRelevant !== false
-              //       )
-              //     : articlesArray
-              // }
               selectedRowId={selectedArticle?.id}
               loading={loadingComponents.table01}
             />
