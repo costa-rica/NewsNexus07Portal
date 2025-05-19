@@ -118,30 +118,6 @@
 .btnSubmit:active {
   transform: scale(0.87);
 }
-/* .divRequestGroup {
-  display: flex;
-  flex-direction: row;
-  gap: 0.25rem;
-}
-.divRequestGroupInput {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: flex-end;
-}
-.divRequestGroupInputWide {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: flex-end;
-  width: 20rem;
-  position: relative;
-}
-
-
-.inputError {
-  outline: 2px solid red;
-} */
 
 /* ----------
 
@@ -176,6 +152,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .lblParametersDetailMain {
   font-size: small;
   width: 12rem;
