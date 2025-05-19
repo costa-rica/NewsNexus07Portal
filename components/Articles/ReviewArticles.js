@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import {
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
+  toggleHideApproved,
   updateStateArray,
 } from "../../reducers/user";
 import SummaryStatistics from "../common/SummaryStatistics";
@@ -518,15 +519,6 @@ export default function ReviewArticles() {
   };
 
   const handleApproveArticle = async () => {
-    console.log("clicked approve article");
-    // if (!selectedArticle.id) {
-    // if (selectedArticle.id) {
-    //   setInfoModalContent(
-    //     JSON.stringify({ ...bodyObj, id: selectedArticle.id })
-    //   );
-    //   setIsOpenModalInfo(true);
-    //   return;
-    // }
     try {
       const bodyObj = {
         isApproved: !selectedArticle.isApproved,
@@ -630,6 +622,17 @@ export default function ReviewArticles() {
       summaryStatistics: false,
     }));
   };
+
+  const filteredArticlesArray = articlesArray.filter((article) => {
+    let returnFlag = true;
+    if (userReducer.hideApproved) {
+      returnFlag = article.isApproved === false;
+    }
+    if (userReducer.hideIrrelevant) {
+      returnFlag = returnFlag && article.isRelevant === true;
+    }
+    return returnFlag;
+  });
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -654,7 +657,6 @@ export default function ReviewArticles() {
                 type="text"
                 value={selectedArticle?.title}
                 className={styles.inputArticleDetail}
-                // onChange={(e) =>
                 disabled
               />
             </div>
@@ -756,30 +758,46 @@ export default function ReviewArticles() {
             >
               {selectedArticle?.isApproved ? "Un-approve" : "Approve"}
             </button>
-
-            <button
-              className={`${styles.btnSubmit} ${
-                userReducer.hideIrrelevant ? styles.btnOpaque : ""
-              }`}
-              onClick={() => dispatch(toggleHideIrrelevant())}
-            >
-              {userReducer.hideIrrelevant
-                ? "Show All Articles"
-                : "Hide Irrelevant Articles"}
-            </button>
           </div>
         </div>
         <div className={styles.divMainBottom}>
           <div className={styles.divRequestTableGroupSuper}>
+            <div className={styles.divRequestTableParameters}>
+              <button
+                className={`${styles.btnSubmit} ${
+                  userReducer.hideIrrelevant ? styles.btnOpaque : ""
+                }`}
+                onClick={() => {
+                  dispatch(toggleHideIrrelevant());
+                }}
+              >
+                {userReducer.hideIrrelevant
+                  ? "Show All Articles"
+                  : "Hide Irrelevant Articles"}
+              </button>
+              <button
+                className={`${styles.btnSubmit} ${
+                  userReducer.hideApproved ? styles.btnOpaque : ""
+                }`}
+                onClick={() => {
+                  dispatch(toggleHideApproved());
+                }}
+              >
+                {userReducer.hideApproved
+                  ? "Show All Articles"
+                  : "Hide Approved Articles"}
+              </button>
+            </div>
             <Table01
               columns={columnsForArticlesTable}
-              data={
-                userReducer.hideIrrelevant
-                  ? articlesArray.filter(
-                      (article) => article.isRelevant !== false
-                    )
-                  : articlesArray
-              }
+              data={filteredArticlesArray}
+              // data={
+              //   userReducer.hideIrrelevant
+              //     ? articlesArray.filter(
+              //         (article) => article.isRelevant !== false
+              //       )
+              //     : articlesArray
+              // }
               selectedRowId={selectedArticle?.id}
               loading={loadingComponents.table01}
             />

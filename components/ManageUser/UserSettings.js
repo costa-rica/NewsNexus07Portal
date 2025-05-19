@@ -88,7 +88,7 @@ export default function UserSettings() {
             />
           </div>
 
-          <div className={styles.divSettingDetail}>
+          {/* <div className={styles.divSettingDetail}>
             <span className={styles.lblSettingDetailMain}>
               Include Approved Articles :
             </span>
@@ -139,7 +139,7 @@ export default function UserSettings() {
                 ⚠️ This could slow down the website
               </span>
             )}
-          </div>
+          </div> */}
         </div>
       </main>
     </TemplateView>

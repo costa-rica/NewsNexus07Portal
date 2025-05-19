@@ -48,7 +48,40 @@ export const userSlice = createSlice({
       state.email = null;
     },
     toggleHideIrrelevant: (state) => {
-      state.hideIrrelevant = !state.hideIrrelevant;
+      state.hideIrrelevant = !state.hideIrrelevant; // toggle for Review Articles
+
+      // update articleTableBodyParams
+      if (state.hideIrrelevant) {
+        const newParams = {
+          ...state.articleTableBodyParams,
+          returnOnlyIsRelevant: true,
+        };
+        state.articleTableBodyParams = newParams;
+      } else {
+        const newParams = {
+          ...state.articleTableBodyParams,
+          returnOnlyIsRelevant: false,
+        };
+        state.articleTableBodyParams = newParams;
+      }
+    },
+    toggleHideApproved: (state) => {
+      state.hideApproved = !state.hideApproved;
+
+      // update articleTableBodyParams
+      if (state.hideApproved) {
+        const newParams = {
+          ...state.articleTableBodyParams,
+          returnOnlyIsNotApproved: true,
+        };
+        state.articleTableBodyParams = newParams;
+      } else {
+        const newParams = {
+          ...state.articleTableBodyParams,
+          returnOnlyIsNotApproved: false,
+        };
+        state.articleTableBodyParams = newParams;
+      }
     },
     toggleNavExpandGetArticles: (state) => {
       state.navExpandGetArticles = !state.navExpandGetArticles;
@@ -82,6 +115,7 @@ export const {
   updateStateArray,
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
+  toggleHideApproved,
   toggleNavExpandGetArticles,
   toggleNavExpandManageArticles,
   toggleNavExpandDb,
