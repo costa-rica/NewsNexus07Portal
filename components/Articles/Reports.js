@@ -162,6 +162,11 @@ export default function Reports() {
         resJson = await response.json();
       } catch (e) {
         console.warn("Could not parse JSON response:", e);
+        setLoadingComponents((prev) => ({
+          ...prev,
+          pageLoading: false,
+        }));
+        return;
       }
       if (response.status !== 200) {
         if (resJson?.error) {
