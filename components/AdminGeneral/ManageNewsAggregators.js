@@ -93,9 +93,9 @@ export default function ManageNewsAggregators() {
     }
   };
 
-  const handleDelete = async (userId) => {
+  const handleDelete = async (aggregatorId) => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${userId}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/${aggregatorId}`,
       {
         method: "DELETE",
         headers: { Authorization: `Bearer ${userReducer.token}` },
