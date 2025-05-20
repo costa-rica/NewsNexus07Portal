@@ -60,7 +60,10 @@ export default function SummaryStatistics() {
           Article count
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.articlesCount.toLocaleString()}
+          {/* {userReducer.articlesSummaryStatistics?.articlesCount.toLocaleString()} */}
+          {userReducer.articlesSummaryStatistics?.articlesCount != null
+            ? userReducer.articlesSummaryStatistics.articlesCount.toLocaleString()
+            : "N/A"}
         </div>
       </div>
       {/* <div className={styles.divArticleSummaryStatisticsGroup}>

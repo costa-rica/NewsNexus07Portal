@@ -26,6 +26,10 @@ export default function RootNavigator() {
       return import(`../components/Articles/ReviewArticles`).catch(() => () => (
         <p>Table Not Found</p>
       ));
+    } else if (root_navigator === "logout") {
+      return import(`../components/ManageUser/logout`).catch(() => () => (
+        <p>Table Not Found</p>
+      ));
     } else {
       return Promise.resolve(() => <p>Table Not Found</p>);
     }

@@ -107,6 +107,33 @@ export const userSlice = createSlice({
     updateApprovedArticlesArray: (state, action) => {
       state.approvedArticlesArray = action.payload;
     },
+    logoutUserFully: (state) => {
+      state.token = null;
+      state.username = null;
+      state.email = null;
+      state.isAdmin = false;
+      state.stateArray = [];
+      state.articlesSummaryStatistics = {};
+      state.hideIrrelevant = false;
+      state.navExpandGetArticles = false;
+      state.navExpandManageArticles = false;
+      state.navExpandDb = false;
+      state.navExpandAdminGeneral = false;
+      state.requestTableBodyParams = {
+        includeIsFromAutomation: false,
+        dateLimitOnRequestMade: null,
+      };
+      // NOTE: dateLimitOnRequestMade: date; includeIsFromAutomation: boolean
+      state.articleTableBodyParams = {
+        returnOnlyThisPublishedDateOrAfter: null,
+        returnOnlyThisCreatedAtDateOrAfter: null,
+        returnOnlyIsNotApproved: true,
+        returnOnlyIsRelevant: true,
+      };
+      // NOTE: returnOnlyThisPublishedDateOrAfter, returnOnlyThisCreatedAtDateOrAfter, returnOnlyIsNotApproved, returnOnlyIsRelevant
+      state.approvedArticlesArray = [];
+      console.log("-----> Finished Super Logout !!!");
+    },
   },
 });
 
@@ -124,5 +151,6 @@ export const {
   updateRequestTableBodyParams,
   updateArticleTableBodyParams,
   updateApprovedArticlesArray,
+  logoutUserFully,
 } = userSlice.actions;
 export default userSlice.reducer;
