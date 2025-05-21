@@ -113,12 +113,6 @@ export default function TemplateView({ children }) {
             toggleFunction={() => dispatch(toggleNavExpandGetArticles())}
             expanded={userReducer.navExpandGetArticles}
           >
-            {/* <NavBarSideLink
-              href="/articles/get-from-api-services"
-              style={{ padding: "0.25rem" }}
-              label="Old way"
-              currentPath={currentPath}
-            /> */}
             <NavBarSideLink
               href="/articles/get-newsapi"
               style={{ padding: "0.25rem" }}
@@ -163,6 +157,13 @@ export default function TemplateView({ children }) {
               href="/articles/add-delete"
               // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
               label="Add / Delete Article"
+              style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
+              href="/articles/requests-analysis"
+              // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+              label="Requests Analysis"
               style={{ padding: "0.25rem" }}
               currentPath={currentPath}
             />

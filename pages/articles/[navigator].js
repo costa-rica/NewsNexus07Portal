@@ -42,6 +42,10 @@ export default function GetArticlesNavigator() {
       return import(`../../components/Articles/ManageAutomation`).catch(
         () => () => <p>ManageAutomation Not Found</p>
       );
+    } else if (navigator === "requests-analysis") {
+      return import(`../../components/Articles/RequestsAnalysis`).catch(
+        () => () => <p>RequestsAnalysis Not Found</p>
+      );
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }
