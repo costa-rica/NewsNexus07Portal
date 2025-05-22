@@ -12,7 +12,12 @@ export default function RequestsAnalysis() {
   const userReducer = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [requestsArray, setRequestsArray] = useState([]);
-  const [manualFoundCount, setManualFoundCount] = useState(0);
+  // const [manualFoundCount, setManualFoundCount] = useState(0);
+  const [approvedArticleStats, setApprovedArticleStats] = useState({
+    countOfApprovedArticles: 0,
+    countOfManuallyApprovedArticles: 0,
+  });
+  const [dateModified, setDateModified] = useState(false);
   const [loadingComponents, setLoadingComponents] = useState({
     table01: false,
   });
@@ -52,7 +57,12 @@ export default function RequestsAnalysis() {
       if (result.requestsArray && Array.isArray(result.requestsArray)) {
         setRequestsArray(result.requestsArray);
         // setSelectedRequest(result.requestsArray[0]);
-        setManualFoundCount(result.manualFoundCount);
+        setApprovedArticleStats({
+          countOfApprovedArticles: result.countOfApprovedArticles,
+          countOfManuallyApprovedArticles:
+            result.countOfManuallyApprovedArticles,
+        });
+        setDateModified(false);
       } else {
         setRequestsArray([]);
       }
@@ -155,19 +165,17 @@ export default function RequestsAnalysis() {
     <TemplateView>
       <main className={styles.main}>
         <div className={styles.divMainTop}>
-          <h2>RequestsAnalysis</h2>
-          <div className={styles.divDownloadControls}>
-            <button onClick={downloadTableSpreadsheet}>
-              Download Table Spreadsheet
-            </button>
-            Since:
+          <h2>Requests Analysis</h2>
+          <div>
+            <p>Summary of Approved Articles since:</p>
             <input
               type="date"
               value={
                 userReducer.requestsAnalysisTableBodyParams?.dateRequestsLimit
               }
+              className={dateModified ? styles.inputModified : ""}
               onChange={(e) => {
-                setDateRequestsLimit(e.target.value);
+                setDateModified(true);
                 dispatch(
                   updateRequestsAnalysisTableBodyParams({
                     dateRequestsLimit: e.target.value,
@@ -175,7 +183,22 @@ export default function RequestsAnalysis() {
                 );
               }}
             />
-            Manual Count found: {manualFoundCount}
+            <br />
+            <ul>
+              <li>
+                Count of All Approved Articles:{" "}
+                {approvedArticleStats.countOfApprovedArticles}
+              </li>
+              <li>
+                Manually Approved Articles:{" "}
+                {approvedArticleStats.countOfManuallyApprovedArticles}
+              </li>
+            </ul>
+          </div>
+          <div className={styles.divDownloadControls}>
+            <button onClick={downloadTableSpreadsheet}>
+              Download Table Spreadsheet
+            </button>
           </div>
         </div>
         {/* <div className={styles.divMainTop}>
