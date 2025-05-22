@@ -620,7 +620,7 @@ export default function ReviewArticles() {
       );
 
       if (result.summaryStatistics) {
-        console.log("-----> make summary statistics");
+        // console.log("-----> make summary statistics");
         dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
       }
     } catch (error) {

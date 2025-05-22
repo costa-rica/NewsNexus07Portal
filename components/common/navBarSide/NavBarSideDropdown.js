@@ -11,12 +11,12 @@ export default function NavBarSideDropdown({
   children,
   expanded,
 }) {
-  // const [expanded, setExpanded] = useState(false);
-
   return (
     <div>
       <div
-        onClick={() => toggleFunction()}
+        onClick={() => {
+          toggleFunction();
+        }}
         style={{
           display: "flex",
           alignItems: "center",
@@ -34,9 +34,13 @@ export default function NavBarSideDropdown({
           e.currentTarget.style.border = "1px solid transparent";
         }}
       >
-        <FontAwesomeIcon
+        {/* <FontAwesomeIcon
           icon={expanded ? faChevronRight : faChevronDown}
           style={{ width: expanded ? "1rem" : "1.5rem", marginRight: "1rem" }}
+        /> */}
+        <FontAwesomeIcon
+          icon={expanded ? faChevronDown : faChevronRight}
+          style={{ width: expanded ? "1.5rem" : "1rem", marginRight: "1rem" }}
         />
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
@@ -47,8 +51,10 @@ export default function NavBarSideDropdown({
           <span>{label}</span>
         </div>
       </div>
-
-      {expanded && <div style={{ paddingLeft: "2rem" }}>{children}</div>}
+      {Boolean(expanded) && (
+        <div style={{ paddingLeft: "2rem" }}>{children}</div>
+      )}
+      {/* {expanded && <div style={{ paddingLeft: "2rem" }}>{children}</div>} */}
     </div>
   );
 }

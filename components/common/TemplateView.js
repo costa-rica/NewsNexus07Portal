@@ -9,10 +9,11 @@ import { logoutUser } from "../../reducers/user";
 import NavBarSideLink from "./navBarSide/NavBarSideLink";
 import NavBarSideDropdown from "./navBarSide/NavBarSideDropdown";
 import {
-  toggleNavExpandGetArticles,
-  toggleNavExpandManageArticles,
-  toggleNavExpandDb,
-  toggleNavExpandAdminGeneral,
+  // toggleNavExpandGetArticles,
+  // toggleNavExpandManageArticles,
+  // toggleNavExpandDb,
+  // toggleNavExpandAdminGeneral,
+  toggleNavExpandItem,
 } from "../../reducers/user";
 import { useSelector } from "react-redux";
 export default function TemplateView({ children }) {
@@ -106,12 +107,13 @@ export default function TemplateView({ children }) {
             iconFilenameAndPath="/images/menu/user-solid-white.svg"
             label="User Settings"
           />
+          {/* Get Articles */}
           <NavBarSideDropdown
             iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
             label="Get Articles"
             currentPath={currentPath}
-            toggleFunction={() => dispatch(toggleNavExpandGetArticles())}
-            expanded={userReducer.navExpandGetArticles}
+            toggleFunction={() => dispatch(toggleNavExpandItem("GetArticles"))}
+            expanded={userReducer.navExpandObject.GetArticles}
           >
             <NavBarSideLink
               href="/articles/get-newsapi"
@@ -139,12 +141,16 @@ export default function TemplateView({ children }) {
             />
           </NavBarSideDropdown>
 
+          {/* Manage Articles */}
           <NavBarSideDropdown
             iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
             label="Manage Articles"
             currentPath={currentPath}
-            toggleFunction={() => dispatch(toggleNavExpandManageArticles())}
-            expanded={userReducer.navExpandManageArticles}
+            // toggleFunction={() => dispatch(toggleNavExpandManageArticles())}
+            toggleFunction={() =>
+              dispatch(toggleNavExpandItem("ManageArticles"))
+            }
+            expanded={userReducer.navExpandObject.ManageArticles}
           >
             <NavBarSideLink
               href="/articles/review"
@@ -168,13 +174,41 @@ export default function TemplateView({ children }) {
               currentPath={currentPath}
             />
           </NavBarSideDropdown>
+
+          {/* Reports & Analysis */}
+          <NavBarSideDropdown
+            iconFilenameAndPath="/images/menu/file-invoice-solid.svg"
+            label="Reports & Analysis"
+            currentPath={currentPath}
+            // toggleFunction={() => dispatch(toggleNavExpandReportsAnalysis())}
+            toggleFunction={() =>
+              dispatch(toggleNavExpandItem("ReportsAnalysis"))
+            }
+            expanded={userReducer.navExpandObject.ReportsAnalysis}
+          >
+            <NavBarSideLink
+              href="/reports-analysis/reports"
+              label="Reports"
+              style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
+            />
+            <NavBarSideLink
+              href="/reports-analysis/requests-analysis"
+              label="Requests Analysis"
+              style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
+            />
+          </NavBarSideDropdown>
+
+          {/* Manage DB */}
           {userReducer.isAdmin && (
             <NavBarSideDropdown
               iconFilenameAndPath="/images/menu/database-solid.svg"
               label="Manage DB"
               currentPath={currentPath}
-              toggleFunction={() => dispatch(toggleNavExpandDb())}
-              expanded={userReducer.navExpandDb}
+              // toggleFunction={() => dispatch(toggleNavExpandDb())}
+              toggleFunction={() => dispatch(toggleNavExpandItem("ManageDb"))}
+              expanded={userReducer.navExpandObject.ManageDb}
             >
               <NavBarSideLink
                 href="/admin-db/manage-db-backups"
@@ -197,13 +231,18 @@ export default function TemplateView({ children }) {
               />
             </NavBarSideDropdown>
           )}
+
+          {/* Admin General */}
           {userReducer.isAdmin && (
             <NavBarSideDropdown
               iconFilenameAndPath="/images/menu/user-tie-solid-white.svg"
               label="Admin"
               currentPath={currentPath}
-              toggleFunction={() => dispatch(toggleNavExpandAdminGeneral())}
-              expanded={userReducer.navExpandAdminGeneral}
+              // toggleFunction={() => dispatch(toggleNavExpandAdminGeneral())}
+              toggleFunction={() =>
+                dispatch(toggleNavExpandItem("AdminGeneral"))
+              }
+              expanded={userReducer.navExpandObject.AdminGeneral}
             >
               <NavBarSideLink
                 href="/admin-general/manage-users"
@@ -219,12 +258,7 @@ export default function TemplateView({ children }) {
               />
             </NavBarSideDropdown>
           )}
-          <NavBarSideLink
-            href="/articles/reports"
-            iconFilenameAndPath="/images/menu/file-invoice-solid.svg"
-            label="Reports"
-            currentPath={currentPath}
-          />
+
           <NavBarSideLink
             href="/login"
             iconFilenameAndPath="/images/menu/logout.svg"

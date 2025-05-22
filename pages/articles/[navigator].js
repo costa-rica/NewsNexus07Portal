@@ -30,11 +30,13 @@ export default function GetArticlesNavigator() {
       return import(`../../components/Articles/ReviewArticles`).catch(
         () => () => <p>ReviewArticles Not Found</p>
       );
-    } else if (navigator === "reports") {
-      return import(`../../components/Articles/Reports`).catch(() => () => (
-        <p>Reports Not Found</p>
-      ));
-    } else if (navigator === "add-delete") {
+    }
+    // else if (navigator === "reports") {
+    //   return import(`../../components/Articles/Reports`).catch(() => () => (
+    //     <p>Reports Not Found</p>
+    //   ));
+    // }
+    else if (navigator === "add-delete") {
       return import(`../../components/Articles/AddDeleteArticle`).catch(
         () => () => <p>AddDeleteArticle Not Found</p>
       );
@@ -42,11 +44,13 @@ export default function GetArticlesNavigator() {
       return import(`../../components/Articles/ManageAutomation`).catch(
         () => () => <p>ManageAutomation Not Found</p>
       );
-    } else if (navigator === "requests-analysis") {
-      return import(`../../components/Articles/RequestsAnalysis`).catch(
-        () => () => <p>RequestsAnalysis Not Found</p>
-      );
-    } else {
+    }
+    // else if (navigator === "requests-analysis") {
+    //   return import(`../../components/Articles/RequestsAnalysis`).catch(
+    //     () => () => <p>RequestsAnalysis Not Found</p>
+    //   );
+    // }
+    else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }
   });

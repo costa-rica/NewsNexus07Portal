@@ -37,7 +37,7 @@ export default function SummaryStatistics() {
       );
 
       if (result.summaryStatistics) {
-        console.log("-----> make summary statistics");
+        // console.log("-----> make summary statistics");
         dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
       }
     } catch (error) {

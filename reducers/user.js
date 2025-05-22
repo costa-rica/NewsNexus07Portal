@@ -8,10 +8,13 @@ const initialState = {
   stateArray: [],
   articlesSummaryStatistics: {},
   hideIrrelevant: false,
-  navExpandGetArticles: false,
-  navExpandManageArticles: false,
-  navExpandDb: false,
-  navExpandAdminGeneral: false,
+  navExpandObject: {
+    GetArticles: false,
+    ManageArticles: false,
+    ManageDb: false,
+    AdminGeneral: false,
+    ReportsAnalysis: false,
+  },
   requestTableBodyParams: {
     includeIsFromAutomation: false,
     dateLimitOnRequestMade: null,
@@ -87,18 +90,22 @@ export const userSlice = createSlice({
         state.articleTableBodyParams = newParams;
       }
     },
-    toggleNavExpandGetArticles: (state) => {
-      state.navExpandGetArticles = !state.navExpandGetArticles;
+    toggleNavExpandItem: (state, action) => {
+      const item = action.payload;
+      state.navExpandObject[item] = !state.navExpandObject[item];
     },
-    toggleNavExpandManageArticles: (state) => {
-      state.navExpandManageArticles = !state.navExpandManageArticles;
-    },
-    toggleNavExpandDb: (state) => {
-      state.navExpandDb = !state.navExpandDb;
-    },
-    toggleNavExpandAdminGeneral: (state) => {
-      state.navExpandAdminGeneral = !state.navExpandAdminGeneral;
-    },
+    // toggleNavExpandGetArticles: (state) => {
+    //   state.navExpandGetArticles = !state.navExpandGetArticles;
+    // },
+    // toggleNavExpandManageArticles: (state) => {
+    //   state.navExpandManageArticles = !state.navExpandManageArticles;
+    // },
+    // toggleNavExpandDb: (state) => {
+    //   state.navExpandDb = !state.navExpandDb;
+    // },
+    // toggleNavExpandAdminGeneral: (state) => {
+    //   state.navExpandAdminGeneral = !state.navExpandAdminGeneral;
+    // },
     updateRequestTableBodyParams: (state, action) => {
       const newParams = { ...state.requestTableBodyParams, ...action.payload };
       state.requestTableBodyParams = newParams;
@@ -118,10 +125,10 @@ export const userSlice = createSlice({
       state.stateArray = [];
       state.articlesSummaryStatistics = {};
       state.hideIrrelevant = false;
-      state.navExpandGetArticles = false;
-      state.navExpandManageArticles = false;
-      state.navExpandDb = false;
-      state.navExpandAdminGeneral = false;
+      // state.navExpandGetArticles = false;
+      // state.navExpandManageArticles = false;
+      // state.navExpandDb = false;
+      // state.navExpandAdminGeneral = false;
       state.requestTableBodyParams = {
         includeIsFromAutomation: false,
         dateLimitOnRequestMade: null,
@@ -135,6 +142,13 @@ export const userSlice = createSlice({
       };
       // NOTE: returnOnlyThisPublishedDateOrAfter, returnOnlyThisCreatedAtDateOrAfter, returnOnlyIsNotApproved, returnOnlyIsRelevant
       state.approvedArticlesArray = [];
+      state.navExpandObject = {
+        GetArticles: false,
+        ManageArticles: false,
+        ManageDb: false,
+        AdminGeneral: false,
+        ReportsAnalysis: false,
+      };
       console.log("-----> Finished Super Logout !!!");
     },
     updateRequestsAnalysisTableBodyParams: (state, action) => {
@@ -154,10 +168,11 @@ export const {
   updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
   toggleHideApproved,
-  toggleNavExpandGetArticles,
-  toggleNavExpandManageArticles,
-  toggleNavExpandDb,
-  toggleNavExpandAdminGeneral,
+  // toggleNavExpandGetArticles,
+  // toggleNavExpandManageArticles,
+  // toggleNavExpandDb,
+  // toggleNavExpandAdminGeneral,
+  toggleNavExpandItem,
   updateRequestTableBodyParams,
   updateArticleTableBodyParams,
   updateApprovedArticlesArray,
