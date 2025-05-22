@@ -25,6 +25,9 @@ const initialState = {
   },
   // NOTE: returnOnlyThisPublishedDateOrAfter, returnOnlyThisCreatedAtDateOrAfter, returnOnlyIsNotApproved, returnOnlyIsRelevant
   approvedArticlesArray: [],
+  requestsAnalysisTableBodyParams: {
+    dateRequestsLimit: null,
+  },
 };
 
 export const userSlice = createSlice({
@@ -134,6 +137,13 @@ export const userSlice = createSlice({
       state.approvedArticlesArray = [];
       console.log("-----> Finished Super Logout !!!");
     },
+    updateRequestsAnalysisTableBodyParams: (state, action) => {
+      const newParams = {
+        ...state.requestsAnalysisTableBodyParams,
+        ...action.payload,
+      };
+      state.requestsAnalysisTableBodyParams = newParams;
+    },
   },
 });
 
@@ -152,5 +162,6 @@ export const {
   updateArticleTableBodyParams,
   updateApprovedArticlesArray,
   logoutUserFully,
+  updateRequestsAnalysisTableBodyParams,
 } = userSlice.actions;
 export default userSlice.reducer;

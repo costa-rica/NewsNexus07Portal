@@ -4,22 +4,21 @@ import Table01 from "../common/Tables/Table01";
 import Table02Small from "../common/Tables/Table02Small";
 import { createColumnHelper } from "@tanstack/react-table";
 import TemplateView from "../common/TemplateView";
-import styles from "../../styles/articles/ReviewArticles.module.css";
+import styles from "../../styles/articles/RequestAnalysis.module.css";
+import { useDispatch } from "react-redux";
+import { updateRequestsAnalysisTableBodyParams } from "../../reducers/user";
 
 export default function RequestsAnalysis() {
   const userReducer = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [requestsArray, setRequestsArray] = useState([]);
   const [manualFoundCount, setManualFoundCount] = useState(0);
   const [loadingComponents, setLoadingComponents] = useState({
     table01: false,
   });
-  const [selectedRequest, setSelectedRequest] = useState(null);
+  // const [selectedRequest, setSelectedRequest] = useState(null);
 
   const fetchApprovedArticles = async () => {
-    const bodyParams = {
-      dateRequestsLimit: "2025-05-21",
-    };
-
     try {
       setLoadingComponents((prev) => ({
         ...prev,
@@ -33,7 +32,10 @@ export default function RequestsAnalysis() {
             "Content-Type": "application/json",
           },
           method: "POST",
-          body: JSON.stringify(bodyParams),
+          body: JSON.stringify({
+            dateRequestsLimit:
+              userReducer.requestsAnalysisTableBodyParams?.dateRequestsLimit,
+          }),
         }
       );
 
@@ -49,7 +51,8 @@ export default function RequestsAnalysis() {
 
       if (result.requestsArray && Array.isArray(result.requestsArray)) {
         setRequestsArray(result.requestsArray);
-        setSelectedRequest(result.requestsArray[0]);
+        // setSelectedRequest(result.requestsArray[0]);
+        setManualFoundCount(result.manualFoundCount);
       } else {
         setRequestsArray([]);
       }
@@ -68,16 +71,7 @@ export default function RequestsAnalysis() {
     columnHelper.accessor("id", {
       header: "ID",
       enableSorting: true,
-      cell: ({ row }) => {
-        return (
-          <button
-            onClick={() => setSelectedRequest(row.original)}
-            className={styles.button}
-          >
-            {row.original.id}
-          </button>
-        );
-      },
+      cell: ({ row }) => row.original.id,
     }),
     columnHelper.accessor("nameOfOrg", {
       header: "Name of Organization",
@@ -91,7 +85,9 @@ export default function RequestsAnalysis() {
         let andString = row.original.andString;
         let orString = row.original.orString;
         let notString = row.original.notString;
-        return `${andString} ${orString} ${notString}`;
+        return `AND: ${andString} ${orString ? "OR: " + orString : ""} ${
+          notString ? "NOT: " + notString : ""
+        }`;
       },
     }),
     columnHelper.accessor("includeOrExcludeDomainsString", {
@@ -110,17 +106,89 @@ export default function RequestsAnalysis() {
     fetchApprovedArticles();
   }, []);
 
+  const downloadTableSpreadsheet = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/download/table-approved-by-request`,
+        {
+          headers: {
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server Error: ${errorText}`);
+      }
+
+      const contentDisposition = response.headers.get("Content-Disposition");
+      let fileName = "report.xlsx";
+
+      if (contentDisposition && contentDisposition.includes("filename=")) {
+        console.log("----> Content-Disposition header:", contentDisposition);
+        const match = contentDisposition.match(/filename="(.+)"/);
+        if (match && match[1]) {
+          fileName = match[1];
+        }
+      } else {
+        console.log(`---> headers: ${JSON.stringify(response.headers)}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading spreadsheet:", error.message);
+    }
+  };
+
   return (
     <TemplateView>
       <main className={styles.main}>
         <div className={styles.divMainTop}>
-          <div>RequestsAnalysis</div>
+          <h2>RequestsAnalysis</h2>
+          <div className={styles.divDownloadControls}>
+            <button onClick={downloadTableSpreadsheet}>
+              Download Table Spreadsheet
+            </button>
+            Since:
+            <input
+              type="date"
+              value={
+                userReducer.requestsAnalysisTableBodyParams?.dateRequestsLimit
+              }
+              onChange={(e) => {
+                setDateRequestsLimit(e.target.value);
+                dispatch(
+                  updateRequestsAnalysisTableBodyParams({
+                    dateRequestsLimit: e.target.value,
+                  })
+                );
+              }}
+            />
+            Manual Count found: {manualFoundCount}
+          </div>
         </div>
-        <Table02Small
+        {/* <div className={styles.divMainTop}>
+          <div>RequestsAnalysis</div>
+          <button onClick={downloadTableSpreadsheet}>
+            Download Table Spreadsheet
+          </button>
+        </div> */}
+        <Table01
           data={requestsArray}
           columns={columnsForArticlesTable}
           //   selectedRowId={selectedRequest?.id}
-          //   loading={loadingComponents.table01}
+          loading={loadingComponents.table01}
         />
       </main>
     </TemplateView>

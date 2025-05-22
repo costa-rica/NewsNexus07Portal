@@ -13,7 +13,7 @@ import { useState } from "react";
 export default function Table01({
   data,
   columns,
-  selectedRowId,
+  selectedRowId = null,
   loading = false,
 }) {
   const [pagination, setPagination] = useState({
