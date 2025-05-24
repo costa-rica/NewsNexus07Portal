@@ -141,41 +141,69 @@
 .divRequestTableParameters {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  background-color: var(--gray-light);
+  border-radius: 0.5rem;
+}
+.divRequestTableParametersLeft {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
 .divParametersDetail {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  border: 1px solid gray;
   border-radius: 0.5rem;
-  align-items: center;
+  /* align-items: flex-start; */
+  align-items: flex-start;
+  justify-content: center;
   padding: 0.5rem;
+  gap: 0.5rem;
+  /* background-color: green; */
 }
 .divParametersDetailDate {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.5rem;
-  border: 1px solid gray;
   border-radius: 0.5rem;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 .lblParametersDetailMain {
   font-size: small;
-  width: 12rem;
-  text-align: center;
   margin: 0;
   padding: 0;
 }
-/* .divParametersDetailDate input {
-  margin: 0.5rem;
-} */
+
+.btnSubmitRequestTableParameters {
+  width: 12rem;
+  font-size: 1rem;
+  background-color: var(--blue-dark);
+  color: var(--gray-light);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; /*This with .btnSubmit:active make press feel*/
+}
+.divParametersDetailLoadingStatistics {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  justify-content: center;
+  width: 15rem;
+  padding-right: 0.5rem;
+  gap: 0.25rem;
+}
+.divParametersDetailLoadingStatisticsRow {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .lblParametersDetailTimes {
   font-size: small;
-}
-.divRequestTableParameters button {
-  width: 12rem;
 }
 /* ----------
 

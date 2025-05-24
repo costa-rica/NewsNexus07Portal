@@ -790,81 +790,107 @@ export default function ReviewArticles() {
         <div className={styles.divMainBottom}>
           <div className={styles.divRequestTableGroupSuper}>
             <div className={styles.divRequestTableParameters}>
-              <div className={styles.divParametersDetailDate}>
-                <span className={styles.lblParametersDetailMain}>
-                  Article Added to NewsNexus Db Date Limit:
-                </span>
-                <input
-                  className={styles.inputParametersDetailDate}
-                  type="date"
-                  value={
-                    userReducer.articleTableBodyParams
-                      ?.returnOnlyThisCreatedAtDateOrAfter
-                  }
-                  onChange={(e) =>
-                    dispatch(
-                      updateArticleTableBodyParams({
-                        returnOnlyThisCreatedAtDateOrAfter: e.target.value,
-                      })
-                    )
-                  }
-                />
+              <div className={styles.divRequestTableParametersLeft}>
+                <div className={styles.divParametersDetail}>
+                  <div className={styles.divParametersDetailDate}>
+                    <div className="tooltipWrapper">
+                      <span className={styles.lblParametersDetailMain}>
+                        Db Date Limit:
+                      </span>
+                      <span className="tooltipText">
+                        Limits downloading aritlces added to the Nexus News
+                        Database before this date
+                      </span>
+                    </div>
+                    <input
+                      className={styles.inputParametersDetailDate}
+                      type="date"
+                      value={
+                        userReducer.articleTableBodyParams
+                          ?.returnOnlyThisCreatedAtDateOrAfter
+                      }
+                      onChange={(e) =>
+                        dispatch(
+                          updateArticleTableBodyParams({
+                            returnOnlyThisCreatedAtDateOrAfter: e.target.value,
+                          })
+                        )
+                      }
+                    />
+                  </div>
+                  <div className={styles.divParametersDetailDate}>
+                    <div className="tooltipWrapper">
+                      <span className={styles.lblParametersDetailMain}>
+                        Published Date Limit:
+                      </span>
+                      <span className="tooltipText">
+                        Limits downloading aritlces published before this date
+                      </span>
+                    </div>
+                    <input
+                      type="date"
+                      value={
+                        userReducer.articleTableBodyParams
+                          ?.returnOnlyThisPublishedDateOrAfter
+                      }
+                      onChange={(e) =>
+                        dispatch(
+                          updateArticleTableBodyParams({
+                            returnOnlyThisPublishedDateOrAfter: e.target.value,
+                          })
+                        )
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.divParametersDetail}>
+                  <button
+                    className={`${styles.btnSubmitRequestTableParameters} ${
+                      userReducer.hideApproved ? styles.btnOpaque : ""
+                    }`}
+                    onClick={() => {
+                      dispatch(toggleHideApproved());
+                    }}
+                  >
+                    {userReducer.hideApproved
+                      ? "Show All Articles"
+                      : "Hide Approved Articles"}
+                  </button>
+                  <button
+                    className={`${styles.btnSubmitRequestTableParameters} ${
+                      userReducer.hideIrrelevant ? styles.btnOpaque : ""
+                    }`}
+                    onClick={() => {
+                      dispatch(toggleHideIrrelevant());
+                    }}
+                  >
+                    {userReducer.hideIrrelevant
+                      ? "Show All Articles"
+                      : "Hide Irrelevant Articles"}
+                  </button>
+                </div>
               </div>
-              <div className={styles.divParametersDetailDate}>
-                <span className={styles.lblParametersDetailMain}>
-                  Article Published Date Limit:
-                </span>
-                <input
-                  type="date"
-                  value={
-                    userReducer.articleTableBodyParams
-                      ?.returnOnlyThisPublishedDateOrAfter
-                  }
-                  onChange={(e) =>
-                    dispatch(
-                      updateArticleTableBodyParams({
-                        returnOnlyThisPublishedDateOrAfter: e.target.value,
-                      })
-                    )
-                  }
-                />
-              </div>
-              <div className={styles.divParametersDetail}>
-                <button
-                  className={`${styles.btnSubmit} ${
-                    userReducer.hideApproved ? styles.btnOpaque : ""
-                  }`}
-                  onClick={() => {
-                    dispatch(toggleHideApproved());
-                  }}
-                >
-                  {userReducer.hideApproved
-                    ? "Show All Articles"
-                    : "Hide Approved Articles"}
-                </button>
-                <button
-                  className={`${styles.btnSubmit} ${
-                    userReducer.hideIrrelevant ? styles.btnOpaque : ""
-                  }`}
-                  onClick={() => {
-                    dispatch(toggleHideIrrelevant());
-                  }}
-                >
-                  {userReducer.hideIrrelevant
-                    ? "Show All Articles"
-                    : "Hide Irrelevant Articles"}
-                </button>
-              </div>
-              <div className={styles.divParametersDetail}>
-                <span className={styles.lblParametersDetailTimes}>
-                  Time to load Table:{" "}
-                  {loadingTimes.timeToRenderTable01InSeconds.toFixed(1)} s
-                </span>
-                <span className={styles.lblParametersDetailTimes}>
-                  Query time (API):{" "}
-                  {loadingTimes.timeToRenderResponseFromApiInSeconds.toFixed(1)}{" "}
-                  s
-                </span>
+              <div className={styles.divParametersDetailLoadingStatistics}>
+                <div className={styles.divParametersDetailLoadingStatisticsRow}>
+                  <span className={styles.lblParametersDetailTimes}>
+                    Time to get table data (API):{" "}
+                  </span>
+                  <span className={styles.lblParametersDetailTimes}>
+                    {loadingTimes.timeToRenderResponseFromApiInSeconds.toFixed(
+                      1
+                    )}{" "}
+                    s
+                  </span>
+                </div>
+                <div className={styles.divParametersDetailLoadingStatisticsRow}>
+                  <div className={styles.lblParametersDetailTimes}>
+                    Time to load table (Website):{" "}
+                  </div>
+                  <div className={styles.lblParametersDetailTimes}>
+                    {loadingTimes.timeToRenderTable01InSeconds.toFixed(1)} s
+                  </div>
+                </div>
               </div>
             </div>
             <Table01
