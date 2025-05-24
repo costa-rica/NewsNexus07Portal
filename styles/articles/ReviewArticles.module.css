@@ -170,6 +170,10 @@
   align-items: center;
   width: 100%;
 }
+.inputParametersDetailDate {
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+}
 .lblParametersDetailMain {
   font-size: small;
   margin: 0;

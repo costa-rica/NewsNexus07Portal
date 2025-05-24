@@ -797,7 +797,7 @@ export default function ReviewArticles() {
                   <div className={styles.divParametersDetailDate}>
                     <div className="tooltipWrapper">
                       <span className={styles.lblParametersDetailMain}>
-                        Db Date Limit:
+                        Database Date Limit:
                       </span>
                       <span className="tooltipText">
                         Limits downloading aritlces added to the Nexus News
@@ -830,6 +830,7 @@ export default function ReviewArticles() {
                       </span>
                     </div>
                     <input
+                      className={styles.inputParametersDetailDate}
                       type="date"
                       value={
                         userReducer.articleTableBodyParams
@@ -856,8 +857,8 @@ export default function ReviewArticles() {
                     }}
                   >
                     {userReducer.hideApproved
-                      ? "Show All Articles"
-                      : "Hide Approved Articles"}
+                      ? "Show Approved"
+                      : "Hide Approved"}
                   </button>
                   <button
                     className={`${styles.btnSubmitRequestTableParameters} ${
@@ -868,8 +869,8 @@ export default function ReviewArticles() {
                     }}
                   >
                     {userReducer.hideIrrelevant
-                      ? "Show All Articles"
-                      : "Hide Irrelevant Articles"}
+                      ? "Show Irrelevant"
+                      : "Hide Irrelevant"}
                   </button>
                 </div>
               </div>
