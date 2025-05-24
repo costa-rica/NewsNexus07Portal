@@ -16,6 +16,7 @@ import {
   updateArticleTableBodyParams,
 } from "../../reducers/user";
 import SummaryStatistics from "../common/SummaryStatistics";
+
 export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
@@ -32,6 +33,10 @@ export default function ReviewArticles() {
   const [loadingComponents, setLoadingComponents] = useState({
     table01: false,
     summaryStatistics: false,
+  });
+  const [loadingTimes, setLoadingTimes] = useState({
+    timeToRenderResponseFromApiInSeconds: 0,
+    timeToRenderTable01InSeconds: 0,
   });
 
   useEffect(() => {
@@ -53,6 +58,7 @@ export default function ReviewArticles() {
   }, [articlesArray, userReducer.hideIrrelevant]);
 
   const fetchArticlesArray = async () => {
+    let startTime = null;
     const bodyParams = {
       ...userReducer.articleTableBodyParams,
       // entityWhoCategorizesIdSemantic: 1,
@@ -86,13 +92,14 @@ export default function ReviewArticles() {
       const result = await response.json();
       console.log("Fetched Data:", result);
 
+      startTime = Date.now();
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         setArticlesArray(result.articlesArray);
-        // setSelectedArticle({
-        //   ...result.articlesArray[0],
-        //   content: result.articlesArray[0].description,
-        // });
-        // updateStateArrayWithArticleState(result.articlesArray[0]);
+        setLoadingTimes((prev) => ({
+          ...prev,
+          timeToRenderResponseFromApiInSeconds:
+            result.timeToRenderResponseFromApiInSeconds,
+        }));
       } else {
         setArticlesArray([]);
       }
@@ -103,6 +110,13 @@ export default function ReviewArticles() {
     setLoadingComponents((prev) => ({
       ...prev,
       table01: false,
+    }));
+
+    setLoadingTimes((prev) => ({
+      ...prev,
+      timeToRenderTable01InSeconds: startTime
+        ? (Date.now() - startTime) / 1000
+        : 0,
     }));
   };
 
@@ -645,6 +659,7 @@ export default function ReviewArticles() {
     }
     return returnFlag;
   });
+
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -775,11 +790,12 @@ export default function ReviewArticles() {
         <div className={styles.divMainBottom}>
           <div className={styles.divRequestTableGroupSuper}>
             <div className={styles.divRequestTableParameters}>
-              <div className={styles.divParametersDetail}>
+              <div className={styles.divParametersDetailDate}>
                 <span className={styles.lblParametersDetailMain}>
                   Article Added to NewsNexus Db Date Limit:
                 </span>
                 <input
+                  className={styles.inputParametersDetailDate}
                   type="date"
                   value={
                     userReducer.articleTableBodyParams
@@ -794,7 +810,7 @@ export default function ReviewArticles() {
                   }
                 />
               </div>
-              <div className={styles.divParametersDetail}>
+              <div className={styles.divParametersDetailDate}>
                 <span className={styles.lblParametersDetailMain}>
                   Article Published Date Limit:
                 </span>
@@ -813,30 +829,43 @@ export default function ReviewArticles() {
                   }
                 />
               </div>
-              <button
-                className={`${styles.btnSubmit} ${
-                  userReducer.hideApproved ? styles.btnOpaque : ""
-                }`}
-                onClick={() => {
-                  dispatch(toggleHideApproved());
-                }}
-              >
-                {userReducer.hideApproved
-                  ? "Show All Articles"
-                  : "Hide Approved Articles"}
-              </button>
-              <button
-                className={`${styles.btnSubmit} ${
-                  userReducer.hideIrrelevant ? styles.btnOpaque : ""
-                }`}
-                onClick={() => {
-                  dispatch(toggleHideIrrelevant());
-                }}
-              >
-                {userReducer.hideIrrelevant
-                  ? "Show All Articles"
-                  : "Hide Irrelevant Articles"}
-              </button>
+              <div className={styles.divParametersDetail}>
+                <button
+                  className={`${styles.btnSubmit} ${
+                    userReducer.hideApproved ? styles.btnOpaque : ""
+                  }`}
+                  onClick={() => {
+                    dispatch(toggleHideApproved());
+                  }}
+                >
+                  {userReducer.hideApproved
+                    ? "Show All Articles"
+                    : "Hide Approved Articles"}
+                </button>
+                <button
+                  className={`${styles.btnSubmit} ${
+                    userReducer.hideIrrelevant ? styles.btnOpaque : ""
+                  }`}
+                  onClick={() => {
+                    dispatch(toggleHideIrrelevant());
+                  }}
+                >
+                  {userReducer.hideIrrelevant
+                    ? "Show All Articles"
+                    : "Hide Irrelevant Articles"}
+                </button>
+              </div>
+              <div className={styles.divParametersDetail}>
+                <span className={styles.lblParametersDetailTimes}>
+                  Time to load Table:{" "}
+                  {loadingTimes.timeToRenderTable01InSeconds.toFixed(1)} s
+                </span>
+                <span className={styles.lblParametersDetailTimes}>
+                  Query time (API):{" "}
+                  {loadingTimes.timeToRenderResponseFromApiInSeconds.toFixed(1)}{" "}
+                  s
+                </span>
+              </div>
             </div>
             <Table01
               columns={columnsForArticlesTable}
