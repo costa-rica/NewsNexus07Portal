@@ -35,8 +35,8 @@ export default function ReviewArticles() {
     summaryStatistics: false,
   });
   const [loadingTimes, setLoadingTimes] = useState({
-    timeToRenderResponseFromApiInSeconds: 0,
-    timeToRenderTable01InSeconds: 0,
+    timeToRenderResponseFromApiInSeconds: "n/a",
+    timeToRenderTable01InSeconds: "n/a",
   });
 
   useEffect(() => {
@@ -877,10 +877,11 @@ export default function ReviewArticles() {
                     Time to get table data (API):{" "}
                   </span>
                   <span className={styles.lblParametersDetailTimes}>
-                    {loadingTimes.timeToRenderResponseFromApiInSeconds.toFixed(
-                      1
-                    )}{" "}
-                    s
+                    {loadingComponents.table01
+                      ? "loading..."
+                      : loadingTimes.timeToRenderResponseFromApiInSeconds.toFixed(
+                          1
+                        ) + " s"}
                   </span>
                 </div>
                 <div className={styles.divParametersDetailLoadingStatisticsRow}>
@@ -888,7 +889,10 @@ export default function ReviewArticles() {
                     Time to load table (Website):{" "}
                   </div>
                   <div className={styles.lblParametersDetailTimes}>
-                    {loadingTimes.timeToRenderTable01InSeconds.toFixed(1)} s
+                    {loadingComponents.table01
+                      ? "loading..."
+                      : loadingTimes.timeToRenderTable01InSeconds.toFixed(1) +
+                        " s"}
                   </div>
                 </div>
               </div>
