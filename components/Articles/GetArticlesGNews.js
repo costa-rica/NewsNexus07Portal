@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import ModalLoading from "../common/modals/ModalLoading";
 
 export default function GetArticlesGNews() {
-  const [keywordsArray, setKeywordsArray] = useState([]);
+  // const [keywordsArray, setKeywordsArray] = useState([]);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -125,35 +125,6 @@ export default function GetArticlesGNews() {
       setEndDate(today);
     }
   }, []);
-  // const fetchKeywordsArray = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/keywords`,
-  //       {
-  //         headers: { Authorization: `Bearer ${userReducer.token}` },
-  //       }
-  //     );
-
-  //     console.log(`Response status: ${response.status}`);
-
-  //     if (!response.ok) {
-  //       const errorText = await response.text(); // Log response text for debugging
-  //       throw new Error(`Server Error: ${errorText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log("Fetched Data:", result);
-
-  //     if (result.keywordsArray && Array.isArray(result.keywordsArray)) {
-  //       setKeywordsArray(result.keywordsArray);
-  //     } else {
-  //       setKeywordsArray([]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error.message);
-  //     setKeywordsArray([]);
-  //   }
-  // };
 
   const requestNewsApi = async () => {
     try {
@@ -251,30 +222,6 @@ export default function GetArticlesGNews() {
       table01: false,
     }));
   };
-  // const fetchNewsOrgArray = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/news-aggregators/news-org-apis`,
-  //       {
-  //         headers: { Authorization: `Bearer ${userReducer.token}` },
-  //       }
-  //     );
-
-  //     console.log(`Response status: ${response.status}`);
-
-  //     const result = await response.json();
-  //     console.log("Fetched Data:", result);
-
-  //     if (result.newsOrgArray && Array.isArray(result.newsOrgArray)) {
-  //       setNewsOrgArray(result.newsOrgArray);
-  //     } else {
-  //       setNewsOrgArray([]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error.message);
-  //     setNewsOrgArray([]);
-  //   }
-  // };
 
   const handleCopyRequest = (rowData) => {
     // setNewsOrg(rowData.nameOfOrg);
