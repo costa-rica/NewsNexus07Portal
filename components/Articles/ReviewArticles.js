@@ -35,8 +35,8 @@ export default function ReviewArticles() {
     summaryStatistics: false,
   });
   const [loadingTimes, setLoadingTimes] = useState({
-    timeToRenderResponseFromApiInSeconds: "n/a",
-    timeToRenderTable01InSeconds: "n/a",
+    timeToRenderResponseFromApiInSeconds: "loading...",
+    timeToRenderTable01InSeconds: "loading...",
   });
 
   useEffect(() => {
@@ -97,8 +97,9 @@ export default function ReviewArticles() {
         setArticlesArray(result.articlesArray);
         setLoadingTimes((prev) => ({
           ...prev,
-          timeToRenderResponseFromApiInSeconds:
-            result.timeToRenderResponseFromApiInSeconds,
+          timeToRenderResponseFromApiInSeconds: `${result.timeToRenderResponseFromApiInSeconds.toFixed(
+            1
+          )} s`,
         }));
       } else {
         setArticlesArray([]);
@@ -112,11 +113,12 @@ export default function ReviewArticles() {
       table01: false,
     }));
 
+    const loadTimeLabel = `${
+      startTime ? ((Date.now() - startTime) / 1000).toFixed(1) : 0
+    } s`;
     setLoadingTimes((prev) => ({
       ...prev,
-      timeToRenderTable01InSeconds: startTime
-        ? (Date.now() - startTime) / 1000
-        : 0,
+      timeToRenderTable01InSeconds: loadTimeLabel,
     }));
   };
 
@@ -877,11 +879,8 @@ export default function ReviewArticles() {
                     Time to get table data (API):{" "}
                   </span>
                   <span className={styles.lblParametersDetailTimes}>
-                    {loadingComponents.table01
-                      ? "loading..."
-                      : loadingTimes.timeToRenderResponseFromApiInSeconds.toFixed(
-                          1
-                        ) + " s"}
+                    {/* check if loadingTimes.timeToRenderResponseFromApiInSeconds is a number */}
+                    {loadingTimes.timeToRenderResponseFromApiInSeconds}
                   </span>
                 </div>
                 <div className={styles.divParametersDetailLoadingStatisticsRow}>
@@ -889,10 +888,11 @@ export default function ReviewArticles() {
                     Time to load table (Website):{" "}
                   </div>
                   <div className={styles.lblParametersDetailTimes}>
-                    {loadingComponents.table01
+                    {loadingTimes.timeToRenderTable01InSeconds}
+                    {/* {loadingComponents.table01
                       ? "loading..."
                       : loadingTimes.timeToRenderTable01InSeconds.toFixed(1) +
-                        " s"}
+                        " s"} */}
                   </div>
                 </div>
               </div>
