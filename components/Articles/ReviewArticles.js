@@ -539,6 +539,11 @@ export default function ReviewArticles() {
               article.id === selectedArticle.id ? updatedArticle : article
             )
           );
+          setIsOpenModalInformation(true);
+          setModalInformationContent({
+            title: "Successfully validated state(s)",
+            content: "NOTE: Table won't update unless you refresh the page.",
+          });
         }
       }
     } catch (error) {
