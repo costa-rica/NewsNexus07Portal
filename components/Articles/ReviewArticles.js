@@ -19,8 +19,6 @@ import SummaryStatistics from "../common/SummaryStatistics";
 export default function ReviewArticles() {
   const userReducer = useSelector((state) => state.user);
   const [articlesArray, setArticlesArray] = useState([]);
-  const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
-  // const [infoModalContent, setInfoModalContent] = useState("");
   const [isOpenModalInformation, setIsOpenModalInformation] = useState(false);
   const [modalInformationContent, setModalInformationContent] = useState({
     title: "Information",
@@ -37,12 +35,15 @@ export default function ReviewArticles() {
     timeToRenderResponseFromApiInSeconds: "loading...",
     timeToRenderTable01InSeconds: "loading...",
   });
+  const [allowUpdateSelectedArticle, setAllowUpdateSelectedArticle] =
+    useState(true);
 
   useEffect(() => {
     fetchArticlesArray();
   }, []);
 
   useEffect(() => {
+    if (!allowUpdateSelectedArticle) return;
     const filteredArticles = userReducer.hideIrrelevant
       ? articlesArray.filter((article) => article.isRelevant !== false)
       : articlesArray;
@@ -484,6 +485,7 @@ export default function ReviewArticles() {
 
   const handleClickedValidateState = async () => {
     console.log("clicked validate state");
+    setAllowUpdateSelectedArticle(false);
 
     // const selectedStateIds = stateArray
     //   .filter((st) => st.selected)
