@@ -9,7 +9,6 @@ import InputDropdownCheckbox from "../common/InputDropdownCheckbox";
 import ModalInformation from "../common/modals/ModalInformation";
 import { useDispatch } from "react-redux";
 import {
-  updateArticlesSummaryStatistics,
   toggleHideIrrelevant,
   toggleHideApproved,
   updateStateArray,
@@ -543,7 +542,6 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error validating states:", error.message);
     }
-    // fetchArticlesSummaryStatistics();
   };
 
   const handleApproveArticle = async () => {
@@ -606,49 +604,6 @@ export default function ReviewArticles() {
     } catch (error) {
       console.error("Error approving article:", error.message);
     }
-    fetchArticlesSummaryStatistics();
-  };
-
-  const fetchArticlesSummaryStatistics = async () => {
-    try {
-      setLoadingComponents((prev) => ({
-        ...prev,
-        summaryStatistics: true,
-      }));
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/summary-statistics`,
-        {
-          headers: { Authorization: `Bearer ${userReducer.token}` },
-        }
-      );
-
-      console.log(`Response status: ${response.status}`);
-
-      if (!response.ok) {
-        const errorText = await response.text(); // Log response text for debugging
-        throw new Error(`Server Error: ${errorText}`);
-      }
-
-      const result = await response.json();
-      console.log(
-        "Fetched Data (articles/summary-statistics):",
-        result.summaryStatistics
-      );
-
-      if (result.summaryStatistics) {
-        // console.log("-----> make summary statistics");
-        dispatch(updateArticlesSummaryStatistics(result.summaryStatistics));
-      }
-    } catch (error) {
-      console.error(
-        "Error fetching articles summary statistics:",
-        error.message
-      );
-    }
-    setLoadingComponents((prev) => ({
-      ...prev,
-      summaryStatistics: false,
-    }));
   };
 
   const filteredArticlesArray = articlesArray.filter((article) => {
