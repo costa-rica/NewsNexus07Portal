@@ -57,6 +57,41 @@ export default function ReviewArticles() {
     }
   }, [articlesArray, userReducer.hideIrrelevant]);
 
+  useEffect(() => {
+    const currentVal =
+      userReducer.articleTableBodyParams?.returnOnlyThisPublishedDateOrAfter;
+
+    const date180DaysAgo = new Date(
+      new Date().setDate(new Date().getDate() - 180)
+    );
+    const iso180DaysAgo = date180DaysAgo.toISOString().split("T")[0];
+
+    if (!currentVal || new Date(currentVal) < date180DaysAgo) {
+      dispatch(
+        updateArticleTableBodyParams({
+          returnOnlyThisPublishedDateOrAfter: iso180DaysAgo,
+        })
+      );
+    }
+  }, []);
+  // useEffect(() => {
+  //   const val =
+  //     userReducer.articleTableBodyParams?.returnOnlyThisPublishedDateOrAfter;
+  //   if (!val) {
+  //     const defaultDate = new Date(
+  //       new Date().setDate(new Date().getDate() - 180)
+  //     )
+  //       .toISOString()
+  //       .split("T")[0];
+
+  //     dispatch(
+  //       updateArticleTableBodyParams({
+  //         returnOnlyThisPublishedDateOrAfter: defaultDate,
+  //       })
+  //     );
+  //   }
+  // }, []);
+
   const fetchArticlesArray = async () => {
     let startTime = null;
     const bodyParams = {
@@ -804,6 +839,11 @@ export default function ReviewArticles() {
                             returnOnlyThisPublishedDateOrAfter: e.target.value,
                           })
                         )
+                      }
+                      min={
+                        new Date(new Date().setDate(new Date().getDate() - 180))
+                          .toISOString()
+                          .split("T")[0]
                       }
                     />
                   </div>
