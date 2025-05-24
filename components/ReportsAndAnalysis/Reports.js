@@ -32,7 +32,6 @@ export default function Reports() {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isOpenModalReportRejected, setIsOpenModalReportRejected] =
     useState(false);
-  // const [loadingTable01, setLoadingTable01] = useState(false);
   const [loadingComponents, setLoadingComponents] = useState({
     table01: false,
     summaryStatistics: false,
@@ -43,6 +42,10 @@ export default function Reports() {
     isOpenModalArticleReferenceNumber,
     setIsOpenModalArticleReferenceNumber,
   ] = useState(false);
+  const [loadingTimes, setLoadingTimes] = useState({
+    timeToRenderResponseFromApiInSeconds: "refresh ?",
+    timeToRenderTable01InSeconds: "refresh ?",
+  });
   useEffect(() => {
     fetchReportsList();
     if (userReducer?.approvedArticlesArray?.length === 0) {
@@ -220,7 +223,13 @@ export default function Reports() {
 
   // Top Right Table
   const fetchApprovedArticlesArray = async () => {
-    // setLoadingTable01(true);
+    setLoadingTimes((prev) => ({
+      ...prev,
+      timeToRenderResponseFromApiInSeconds: "loading...",
+      timeToRenderTable01InSeconds: "loading...",
+    }));
+    let startTime = null;
+
     setLoadingComponents((prev) => ({
       ...prev,
       table01: true,
@@ -244,6 +253,12 @@ export default function Reports() {
       const result = await response.json();
       console.log("Fetched Data:", result);
 
+      setLoadingTimes((prev) => ({
+        ...prev,
+        timeToRenderResponseFromApiInSeconds: `${result.timeToRenderResponseFromApiInSeconds.toFixed(
+          1
+        )} s`,
+      }));
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
         let tempArray = result.articlesArray;
         tempArray.forEach((article) => {
@@ -265,6 +280,13 @@ export default function Reports() {
     setLoadingComponents((prev) => ({
       ...prev,
       table01: false,
+    }));
+    const loadTimeLabel = `${
+      startTime ? ((Date.now() - startTime) / 1000).toFixed(1) : 0
+    } s`;
+    setLoadingTimes((prev) => ({
+      ...prev,
+      timeToRenderTable01InSeconds: loadTimeLabel,
     }));
   };
 
@@ -683,20 +705,40 @@ export default function Reports() {
           </div>
 
           <div className={styles.divBottom}>
+            <div className={styles.divRequestTableParameters}>
+              <button
+                className={styles.btnSubmit}
+                onClick={() => {
+                  fetchApprovedArticlesArray();
+                }}
+              >
+                Refresh
+              </button>
+              <div className={styles.divParametersDetailLoadingStatistics}>
+                <div className={styles.divParametersDetailLoadingStatisticsRow}>
+                  <span className={styles.lblParametersDetailTimes}>
+                    Time to get table data (API):{" "}
+                  </span>
+                  <span className={styles.lblParametersDetailTimes}>
+                    {loadingTimes.timeToRenderResponseFromApiInSeconds}
+                  </span>
+                </div>
+                <div className={styles.divParametersDetailLoadingStatisticsRow}>
+                  <div className={styles.lblParametersDetailTimes}>
+                    Time to load table (Website):{" "}
+                  </div>
+                  <div className={styles.lblParametersDetailTimes}>
+                    {loadingTimes.timeToRenderTable01InSeconds}
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className={styles.divApprovedArticlesHeader}>
               <h3>
                 Approved Articles (count:{" "}
                 {userReducer?.approvedArticlesArray?.length})
               </h3>
               <div className={styles.divApprovedArticlesActions}>
-                <button
-                  className={styles.btnSubmit}
-                  onClick={() => {
-                    fetchApprovedArticlesArray();
-                  }}
-                >
-                  Refresh
-                </button>
                 <button
                   className={`${styles.btnSubmit} ${
                     userReducer.approvedArticlesArray?.length > 0 &&
