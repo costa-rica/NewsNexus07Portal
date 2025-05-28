@@ -94,6 +94,14 @@
 .divRightMenu a.active {
   background-color: black;
 }
+
+.divCredits {
+  position: absolute;
+  bottom: 0;
+  color: white;
+  font-size: 0.75rem;
+}
+
 /* Large screens (media query) */
 @media (min-width: 768px) {
   .headerCustom {

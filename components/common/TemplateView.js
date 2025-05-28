@@ -203,6 +203,7 @@ export default function TemplateView({ children }) {
               label="Counts By State Analysis"
               style={{ padding: "0.25rem" }}
               currentPath={currentPath}
+              dateAdded="2025-05-28"
             />
           </NavBarSideDropdown>
 
@@ -212,7 +213,6 @@ export default function TemplateView({ children }) {
               iconFilenameAndPath="/images/menu/database-solid.svg"
               label="Manage DB"
               currentPath={currentPath}
-              // toggleFunction={() => dispatch(toggleNavExpandDb())}
               toggleFunction={() => dispatch(toggleNavExpandItem("ManageDb"))}
               expanded={userReducer.navExpandObject.ManageDb}
             >
@@ -272,6 +272,15 @@ export default function TemplateView({ children }) {
             onEnterFunction={() => dispatch(logoutUser())}
             currentPath={currentPath}
           />
+
+          <div className={styles.divCredits}>
+            <Link
+              href="https://www.flaticon.com/free-icons/new"
+              title="new icons"
+            >
+              New icons created by Pixel perfect - Flaticon
+            </Link>
+          </div>
         </div>
       </div>
     </>
