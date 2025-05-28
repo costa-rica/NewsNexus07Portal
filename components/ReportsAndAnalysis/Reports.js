@@ -400,11 +400,12 @@ export default function Reports() {
           className={styles.btnDownload}
         >
           {/* <FontAwesomeIcon icon={faDownload} className={styles.faDownload} /> */}
-          <img
+          {/* <img
             src="/images/buttons/reports/download-solid.svg"
             alt="Download"
             className={styles.faDownload}
-          />
+          /> */}
+          <span className={styles.faDownload} />
         </button>
       ),
     }),
@@ -420,11 +421,12 @@ export default function Reports() {
           className={styles.btnDelete}
         >
           {/* <FontAwesomeIcon icon={faTrash} className={styles.faTrash} /> */}
-          <img
+          {/* <img
             src="/images/buttons/reports/trash-solid.svg"
             alt="Delete"
             className={styles.faTrash}
-          />
+          /> */}
+          <span className={styles.faTrash} />
         </button>
       ),
     }),
