@@ -198,6 +198,12 @@ export default function TemplateView({ children }) {
               style={{ padding: "0.25rem" }}
               currentPath={currentPath}
             />
+            <NavBarSideLink
+              href="/reports-analysis/analysis-counts-by-state"
+              label="Analysis Counts By State"
+              style={{ padding: "0.25rem" }}
+              currentPath={currentPath}
+            />
           </NavBarSideDropdown>
 
           {/* Manage DB */}

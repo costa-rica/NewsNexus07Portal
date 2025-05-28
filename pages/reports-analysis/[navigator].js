@@ -14,6 +14,10 @@ export default function ReportsAnalysisNavigator() {
       return import(
         `../../components/ReportsAndAnalysis/RequestsAnalysis`
       ).catch(() => () => <p>RequestsAnalysis Not Found</p>);
+    } else if (navigator === "analysis-counts-by-state") {
+      return import(
+        `../../components/ReportsAndAnalysis/AnalysisCountsByState`
+      ).catch(() => () => <p>AnalysisCountsByState Not Found</p>);
     } else {
       return Promise.resolve(() => <p>Something else Not Found</p>);
     }

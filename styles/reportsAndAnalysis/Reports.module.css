@@ -91,11 +91,6 @@ New Report Table
 .btnDownload:hover .faDownload {
   background-image: url("/images/buttons/reports/download-solid-green.svg");
 }
-/* .btnDownload:hover {
-  background-color: rgb(98, 167, 98);
-  border-radius: 25%;
-  opacity: 0.6;
-} */
 
 .btnDelete {
   background-color: transparent;
@@ -115,17 +110,6 @@ New Report Table
 .btnDelete:hover .faTrash {
   background-image: url("/images/buttons/reports/trash-solid-red.svg");
 }
-/* .btnDelete:hover {
-  background-color: rgb(213, 50, 50);
-  border-radius: 25%;
-  opacity: 0.6;
-} */
-/*
----------------------
-Staged Articles Table
----------------------
-*/
-
 .divStagedColumnValue {
   text-align: center;
   color: var(--gray-dark);

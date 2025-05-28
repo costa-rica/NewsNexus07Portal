@@ -4,7 +4,7 @@ import Table01 from "../common/Tables/Table01";
 import Table02Small from "../common/Tables/Table02Small";
 import { createColumnHelper } from "@tanstack/react-table";
 import TemplateView from "../common/TemplateView";
-import styles from "../../styles/articles/RequestAnalysis.module.css";
+import styles from "../../styles/reportsAndAnalysis/RequestsAnalysis.module.css";
 import { useDispatch } from "react-redux";
 import { updateRequestsAnalysisTableBodyParams } from "../../reducers/user";
 
