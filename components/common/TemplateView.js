@@ -97,182 +97,185 @@ export default function TemplateView({ children }) {
             </div>
           )}
 
-          <NavBarSideLink
-            href="/"
-            iconFilenameAndPath="/images/menu/house-solid.svg"
-            label="Home"
-          />
-          <NavBarSideLink
-            href="/user-settings"
-            iconFilenameAndPath="/images/menu/user-solid-white.svg"
-            label="User Settings"
-          />
-          {/* Get Articles */}
-          <NavBarSideDropdown
-            iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
-            label="Get Articles"
-            currentPath={currentPath}
-            toggleFunction={() => dispatch(toggleNavExpandItem("GetArticles"))}
-            expanded={userReducer.navExpandObject.GetArticles}
-          >
+          <div className={styles.divNavBarSideLinks}>
             <NavBarSideLink
-              href="/articles/get-newsapi"
-              style={{ padding: "0.25rem" }}
-              label="News API"
-              currentPath={currentPath}
+              href="/"
+              iconFilenameAndPath="/images/menu/house-solid.svg"
+              label="Home"
             />
             <NavBarSideLink
-              href="/articles/get-gnews"
-              style={{ padding: "0.25rem" }}
-              label="GNews"
-              currentPath={currentPath}
+              href="/user-settings"
+              iconFilenameAndPath="/images/menu/user-solid-white.svg"
+              label="User Settings"
             />
-            <NavBarSideLink
-              href="/articles/get-newsdataio"
-              style={{ padding: "0.25rem" }}
-              label="NewsDataIO"
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/articles/automation"
-              style={{ padding: "0.25rem" }}
-              label="Automation & Browser Extension"
-              currentPath={currentPath}
-            />
-          </NavBarSideDropdown>
-
-          {/* Manage Articles */}
-          <NavBarSideDropdown
-            iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
-            label="Manage Articles"
-            currentPath={currentPath}
-            // toggleFunction={() => dispatch(toggleNavExpandManageArticles())}
-            toggleFunction={() =>
-              dispatch(toggleNavExpandItem("ManageArticles"))
-            }
-            expanded={userReducer.navExpandObject.ManageArticles}
-          >
-            <NavBarSideLink
-              href="/articles/review"
-              // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
-              label="Review Articles"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/articles/add-delete"
-              // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
-              label="Add / Delete Article"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/articles/requests-analysis"
-              // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
-              label="Requests Analysis"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-          </NavBarSideDropdown>
-
-          {/* Reports & Analysis */}
-          <NavBarSideDropdown
-            iconFilenameAndPath="/images/menu/file-invoice-solid.svg"
-            label="Reports & Analysis"
-            currentPath={currentPath}
-            // toggleFunction={() => dispatch(toggleNavExpandReportsAnalysis())}
-            toggleFunction={() =>
-              dispatch(toggleNavExpandItem("ReportsAnalysis"))
-            }
-            expanded={userReducer.navExpandObject.ReportsAnalysis}
-          >
-            <NavBarSideLink
-              href="/reports-analysis/reports"
-              label="Reports"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/reports-analysis/analysis-requests"
-              label="Requests Analysis"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-            />
-            <NavBarSideLink
-              href="/reports-analysis/analysis-counts-by-state"
-              label="Counts By State Analysis"
-              style={{ padding: "0.25rem" }}
-              currentPath={currentPath}
-              dateAdded="2025-05-28"
-            />
-          </NavBarSideDropdown>
-
-          {/* Manage DB */}
-          {userReducer.isAdmin && (
+            {/* Get Articles */}
             <NavBarSideDropdown
-              iconFilenameAndPath="/images/menu/database-solid.svg"
-              label="Manage DB"
+              iconFilenameAndPath="/images/menu/satellite-dish-solid.svg"
+              label="Get Articles"
               currentPath={currentPath}
-              toggleFunction={() => dispatch(toggleNavExpandItem("ManageDb"))}
-              expanded={userReducer.navExpandObject.ManageDb}
-            >
-              <NavBarSideLink
-                href="/admin-db/manage-db-backups"
-                label="Backups"
-                style={{ padding: "0.25rem" }}
-                currentPath={currentPath}
-              />
-              <NavBarSideLink
-                href="/admin-db/manage-db-uploads"
-                label="Uploads"
-                style={{ padding: "0.25rem" }}
-                currentPath={currentPath}
-              />
-
-              <NavBarSideLink
-                href="/admin-db/manage-db-deletes"
-                label="Deletes"
-                style={{ padding: "0.25rem" }}
-                currentPath={currentPath}
-              />
-            </NavBarSideDropdown>
-          )}
-
-          {/* Admin General */}
-          {userReducer.isAdmin && (
-            <NavBarSideDropdown
-              iconFilenameAndPath="/images/menu/user-tie-solid-white.svg"
-              label="Admin"
-              currentPath={currentPath}
-              // toggleFunction={() => dispatch(toggleNavExpandAdminGeneral())}
               toggleFunction={() =>
-                dispatch(toggleNavExpandItem("AdminGeneral"))
+                dispatch(toggleNavExpandItem("GetArticles"))
               }
-              expanded={userReducer.navExpandObject.AdminGeneral}
+              expanded={userReducer.navExpandObject.GetArticles}
             >
               <NavBarSideLink
-                href="/admin-general/manage-users"
-                label="Users"
+                href="/articles/get-newsapi"
+                style={{ padding: "0.25rem" }}
+                label="News API"
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/articles/get-gnews"
+                style={{ padding: "0.25rem" }}
+                label="GNews"
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/articles/get-newsdataio"
+                style={{ padding: "0.25rem" }}
+                label="NewsDataIO"
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/articles/automation"
+                style={{ padding: "0.25rem" }}
+                label="Automation & Browser Extension"
+                currentPath={currentPath}
+              />
+            </NavBarSideDropdown>
+
+            {/* Manage Articles */}
+            <NavBarSideDropdown
+              iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+              label="Manage Articles"
+              currentPath={currentPath}
+              // toggleFunction={() => dispatch(toggleNavExpandManageArticles())}
+              toggleFunction={() =>
+                dispatch(toggleNavExpandItem("ManageArticles"))
+              }
+              expanded={userReducer.navExpandObject.ManageArticles}
+            >
+              <NavBarSideLink
+                href="/articles/review"
+                // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+                label="Review Articles"
                 style={{ padding: "0.25rem" }}
                 currentPath={currentPath}
               />
               <NavBarSideLink
-                href="/admin-general/manage-news-aggregators"
-                label="News Aggregators"
+                href="/articles/add-delete"
+                // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+                label="Add / Delete Article"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/articles/requests-analysis"
+                // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
+                label="Requests Analysis"
                 style={{ padding: "0.25rem" }}
                 currentPath={currentPath}
               />
             </NavBarSideDropdown>
-          )}
 
-          <NavBarSideLink
-            href="/login"
-            iconFilenameAndPath="/images/menu/logout.svg"
-            label="Logout"
-            onEnterFunction={() => dispatch(logoutUser())}
-            currentPath={currentPath}
-          />
+            {/* Reports & Analysis */}
+            <NavBarSideDropdown
+              iconFilenameAndPath="/images/menu/file-invoice-solid.svg"
+              label="Reports & Analysis"
+              currentPath={currentPath}
+              // toggleFunction={() => dispatch(toggleNavExpandReportsAnalysis())}
+              toggleFunction={() =>
+                dispatch(toggleNavExpandItem("ReportsAnalysis"))
+              }
+              expanded={userReducer.navExpandObject.ReportsAnalysis}
+            >
+              <NavBarSideLink
+                href="/reports-analysis/reports"
+                label="Reports"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/reports-analysis/analysis-requests"
+                label="Requests Analysis"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+              />
+              <NavBarSideLink
+                href="/reports-analysis/analysis-counts-by-state"
+                label="Counts By State Analysis"
+                style={{ padding: "0.25rem" }}
+                currentPath={currentPath}
+                dateAdded="2025-05-28"
+              />
+            </NavBarSideDropdown>
 
+            {/* Manage DB */}
+            {userReducer.isAdmin && (
+              <NavBarSideDropdown
+                iconFilenameAndPath="/images/menu/database-solid.svg"
+                label="Manage DB"
+                currentPath={currentPath}
+                toggleFunction={() => dispatch(toggleNavExpandItem("ManageDb"))}
+                expanded={userReducer.navExpandObject.ManageDb}
+              >
+                <NavBarSideLink
+                  href="/admin-db/manage-db-backups"
+                  label="Backups"
+                  style={{ padding: "0.25rem" }}
+                  currentPath={currentPath}
+                />
+                <NavBarSideLink
+                  href="/admin-db/manage-db-uploads"
+                  label="Uploads"
+                  style={{ padding: "0.25rem" }}
+                  currentPath={currentPath}
+                />
+
+                <NavBarSideLink
+                  href="/admin-db/manage-db-deletes"
+                  label="Deletes"
+                  style={{ padding: "0.25rem" }}
+                  currentPath={currentPath}
+                />
+              </NavBarSideDropdown>
+            )}
+
+            {/* Admin General */}
+            {userReducer.isAdmin && (
+              <NavBarSideDropdown
+                iconFilenameAndPath="/images/menu/user-tie-solid-white.svg"
+                label="Admin"
+                currentPath={currentPath}
+                // toggleFunction={() => dispatch(toggleNavExpandAdminGeneral())}
+                toggleFunction={() =>
+                  dispatch(toggleNavExpandItem("AdminGeneral"))
+                }
+                expanded={userReducer.navExpandObject.AdminGeneral}
+              >
+                <NavBarSideLink
+                  href="/admin-general/manage-users"
+                  label="Users"
+                  style={{ padding: "0.25rem" }}
+                  currentPath={currentPath}
+                />
+                <NavBarSideLink
+                  href="/admin-general/manage-news-aggregators"
+                  label="News Aggregators"
+                  style={{ padding: "0.25rem" }}
+                  currentPath={currentPath}
+                />
+              </NavBarSideDropdown>
+            )}
+
+            <NavBarSideLink
+              href="/login"
+              iconFilenameAndPath="/images/menu/logout.svg"
+              label="Logout"
+              onEnterFunction={() => dispatch(logoutUser())}
+              currentPath={currentPath}
+            />
+          </div>
           <div className={styles.divCredits}>
             <Link
               href="https://www.flaticon.com/free-icons/new"
