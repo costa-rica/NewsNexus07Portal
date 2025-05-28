@@ -193,14 +193,14 @@ export default function TemplateView({ children }) {
               currentPath={currentPath}
             />
             <NavBarSideLink
-              href="/reports-analysis/requests-analysis"
+              href="/reports-analysis/analysis-requests"
               label="Requests Analysis"
               style={{ padding: "0.25rem" }}
               currentPath={currentPath}
             />
             <NavBarSideLink
               href="/reports-analysis/analysis-counts-by-state"
-              label="Analysis Counts By State"
+              label="Counts By State Analysis"
               style={{ padding: "0.25rem" }}
               currentPath={currentPath}
             />

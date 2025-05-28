@@ -10,10 +10,10 @@ export default function ReportsAnalysisNavigator() {
       return import(`../../components/ReportsAndAnalysis/Reports`).catch(
         () => () => <p>Reports Not Found</p>
       );
-    } else if (navigator === "requests-analysis") {
+    } else if (navigator === "analysis-requests") {
       return import(
-        `../../components/ReportsAndAnalysis/RequestsAnalysis`
-      ).catch(() => () => <p>RequestsAnalysis Not Found</p>);
+        `../../components/ReportsAndAnalysis/AnalysisRequests`
+      ).catch(() => () => <p>AnalysisRequests Not Found</p>);
     } else if (navigator === "analysis-counts-by-state") {
       return import(
         `../../components/ReportsAndAnalysis/AnalysisCountsByState`

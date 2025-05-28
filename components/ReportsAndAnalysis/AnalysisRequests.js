@@ -4,11 +4,11 @@ import Table01 from "../common/Tables/Table01";
 import Table02Small from "../common/Tables/Table02Small";
 import { createColumnHelper } from "@tanstack/react-table";
 import TemplateView from "../common/TemplateView";
-import styles from "../../styles/reportsAndAnalysis/RequestsAnalysis.module.css";
+import styles from "../../styles/reportsAndAnalysis/AnalysisRequests.module.css";
 import { useDispatch } from "react-redux";
 import { updateRequestsAnalysisTableBodyParams } from "../../reducers/user";
 
-export default function RequestsAnalysis() {
+export default function AnalysisRequests() {
   const userReducer = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [requestsArray, setRequestsArray] = useState([]);
@@ -119,13 +119,26 @@ export default function RequestsAnalysis() {
   const downloadTableSpreadsheet = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/download/table-approved-by-request`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/analysis/download-excel-file/table-approved-by-request.xlsx`,
         {
           headers: {
             Authorization: `Bearer ${userReducer.token}`,
+            "Content-Type": "application/json", // <-- This line was missing!
           },
+          method: "POST",
+          body: JSON.stringify({
+            arrayToExport: requestsArray,
+          }),
         }
       );
+      // const response = await fetch(
+      //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/download/table-approved-by-request`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${userReducer.token}`,
+      //     },
+      //   }
+      // );
 
       console.log(`Response status: ${response.status}`);
 
