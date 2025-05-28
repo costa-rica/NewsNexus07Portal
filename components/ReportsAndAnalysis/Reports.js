@@ -399,7 +399,12 @@ export default function Reports() {
           }}
           className={styles.btnDownload}
         >
-          <FontAwesomeIcon icon={faDownload} className={styles.faDownload} />
+          {/* <FontAwesomeIcon icon={faDownload} className={styles.faDownload} /> */}
+          <img
+            src="/images/buttons/reports/download-solid.svg"
+            alt="Download"
+            className={styles.faDownload}
+          />
         </button>
       ),
     }),
@@ -414,7 +419,12 @@ export default function Reports() {
           }}
           className={styles.btnDelete}
         >
-          <FontAwesomeIcon icon={faTrash} className={styles.faTrash} />
+          {/* <FontAwesomeIcon icon={faTrash} className={styles.faTrash} /> */}
+          <img
+            src="/images/buttons/reports/trash-solid.svg"
+            alt="Delete"
+            className={styles.faTrash}
+          />
         </button>
       ),
     }),
