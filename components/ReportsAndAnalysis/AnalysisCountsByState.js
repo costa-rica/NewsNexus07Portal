@@ -90,8 +90,6 @@ export default function AnalysisCountsByState() {
   }, []);
 
   const downloadTableSpreadsheet = async () => {
-    console.log("---- Abotu to send articleCountByStateArray to server");
-    console.log(articleCountByStateArray);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/analysis/download-excel-file/table-approved-by-state.xlsx`,
