@@ -444,15 +444,6 @@ export default function Reports() {
           <button
             onClick={() => {
               setSelectedArticle(row.original);
-              // setModalInformationContent({
-              //   title: "Article Report Contracts",
-              //   content: JSON.stringify(
-              //     row.original.ArticleReportContracts,
-              //     null,
-              //     2
-              //   ),
-              // });
-              // setIsOpenModalInformation(true);
               setIsOpenModalArticleReferenceNumber(true);
             }}
             style={{
@@ -460,7 +451,10 @@ export default function Reports() {
               width: "100%",
             }}
           >
-            {row.original.articleReferenceNumberInReport || "Missing Ref #"}
+            {row.original.ArticleReportContracts?.[0]
+              .articleReferenceNumberInReport || "Missing Ref #"}
+            {/* {JSON.stringify(row.original.ArticleReportContracts) ||
+              "Missing Ref #"} */}
           </button>
         </div>
       ),
@@ -586,7 +580,8 @@ export default function Reports() {
               width: "100%",
             }}
           >
-            {row.original.articleReferenceNumberInReport || "Missing Ref #"}
+            {row.original.ArticleReportContracts?.[0]
+              .articleReferenceNumberInReport || "Missing Ref #"}
           </button>
         </div>
       ),
