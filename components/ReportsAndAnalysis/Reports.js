@@ -451,10 +451,12 @@ export default function Reports() {
               width: "100%",
             }}
           >
-            {row.original.ArticleReportContracts?.[0]
-              .articleReferenceNumberInReport || "Missing Ref #"}
-            {/* {JSON.stringify(row.original.ArticleReportContracts) ||
-              "Missing Ref #"} */}
+            {/* {row.original.ArticleReportContracts?.[0]
+              .articleReferenceNumberInReport || "Missing Ref #"} */}
+            {row.original.ArticleReportContracts?.length > 0
+              ? row.original.ArticleReportContracts[0]
+                  .articleReferenceNumberInReport
+              : "Missing Ref #"}
           </button>
         </div>
       ),
@@ -580,8 +582,12 @@ export default function Reports() {
               width: "100%",
             }}
           >
-            {row.original.ArticleReportContracts?.[0]
-              .articleReferenceNumberInReport || "Missing Ref #"}
+            {/* {row.original.ArticleReportContracts?.[0]
+              .articleReferenceNumberInReport || "Missing Ref #"} */}
+            {row.original.ArticleReportContracts?.length > 0
+              ? row.original.ArticleReportContracts[0]
+                  .articleReferenceNumberInReport
+              : "Missing Ref #"}
           </button>
         </div>
       ),
