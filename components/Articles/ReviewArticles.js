@@ -643,6 +643,51 @@ export default function ReviewArticles() {
     return returnFlag;
   });
 
+  const handleUpdateArticleContent = async () => {
+    try {
+      const bodyObj = {
+        articleId: selectedArticle.id,
+        contentToUpdate: selectedArticle.content,
+      };
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/update-approved`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userReducer.token}`,
+          },
+          body: JSON.stringify(bodyObj),
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+      let resJson = null;
+      const contentType = response.headers.get("Content-Type");
+
+      if (contentType?.includes("application/json")) {
+        resJson = await response.json();
+      } else {
+        alert("There was an error");
+      }
+
+      if (resJson.result) {
+        setIsOpenModalInformation(true);
+        setModalInformationContent({
+          title: "Success",
+          content: "Updated article content in report.",
+        });
+      }
+    } catch (error) {
+      setIsOpenModalInformation(true);
+      setModalInformationContent({
+        title: "Error updating article content",
+        content: error.message,
+      });
+    }
+  };
+
   return (
     <TemplateView>
       <main className={styles.main}>
@@ -768,6 +813,16 @@ export default function ReviewArticles() {
             >
               {selectedArticle?.isApproved ? "Un-approve" : "Approve"}
             </button>
+            {selectedArticle?.isApproved && (
+              <button
+                className={styles.btnSubmit}
+                onClick={() => {
+                  handleUpdateArticleContent();
+                }}
+              >
+                Update Content
+              </button>
+            )}
           </div>
         </div>
         <div className={styles.divMainBottom}>
