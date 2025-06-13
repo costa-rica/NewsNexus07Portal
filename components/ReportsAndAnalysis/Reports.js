@@ -404,6 +404,22 @@ export default function Reports() {
       ),
     }),
     columnHelper.display({
+      id: "recreate",
+      cell: (info) => (
+        <button
+          onClick={() => {
+            // fetchReportZipFile(info.row.original.id);
+
+            handleRecreateReport(info.row.original.id);
+          }}
+          className={styles.btnDownload}
+        >
+          {/* <span className={styles.faDownload} /> */}
+          recreate
+        </button>
+      ),
+    }),
+    columnHelper.display({
       id: "delete",
       // header: "Delete",
       cell: (info) => (
@@ -663,6 +679,30 @@ export default function Reports() {
     });
 
     dispatch(updateApprovedArticlesArray(updatedArray));
+  };
+
+  const handleRecreateReport = async (reportId) => {
+    // alert(JSON.stringify(info.row.original, null, 2));
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/recreate/${reportId}`,
+        {
+          headers: { Authorization: `Bearer ${userReducer.token}` },
+        }
+      );
+
+      console.log(`Response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server Error: ${errorText}`);
+      }
+      const resJson = await response.json();
+      console.log(resJson);
+      alert(JSON.stringify(resJson.report, null, 2));
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+    }
   };
 
   return (
