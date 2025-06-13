@@ -703,6 +703,7 @@ export default function Reports() {
       }
       const resJson = await response.json();
       console.log(resJson);
+      fetchReportsList();
       setIsOpenModalInformation(true);
       setModalInformationContent({
         title: "Report Recreated",
