@@ -683,6 +683,10 @@ export default function Reports() {
 
   const handleRecreateReport = async (reportId) => {
     // alert(JSON.stringify(info.row.original, null, 2));
+    setLoadingComponents((prev) => ({
+      ...prev,
+      pageLoading: true,
+    }));
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/recreate/${reportId}`,
@@ -699,10 +703,18 @@ export default function Reports() {
       }
       const resJson = await response.json();
       console.log(resJson);
-      alert(JSON.stringify(resJson.report, null, 2));
+      setIsOpenModalInformation(true);
+      setModalInformationContent({
+        title: "Report Recreated",
+        content: `Report ID ${resJson.newReportId} successfully created. This is an updated version of the Report ID ${resJson.originalReportId} submitted on ${resJson.originalReportSubmittedDate}.`,
+      });
     } catch (error) {
       console.error("Error fetching data:", error.message);
     }
+    setLoadingComponents((prev) => ({
+      ...prev,
+      pageLoading: false,
+    }));
   };
 
   return (
