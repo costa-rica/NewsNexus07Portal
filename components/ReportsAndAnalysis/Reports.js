@@ -267,8 +267,8 @@ export default function Reports() {
         });
         // setApprovedArticlesArray(tempArray);
         dispatch(updateApprovedArticlesArray(tempArray));
-        // console.log("-- articles result.articlesArray --");
-        // console.log(tempArray);
+        console.log("-- articles result.articlesArray --");
+        console.log(tempArray);
       } else {
         // setApprovedArticlesArray([]);
         dispatch(updateApprovedArticlesArray([]));
@@ -437,21 +437,21 @@ export default function Reports() {
     }),
   ];
 
-  // Helper: Check if article has been rejected at least once
-  const articleHasBeenRejectedAtLeastOnce = (article) => {
-    let articleAcceptedByCpsc = true;
+  // // Helper: Check if article has been rejected at least once
+  // const articleHasBeenRejectedAtLeastOnce = (article) => {
+  //   let articleAcceptedByCpsc = true;
 
-    contract.articleAcceptedByCpsc?.forEach((contract) => {
-      if (contract.articleAcceptedByCpsc === 0) {
-        articleAcceptedByCpsc = false;
-      }
-      if (article.id === 96) {
-        console.log(contract.articleAcceptedByCpsc);
-      }
-    });
+  //   contract.articleAcceptedByCpsc?.forEach((contract) => {
+  //     if (contract.articleAcceptedByCpsc === 0) {
+  //       articleAcceptedByCpsc = false;
+  //     }
+  //     if (article.id === 96) {
+  //       console.log(contract.articleAcceptedByCpsc);
+  //     }
+  //   });
 
-    return articleAcceptedByCpsc;
-  };
+  //   return articleAcceptedByCpsc;
+  // };
 
   // Table: Approved Articles (Bottom)
   const columnsApprovedArticles = [
@@ -517,10 +517,12 @@ export default function Reports() {
               setIsOpenModalReportRejected(true);
             }}
             className={`${styles.btn} ${
-              articleHasBeenRejectedAtLeastOnce(row.original) ? "" : "btnRed"
+              // articleHasBeenRejectedAtLeastOnce(row.original) ? "" : "btnRed"
+              row.original.articleHasBeenAcceptedByAll ? "" : "btnRed"
             }`}
           >
-            {articleHasBeenRejectedAtLeastOnce(row.original) ? "Yes" : "No"}
+            {/* {articleHasBeenRejectedAtLeastOnce(row.original) ? "Yes" : "No"} */}
+            {row.original.articleHasBeenAcceptedByAll ? "Yes" : "No"}
           </button>
         </div>
       ),
@@ -649,10 +651,12 @@ export default function Reports() {
               setIsOpenModalReportRejected(true);
             }}
             className={`${styles.btn} ${
-              articleHasBeenRejectedAtLeastOnce(row.original) ? "" : "btnRed"
+              // articleHasBeenRejectedAtLeastOnce(row.original) ? "" : "btnRed"
+              row.original.articleHasBeenAcceptedByAll ? "" : "btnRed"
             }`}
           >
-            {articleHasBeenRejectedAtLeastOnce(row.original) ? "Yes" : "No"}
+            {/* {articleHasBeenRejectedAtLeastOnce(row.original) ? "Yes" : "No"} */}
+            {row.original.articleHasBeenAcceptedByAll ? "Yes" : "No"}
           </button>
         </div>
       ),
