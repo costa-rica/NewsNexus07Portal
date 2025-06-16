@@ -75,7 +75,7 @@ export default function Reports() {
         return;
       }
       const resJson = await response.json();
-      console.log(resJson);
+      // console.log(resJson);
       setReportsArray(resJson.reportsArray);
       // setRefreshTableWarning(false);
     } catch (error) {
@@ -108,9 +108,9 @@ export default function Reports() {
       // Extract filename from Content-Disposition header
       const disposition = response.headers.get("Content-Disposition");
       let filename = "report.zip";
-      console.log(response.headers);
+      // console.log(response.headers);
       if (disposition && disposition.includes("filename=")) {
-        console.log(`----> Filename: ${disposition}`);
+        // console.log(`----> Filename: ${disposition}`);
         filename = disposition
           .split("filename=")[1]
           .replace(/['"]/g, "")
@@ -243,7 +243,7 @@ export default function Reports() {
         }
       );
 
-      console.log(`Response status: ${response.status}`);
+      // console.log(`Response status: ${response.status}`);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -251,7 +251,7 @@ export default function Reports() {
       }
 
       const result = await response.json();
-      console.log("Fetched Data:", result);
+      // console.log("Fetched Data:", result);
 
       setLoadingTimes((prev) => ({
         ...prev,
@@ -267,7 +267,8 @@ export default function Reports() {
         });
         // setApprovedArticlesArray(tempArray);
         dispatch(updateApprovedArticlesArray(tempArray));
-        console.log(tempArray);
+        // console.log("-- articles result.articlesArray --");
+        // console.log(tempArray);
       } else {
         // setApprovedArticlesArray([]);
         dispatch(updateApprovedArticlesArray([]));
@@ -310,7 +311,7 @@ export default function Reports() {
   };
 
   const sendNewReportDate = async (dateSubmittedToClient) => {
-    console.log(dateSubmittedToClient);
+    // console.log(dateSubmittedToClient);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/update-submitted-to-client-date/${selectedReport.id}`,
@@ -438,9 +439,18 @@ export default function Reports() {
 
   // Helper: Check if article has been rejected at least once
   const articleHasBeenRejectedAtLeastOnce = (article) => {
-    return article.ArticleReportContracts?.some(
-      (contract) => contract.articleAcceptedByCpsc === false
-    );
+    let articleAcceptedByCpsc = true;
+
+    contract.articleAcceptedByCpsc?.forEach((contract) => {
+      if (contract.articleAcceptedByCpsc === 0) {
+        articleAcceptedByCpsc = false;
+      }
+      if (article.id === 96) {
+        console.log(contract.articleAcceptedByCpsc);
+      }
+    });
+
+    return articleAcceptedByCpsc;
   };
 
   // Table: Approved Articles (Bottom)
@@ -507,10 +517,10 @@ export default function Reports() {
               setIsOpenModalReportRejected(true);
             }}
             className={`${styles.btn} ${
-              articleHasBeenRejectedAtLeastOnce(row.original) ? "btnRed" : ""
+              articleHasBeenRejectedAtLeastOnce(row.original) ? "" : "btnRed"
             }`}
           >
-            {articleHasBeenRejectedAtLeastOnce(row.original) ? "No" : "Yes"}
+            {articleHasBeenRejectedAtLeastOnce(row.original) ? "Yes" : "No"}
           </button>
         </div>
       ),
@@ -639,10 +649,10 @@ export default function Reports() {
               setIsOpenModalReportRejected(true);
             }}
             className={`${styles.btn} ${
-              articleHasBeenRejectedAtLeastOnce(row.original) ? "btnRed" : ""
+              articleHasBeenRejectedAtLeastOnce(row.original) ? "" : "btnRed"
             }`}
           >
-            {articleHasBeenRejectedAtLeastOnce(row.original) ? "No" : "Yes"}
+            {articleHasBeenRejectedAtLeastOnce(row.original) ? "Yes" : "No"}
           </button>
         </div>
       ),
@@ -702,7 +712,7 @@ export default function Reports() {
         throw new Error(`Server Error: ${errorText}`);
       }
       const resJson = await response.json();
-      console.log(resJson);
+      // console.log(resJson);
       fetchReportsList();
       setIsOpenModalInformation(true);
       setModalInformationContent({
