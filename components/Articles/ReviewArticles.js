@@ -78,9 +78,18 @@ export default function ReviewArticles() {
   // }, []);
 
   const handleTableRendered = () => {
+    if (!renderStartTimeRef.current) {
+      setLoadingTimes((prev) => ({
+        ...prev,
+        timeToRenderTable01InSeconds: "loading...",
+      }));
+      return;
+    }
+
     const loadTime = ((Date.now() - renderStartTimeRef.current) / 1000).toFixed(
       1
     );
+
     setLoadingTimes((prev) => ({
       ...prev,
       timeToRenderTable01InSeconds: `${loadTime} s`,
