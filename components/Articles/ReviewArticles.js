@@ -1,7 +1,7 @@
 import styles from "../../styles/articles/ReviewArticles.module.css";
 import TemplateView from "../common/TemplateView";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Table01 from "../common/Tables/Table01";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -35,6 +35,7 @@ export default function ReviewArticles() {
     timeToRenderResponseFromApiInSeconds: "loading...",
     timeToRenderTable01InSeconds: "loading...",
   });
+  const renderStartTimeRef = useRef(null); // inside component
   const [allowUpdateSelectedArticle, setAllowUpdateSelectedArticle] =
     useState(true);
 
@@ -76,8 +77,18 @@ export default function ReviewArticles() {
   //   }
   // }, []);
 
+  const handleTableRendered = () => {
+    const loadTime = ((Date.now() - renderStartTimeRef.current) / 1000).toFixed(
+      1
+    );
+    setLoadingTimes((prev) => ({
+      ...prev,
+      timeToRenderTable01InSeconds: `${loadTime} s`,
+    }));
+  };
+
   const fetchArticlesArray = async () => {
-    let startTime = null;
+    // let startTime = null;
     const bodyParams = {
       ...userReducer.articleTableBodyParams,
       // entityWhoCategorizesIdSemantic: 1,
@@ -111,8 +122,9 @@ export default function ReviewArticles() {
       const result = await response.json();
       console.log("Fetched Data:", result);
 
-      startTime = Date.now();
+      // startTime = Date.now();
       if (result.articlesArray && Array.isArray(result.articlesArray)) {
+        renderStartTimeRef.current = Date.now(); // ✅ store start time before render
         setArticlesArray(result.articlesArray);
         setLoadingTimes((prev) => ({
           ...prev,
@@ -132,13 +144,13 @@ export default function ReviewArticles() {
       table01: false,
     }));
 
-    const loadTimeLabel = `${
-      startTime ? ((Date.now() - startTime) / 1000).toFixed(1) : 0
-    } s`;
-    setLoadingTimes((prev) => ({
-      ...prev,
-      timeToRenderTable01InSeconds: loadTimeLabel,
-    }));
+    // const loadTimeLabel = `${
+    //   startTime ? ((Date.now() - startTime) / 1000).toFixed(1) : 0
+    // } s`;
+    // setLoadingTimes((prev) => ({
+    //   ...prev,
+    //   timeToRenderTable01InSeconds: loadTimeLabel,
+    // }));
   };
 
   const handleSelectArticleFromTable = async (article) => {
@@ -944,6 +956,7 @@ export default function ReviewArticles() {
               data={filteredArticlesArray}
               selectedRowId={selectedArticle?.id}
               loading={loadingComponents.table01}
+              onRendered={handleTableRendered}
             />
           </div>
         </div>

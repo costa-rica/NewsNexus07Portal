@@ -8,13 +8,14 @@ import {
   getFilteredRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Table01({
   data,
   columns,
   selectedRowId = null,
   loading = false,
+  onRendered = () => {}, // new optional prop
 }) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -40,6 +41,22 @@ export default function Table01({
     autoResetPageIndex: false, // ✅ ADD THIS
   });
   // {loading && <ModalLoading isVisible={true} sizeOfParent={true} />}
+  const hasRenderedRef = useRef(false);
+  // trigger callback once table is mounted
+  useEffect(() => {
+    if (!loading && !hasRenderedRef.current) {
+      hasRenderedRef.current = true;
+      requestAnimationFrame(() => {
+        requestIdleCallback(onRendered);
+      });
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (loading) {
+      hasRenderedRef.current = false;
+    }
+  }, [loading]);
 
   return loading ? (
     <div className={styles.divTableMain}>
