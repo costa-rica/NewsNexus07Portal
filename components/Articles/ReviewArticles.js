@@ -152,14 +152,6 @@ export default function ReviewArticles() {
       ...prev,
       table01: false,
     }));
-
-    // const loadTimeLabel = `${
-    //   startTime ? ((Date.now() - startTime) / 1000).toFixed(1) : 0
-    // } s`;
-    // setLoadingTimes((prev) => ({
-    //   ...prev,
-    //   timeToRenderTable01InSeconds: loadTimeLabel,
-    // }));
   };
 
   const handleSelectArticleFromTable = async (article) => {

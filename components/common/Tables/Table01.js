@@ -44,13 +44,13 @@ export default function Table01({
   const hasRenderedRef = useRef(false);
   // trigger callback once table is mounted
   useEffect(() => {
-    if (!loading && !hasRenderedRef.current) {
+    if (data.length > 0 && !hasRenderedRef.current) {
       hasRenderedRef.current = true;
       requestAnimationFrame(() => {
         requestIdleCallback(onRendered);
       });
     }
-  }, [loading]);
+  }, [data]);
 
   useEffect(() => {
     if (loading) {
