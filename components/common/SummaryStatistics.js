@@ -66,24 +66,18 @@ export default function SummaryStatistics() {
             : "N/A"}
         </div>
       </div>
-      {/* <div className={styles.divArticleSummaryStatisticsGroup}>
-        <div className={styles.divArticlesSummaryStatisticsTitle}>
-          Approved This week articles
-        </div>
-        <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.approvedThisWeek}
-        </div>
-      </div> */}
+
       <div className={styles.divArticleSummaryStatisticsGroup}>
         <div className={styles.divArticlesSummaryStatisticsTitle}>
           Approved articles
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.articlesIsApprovedCount}
+          {userReducer.articlesSummaryStatistics?.articlesIsApprovedCount.toLocaleString()}
           <div
             className={styles.divArticlesSummaryStatisticsMetricParenthesesDiv}
           >
-            (Week: {userReducer.articlesSummaryStatistics?.approvedThisWeek})
+            (Not in report:{" "}
+            {userReducer.articlesSummaryStatistics?.approvedButNotInReport})
           </div>
         </div>
       </div>
@@ -92,7 +86,7 @@ export default function SummaryStatistics() {
           Articles assigned to a state
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.hasStateAssigned}
+          {userReducer.articlesSummaryStatistics?.hasStateAssigned.toLocaleString()}
         </div>
       </div>
       <div className={styles.divArticleSummaryStatisticsGroup}>

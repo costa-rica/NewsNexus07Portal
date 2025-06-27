@@ -26,6 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 .divArticleSummaryStatisticsGroupTransparent {
   display: flex;
@@ -35,4 +36,6 @@
 }
 .divArticlesSummaryStatisticsMetricParenthesesDiv {
   font-size: 12px;
+  width: 100%;
+  text-align: center;
 }
