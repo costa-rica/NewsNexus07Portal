@@ -72,12 +72,20 @@ export default function SummaryStatistics() {
           Approved articles
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.articlesIsApprovedCount.toLocaleString()}
+          {/* {userReducer.articlesSummaryStatistics?.articleIsApprovedCount.toLocaleString() } */}
+          {userReducer.articlesSummaryStatistics?.articleIsApprovedCount != null
+            ? userReducer.articlesSummaryStatistics.articleIsApprovedCount.toLocaleString()
+            : "N/A"}
           <div
             className={styles.divArticlesSummaryStatisticsMetricParenthesesDiv}
           >
             (Not in report:{" "}
-            {userReducer.articlesSummaryStatistics?.approvedButNotInReport})
+            {userReducer.articlesSummaryStatistics
+              ?.approvedButNotInReportCount != null
+              ? userReducer.articlesSummaryStatistics
+                  .approvedButNotInReportCount
+              : "N/A"}
+            )
           </div>
         </div>
       </div>
@@ -86,15 +94,21 @@ export default function SummaryStatistics() {
           Articles assigned to a state
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.hasStateAssigned.toLocaleString()}
+          {/* {userReducer.articlesSummaryStatistics?.articleHasStateCount.toLocaleString()} */}
+          {userReducer.articlesSummaryStatistics?.articleHasStateCount != null
+            ? userReducer.articlesSummaryStatistics.articleHasStateCount.toLocaleString()
+            : "N/A"}
         </div>
       </div>
       <div className={styles.divArticleSummaryStatisticsGroup}>
         <div className={styles.divArticlesSummaryStatisticsTitle}>
-          Articles added Yesterday
+          Articles added this week
         </div>
         <div className={styles.divArticlesSummaryStatisticsMetric}>
-          {userReducer.articlesSummaryStatistics?.addedYesterday}
+          {
+            userReducer.articlesSummaryStatistics
+              ?.articlesSinceLastThursday20hEst
+          }
         </div>
       </div>
       <div className={styles.divArticleSummaryStatisticsGroupTransparent}>
