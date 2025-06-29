@@ -79,13 +79,23 @@ export default function SummaryStatistics() {
           <div
             className={styles.divArticlesSummaryStatisticsMetricParenthesesDiv}
           >
-            (Not in report:{" "}
-            {userReducer.articlesSummaryStatistics
-              ?.approvedButNotInReportCount != null
-              ? userReducer.articlesSummaryStatistics
-                  .approvedButNotInReportCount
-              : "N/A"}
-            )
+            <div className="tooltipWrapper">
+              (newly approved:{" "}
+              {userReducer.articlesSummaryStatistics
+                ?.approvedButNotInReportCount != null
+                ? userReducer.articlesSummaryStatistics
+                    .approvedButNotInReportCount
+                : "N/A"}
+              )
+              <span className="tooltipText">
+                {userReducer.articlesSummaryStatistics
+                  ?.approvedButNotInReportCount != null
+                  ? userReducer.articlesSummaryStatistics
+                      .approvedButNotInReportCount
+                  : "N/A"}{" "}
+                articles have been approved but not added to a report
+              </span>
+            </div>
           </div>
         </div>
       </div>
