@@ -634,10 +634,10 @@ export default function ReviewArticles() {
 
   const filteredArticlesArray = articlesArray.filter((article) => {
     let returnFlag = true;
-    if (userReducer.hideApproved) {
+    if (userReducer.articleTableBodyParams.returnOnlyIsNotApproved) {
       returnFlag = article.isApproved === false;
     }
-    if (userReducer.hideIrrelevant) {
+    if (userReducer.articleTableBodyParams.returnOnlyIsRelevant) {
       returnFlag = returnFlag && article.isRelevant === true;
     }
     return returnFlag;
@@ -891,25 +891,29 @@ export default function ReviewArticles() {
                 <div className={styles.divParametersDetail}>
                   <button
                     className={`${styles.btnSubmitRequestTableParameters} ${
-                      userReducer.hideApproved ? styles.btnOpaque : ""
+                      userReducer.articleTableBodyParams.returnOnlyIsNotApproved
+                        ? styles.btnOpaque
+                        : ""
                     }`}
                     onClick={() => {
                       dispatch(toggleHideApproved());
                     }}
                   >
-                    {userReducer.hideApproved
+                    {userReducer.articleTableBodyParams.returnOnlyIsNotApproved
                       ? "Show Approved"
                       : "Hide Approved"}
                   </button>
                   <button
                     className={`${styles.btnSubmitRequestTableParameters} ${
-                      userReducer.hideIrrelevant ? styles.btnOpaque : ""
+                      userReducer.articleTableBodyParams.returnOnlyIsRelevant
+                        ? styles.btnOpaque
+                        : ""
                     }`}
                     onClick={() => {
                       dispatch(toggleHideIrrelevant());
                     }}
                   >
-                    {userReducer.hideIrrelevant
+                    {userReducer.articleTableBodyParams.returnOnlyIsRelevant
                       ? "Show Irrelevant"
                       : "Hide Irrelevant"}
                   </button>

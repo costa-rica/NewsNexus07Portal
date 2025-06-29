@@ -131,6 +131,9 @@ export default function SummaryStatistics() {
           Refresh
         </button>
       </div>
+      {/* <div className={styles.divArticleSummaryStatisticsGroupTransparent}>
+        {JSON.stringify(userReducer.articleTableBodyParams, null, 2)}
+      </div> */}
     </div>
   );
 }
