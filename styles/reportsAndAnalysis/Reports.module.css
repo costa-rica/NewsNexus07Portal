@@ -15,11 +15,11 @@
 }
 .divTop {
   display: flex;
-  height: 27rem;
+  /* height: 27rem; */
   gap: 1rem;
 }
 .divTopLeft {
-  height: 27rem;
+  /* height: 27rem; */
   padding: 1rem;
   border: 4px solid gray;
   border-radius: 0.5rem;
@@ -27,6 +27,7 @@
 .divReportTable {
   /* background-color: var(--off-white); */
   border-radius: 12px;
+  height: 100%;
 }
 .divTopRight {
   /* width: 50%; */

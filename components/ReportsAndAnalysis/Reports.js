@@ -437,22 +437,6 @@ export default function Reports() {
     }),
   ];
 
-  // // Helper: Check if article has been rejected at least once
-  // const articleHasBeenRejectedAtLeastOnce = (article) => {
-  //   let articleAcceptedByCpsc = true;
-
-  //   contract.articleAcceptedByCpsc?.forEach((contract) => {
-  //     if (contract.articleAcceptedByCpsc === 0) {
-  //       articleAcceptedByCpsc = false;
-  //     }
-  //     if (article.id === 96) {
-  //       console.log(contract.articleAcceptedByCpsc);
-  //     }
-  //   });
-
-  //   return articleAcceptedByCpsc;
-  // };
-
   // Table: Approved Articles (Bottom)
   const columnsApprovedArticles = [
     columnHelper.accessor("id", {
