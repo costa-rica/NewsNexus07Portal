@@ -13,6 +13,7 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import ModalLoading from "../modals/ModalLoading";
 
 export default function Table05ReportsExpandingRows({
   data,
@@ -22,6 +23,7 @@ export default function Table05ReportsExpandingRows({
   fetchReportZipFile,
   handleRecreateReport,
   setIsOpenAreYouSure,
+  loading = false,
 }) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [globalFilter, setGlobalFilter] = useState("");
@@ -190,7 +192,11 @@ export default function Table05ReportsExpandingRows({
     autoResetPageIndex: false,
   });
 
-  return (
+  return loading ? (
+    <div className={styles.divTableMain}>
+      <ModalLoading isVisible={true} sizeOfParent={true} />
+    </div>
+  ) : (
     <div className={styles.divTableMain}>
       <div className={styles.divTableButtonsAndInputs}>
         <div className={styles.divShowRows}>

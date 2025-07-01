@@ -38,7 +38,7 @@ export default function Reports() {
   const [loadingComponents, setLoadingComponents] = useState({
     table01: false,
     summaryStatistics: false,
-    table02SmallReports: false,
+    table05ReportsExpandingRows: false,
     pageLoading: false,
   });
   const [
@@ -83,7 +83,7 @@ export default function Reports() {
     try {
       setLoadingComponents((prev) => ({
         ...prev,
-        table02SmallReports: true,
+        table05ReportsExpandingRows: true,
       }));
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports`,
@@ -109,7 +109,7 @@ export default function Reports() {
     }
     setLoadingComponents((prev) => ({
       ...prev,
-      table02SmallReports: false,
+      table05ReportsExpandingRows: false,
     }));
   };
 
@@ -768,6 +768,7 @@ export default function Reports() {
                   fetchReportZipFile={fetchReportZipFile}
                   handleRecreateReport={handleRecreateReport}
                   setIsOpenAreYouSure={setIsOpenAreYouSure}
+                  loading={loadingComponents.table05ReportsExpandingRows}
                 />
               </div>
             </div>
