@@ -96,6 +96,65 @@ export default function Table05ReportsExpandingRows({
       },
     },
     {
+      id: "articleCount",
+      header: "Article Count",
+      cell: ({ row }) => {
+        const highestId = [...row.original.reportsArray]
+          .sort((a, b) => a.id - b.id)
+          .at(-1).id;
+        const reportHighestId = row.original.reportsArray.find(
+          (report) => report.id === highestId
+        );
+        return (
+          <div className={styles.divColumn}>
+            {reportHighestId?.ArticleReportContracts.length}
+          </div>
+        );
+      },
+    },
+    {
+      id: "manageReportButtons",
+      header: "",
+      cell: ({ row }) => {
+        const highestId = [...row.original.reportsArray]
+          .sort((a, b) => a.id - b.id)
+          .at(-1).id;
+        const reportHighestId = row.original.reportsArray.find(
+          (report) => report.id === highestId
+        );
+        return (
+          <div className={styles.divColumn}>
+            <button
+              onClick={() => {
+                fetchReportZipFile(reportHighestId.id);
+              }}
+              className={styles.btnDownload}
+            >
+              <span className={styles.faDownload} />
+            </button>
+            <button
+              onClick={() => {
+                handleRecreateReport(reportHighestId.id);
+              }}
+              className={styles.btnDownload}
+            >
+              recreate
+            </button>
+            <button
+              onClick={() => {
+                setIsOpenAreYouSure(true);
+                setSelectedReport(reportHighestId);
+              }}
+              className={styles.btnDelete}
+            >
+              <span className={styles.faTrash} />
+            </button>
+          </div>
+        );
+      },
+    },
+
+    {
       id: "expandIcon",
       header: "",
       cell: ({ row }) => {
@@ -189,46 +248,90 @@ export default function Table05ReportsExpandingRows({
               </tr>
               {expandedRows[row.index] && (
                 <tr className={styles.trExpandedRow}>
-                  <td colSpan={3}>
-                    {[...row.original.reportsArray]
-                      .sort((a, b) => a.id - b.id)
-                      .slice(0, -1)
-                      .map((report) => (
-                        <div
-                          key={report.id}
-                          // style={{ display: "inline" }}
-                          className={styles.divExpandedRow}
-                        >
-                          <span className={styles.spanExpandedRowColumn}>
-                            {row.original.crName}
-                          </span>
-                          <span className={styles.spanExpandedRowColumnTest}>
-                            <button
-                              onClick={() => {
-                                updateStagedArticlesTableWithReportArticles(
-                                  report.ArticleReportContracts.map(
-                                    (articleReportContract) =>
-                                      articleReportContract.articleId
-                                  )
-                                );
-                              }}
-                            >
-                              {report.id}
-                            </button>
-                          </span>
-                          <span className={styles.spanExpandedRowColumnEnd}>
-                            <button
-                              className={styles.btnDate}
-                              onClick={() => {
-                                setIsOpenModalReportDate(true);
-                                setSelectedReport(report);
-                              }}
-                            >
-                              {report.dateSubmittedToClient.split("T")[0]}
-                            </button>
-                          </span>
-                        </div>
-                      ))}
+                  <td colSpan={table.getAllColumns().length}>
+                    <table className={styles.tableRequest}>
+                      <tbody className={styles.tbodyExpandedRow}>
+                        {[...row.original.reportsArray]
+                          .sort((a, b) => a.id - b.id)
+                          .slice(0, -1)
+                          .map((report) => (
+                            <tr key={report.id}>
+                              {/* crName */}
+                              <td>
+                                <div className={styles.divExpandedRowColumn}>
+                                  {row.original.crName}
+                                </div>
+                              </td>
+                              {/* reportId */}
+                              <td>
+                                <div className={styles.divExpandedRowColumn}>
+                                  <button
+                                    onClick={() => {
+                                      updateStagedArticlesTableWithReportArticles(
+                                        report.ArticleReportContracts.map(
+                                          (arc) => arc.articleId
+                                        )
+                                      );
+                                    }}
+                                  >
+                                    {report.id}
+                                  </button>
+                                </div>
+                              </td>
+                              {/* dateSubmittedToClient */}
+                              <td>
+                                <div className={styles.divExpandedRowColumn}>
+                                  <button
+                                    className={styles.btnDate}
+                                    onClick={() => {
+                                      setIsOpenModalReportDate(true);
+                                      setSelectedReport(report);
+                                    }}
+                                  >
+                                    {report.dateSubmittedToClient.split("T")[0]}
+                                  </button>
+                                </div>
+                              </td>
+                              {/* articleCount */}
+                              <td>
+                                <div className={styles.divExpandedRowColumn}>
+                                  {report.ArticleReportContracts.length}
+                                </div>
+                              </td>
+                              {/* manageReportButtons */}
+                              <td>
+                                <button
+                                  onClick={() => {
+                                    fetchReportZipFile(report.id);
+                                  }}
+                                  className={styles.btnDownload}
+                                >
+                                  <span className={styles.faDownload} />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    handleRecreateReport(reportHighestId.id);
+                                  }}
+                                  className={styles.btnDownload}
+                                >
+                                  recreate
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setIsOpenAreYouSure(true);
+                                    setSelectedReport(reportHighestId);
+                                  }}
+                                  className={styles.btnDelete}
+                                >
+                                  <span className={styles.faTrash} />
+                                </button>
+                              </td>
+                              <td style={{ width: "1rem" }} />{" "}
+                              {/* blank for expandIcon column */}
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
                   </td>
                 </tr>
               )}
