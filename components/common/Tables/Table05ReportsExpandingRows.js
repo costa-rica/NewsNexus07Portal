@@ -13,7 +13,10 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function Table05ReportsExpandingRows({ data }) {
+export default function Table05ReportsExpandingRows({
+  data,
+  updateStagedArticlesTableWithReportArticles,
+}) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [globalFilter, setGlobalFilter] = useState("");
   const [expandedRows, setExpandedRows] = useState({});
@@ -30,6 +33,16 @@ export default function Table05ReportsExpandingRows({ data }) {
       accessorKey: "crName",
       header: "CR Name",
       cell: (info) => <div>{info.getValue()}</div>,
+    },
+    {
+      id: "reportId",
+      header: "Report ID",
+      cell: ({ row }) => {
+        const highestId = [...row.original.reportsArray]
+          .sort((a, b) => a.id - b.id)
+          .at(-1).id;
+        return <div>{highestId}</div>;
+      },
     },
     {
       id: "expandIcon",
@@ -115,8 +128,8 @@ export default function Table05ReportsExpandingRows({ data }) {
         </thead>
         <tbody>
           {table.getPaginationRowModel().rows.map((row) => (
-            <div key={row.id}>
-              <tr>
+            <>
+              <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -124,17 +137,24 @@ export default function Table05ReportsExpandingRows({ data }) {
                 ))}
               </tr>
               {expandedRows[row.index] && (
-                <tr>
-                  <td colSpan={columns.length}>
-                    <ul>
-                      {row.original.reportsArray.map((report) => (
-                        <li key={report.id}>Report ID: {report.id}</li>
+                <tr className={styles.expandedRow}>
+                  <td colSpan={3}>
+                    {[...row.original.reportsArray]
+                      .sort((a, b) => a.id - b.id)
+                      .slice(0, -1)
+                      .map((report) => (
+                        <div
+                          key={report.id}
+                          style={{ display: "flex", gap: "1rem" }}
+                        >
+                          <span>{row.original.crName}</span>
+                          <span>{report.id}</span>
+                        </div>
                       ))}
-                    </ul>
                   </td>
                 </tr>
               )}
-            </div>
+            </>
           ))}
         </tbody>
       </table>

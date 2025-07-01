@@ -750,7 +750,12 @@ export default function Reports() {
                   loading={loadingComponents.table02SmallReports}
                   // loading={true}
                 /> */}
-                <Table05ReportsExpandingRows data={reportsArrayNew} />
+                <Table05ReportsExpandingRows
+                  data={reportsArrayNew}
+                  updateStagedArticlesTableWithReportArticles={
+                    updateStagedArticlesTableWithReportArticles
+                  }
+                />
               </div>
             </div>
             <div className={styles.divTopRight}>

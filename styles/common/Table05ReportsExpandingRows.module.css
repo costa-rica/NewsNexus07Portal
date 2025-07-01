@@ -63,3 +63,7 @@
 .approvedRow {
   background-color: var(--green-approved-article);
 }
+
+.expandedRow {
+  background-color: #f0f0f0;
+}
