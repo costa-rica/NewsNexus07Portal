@@ -258,7 +258,9 @@ export default function Table05ReportsExpandingRows({
                             <tr key={report.id}>
                               {/* crName */}
                               <td>
-                                <div className={styles.divExpandedRowColumn}>
+                                <div
+                                  className={styles.divExpandedRowColumnLeft}
+                                >
                                   {row.original.crName}
                                 </div>
                               </td>
@@ -326,7 +328,7 @@ export default function Table05ReportsExpandingRows({
                                   <span className={styles.faTrash} />
                                 </button>
                               </td>
-                              <td style={{ width: "1rem" }} />{" "}
+                              {/* <td style={{ width: "1rem" }} />{" "} */}
                               {/* blank for expandIcon column */}
                             </tr>
                           ))}

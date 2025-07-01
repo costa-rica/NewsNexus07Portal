@@ -18,6 +18,8 @@
 }
 .tableRequest {
   width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 .tableRequestHeader {
   border-bottom: 4px solid gray;
@@ -128,9 +130,9 @@
   background-image: url("/images/buttons/reports/trash-solid-red.svg");
 }
 
-/* Test */
+/* Expanded rows Nick added */
+
 .tbodyExpandedRow {
-  /* background-color: red; */
   margin: 0;
   padding: 0;
 }
@@ -139,8 +141,11 @@
   padding: 0;
 }
 
+.divExpandedRowColumnLeft {
+  width: 6rem;
+  padding: 0;
+}
 .divExpandedRowColumn {
-  /* background-color: green; */
   width: 7rem;
   padding: 0;
   text-align: center;
