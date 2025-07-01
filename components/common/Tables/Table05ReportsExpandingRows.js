@@ -19,6 +19,9 @@ export default function Table05ReportsExpandingRows({
   updateStagedArticlesTableWithReportArticles,
   setIsOpenModalReportDate,
   setSelectedReport,
+  fetchReportZipFile,
+  handleRecreateReport,
+  setIsOpenAreYouSure,
 }) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [globalFilter, setGlobalFilter] = useState("");
@@ -312,7 +315,7 @@ export default function Table05ReportsExpandingRows({
                                 </button>
                                 <button
                                   onClick={() => {
-                                    handleRecreateReport(reportHighestId.id);
+                                    handleRecreateReport(report.id);
                                   }}
                                   className={styles.btnDownload}
                                 >
@@ -321,7 +324,7 @@ export default function Table05ReportsExpandingRows({
                                 <button
                                   onClick={() => {
                                     setIsOpenAreYouSure(true);
-                                    setSelectedReport(reportHighestId);
+                                    setSelectedReport(report);
                                   }}
                                   className={styles.btnDelete}
                                 >

@@ -10,8 +10,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
 import { updateApprovedArticlesArray } from "../../reducers/user";
 import ModalReportDate from "../common/modals/ModalReportDate";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
+
 import ModalInformation from "../common/modals/ModalInformation";
 import ModalArticleRejected from "../common/modals/ModalArticleRejected";
 import ModalLoading from "../common/modals/ModalLoading";
@@ -24,7 +23,7 @@ export default function Reports() {
   const [isOpenReportType, setIsOpenReportType] = useState(false);
   const [isOpenAreYouSure, setIsOpenAreYouSure] = useState(false);
   const [reportsArray, setReportsArray] = useState([]);
-  const [reportsArrayNew, setReportsArrayNew] = useState([]);
+  // const [reportsArrayNew, setReportsArrayNew] = useState([]);
 
   const [selectedReport, setSelectedReport] = useState(null);
   const [isOpenModalReportDate, setIsOpenModalReportDate] = useState(false);
@@ -51,25 +50,25 @@ export default function Reports() {
     timeToRenderTable01InSeconds: "refresh ?",
   });
   useEffect(() => {
-    fetchReportsList();
+    fetchReportsArray();
     if (userReducer?.approvedArticlesArray?.length === 0) {
       fetchApprovedArticlesArray();
     }
-    fetchReportsArrayNew();
+    // fetchReportsArrayNew();
   }, []);
 
-  const fetchReportsArrayNew = async () => {
-    try {
-      // Simulate fetching new report data from static JSON
-      setReportsArrayNew(reportsTableDummyData.reportsArrayByCrName);
-      console.log(
-        "Dummy reports loaded:",
-        reportsTableDummyData.reportsArrayByCrName
-      );
-    } catch (error) {
-      console.error("Failed to load dummy reports:", error);
-    }
-  };
+  // const fetchReportsArrayNew = async () => {
+  //   try {
+  //     // Simulate fetching new report data from static JSON
+  //     setReportsArrayNew(reportsTableDummyData.reportsArrayByCrName);
+  //     console.log(
+  //       "Dummy reports loaded:",
+  //       reportsTableDummyData.reportsArrayByCrName
+  //     );
+  //   } catch (error) {
+  //     console.error("Failed to load dummy reports:", error);
+  //   }
+  // };
 
   const displayReportIdArray = () => {
     console.log(
@@ -80,14 +79,14 @@ export default function Reports() {
   };
 
   // This is what we had before
-  const fetchReportsList = async () => {
+  const fetchReportsArray = async () => {
     try {
       setLoadingComponents((prev) => ({
         ...prev,
         table02SmallReports: true,
       }));
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports/`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reports`,
         {
           method: "GET",
           headers: {
@@ -103,7 +102,7 @@ export default function Reports() {
       }
       const resJson = await response.json();
       // console.log(resJson);
-      setReportsArray(resJson.reportsArray);
+      setReportsArray(resJson.reportsArrayByCrName);
       // setRefreshTableWarning(false);
     } catch (error) {
       console.error("Error fetching reports:", error);
@@ -212,7 +211,7 @@ export default function Reports() {
       } else {
         alert("Report created successfully!");
       }
-      fetchReportsList();
+      fetchReportsArray();
     } catch (error) {
       console.error("Error creating report:", error);
     }
@@ -241,7 +240,7 @@ export default function Reports() {
       }
 
       // alert("Report deleted successfully!");
-      fetchReportsList();
+      fetchReportsArray();
     } catch (error) {
       console.error("Error deleting report:", error);
     }
@@ -321,10 +320,6 @@ export default function Reports() {
   const updateStagedArticlesTableWithReportArticles = (articlesIdArray) => {
     const articles = userReducer.approvedArticlesArray;
 
-    console.log("----------");
-    console.log(articlesIdArray);
-    console.log("----------");
-
     const updatedArray = articles.map((article) => {
       if (articlesIdArray.includes(article.id)) {
         return {
@@ -362,7 +357,7 @@ export default function Reports() {
       }
 
       alert("Report date updated successfully!");
-      fetchReportsList();
+      fetchReportsArray();
     } catch (error) {
       console.error("Error updating report date:", error);
     }
@@ -732,7 +727,7 @@ export default function Reports() {
       }
       const resJson = await response.json();
       // console.log(resJson);
-      fetchReportsList();
+      fetchReportsArray();
       setIsOpenModalInformation(true);
       setModalInformationContent({
         title: "Report Recreated",
@@ -753,9 +748,6 @@ export default function Reports() {
       <main className={styles.main}>
         <div className={styles.divMainSub}>
           <h1>Create Report</h1>
-          <button onClick={displayReportIdArray}>
-            Display Report Id Array --- testing purposes only
-          </button>
           <div className={styles.divTop}>
             <div className={styles.divTopLeft}>
               <div className={styles.divReportTable}>
@@ -765,13 +757,17 @@ export default function Reports() {
                   loading={loadingComponents.table02SmallReports}
                   // loading={true}
                 /> */}
+
                 <Table05ReportsExpandingRows
-                  data={reportsArrayNew}
+                  data={reportsArray}
                   updateStagedArticlesTableWithReportArticles={
                     updateStagedArticlesTableWithReportArticles
                   }
                   setIsOpenModalReportDate={setIsOpenModalReportDate}
                   setSelectedReport={setSelectedReport}
+                  fetchReportZipFile={fetchReportZipFile}
+                  handleRecreateReport={handleRecreateReport}
+                  setIsOpenAreYouSure={setIsOpenAreYouSure}
                 />
               </div>
             </div>

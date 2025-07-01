@@ -1,0 +1,117 @@
+{
+  "reportsArrayByCrName": [
+    {
+      "crName": "cr250423",
+      "reportsArray": [
+        {
+          "id": 7,
+          "dateSubmittedToClient": "2025-04-23T00:00:00.000Z",
+          "nameCrFormat": "cr250423",
+          "nameZipFile": "report_bundle_20250423.zip",
+          "userId": 2,
+          "createdAt": "2025-04-23T17:35:21.999Z",
+          "updatedAt": "2025-05-07T08:07:35.717Z",
+          "ArticleReportContracts": [
+            {
+              "id": 2,
+              "reportId": 7,
+              "articleId": 42,
+              "articleReferenceNumberInReport": "250424002",
+              "articleAcceptedByCpsc": false,
+              "articleRejectionReason": "",
+              "createdAt": "2025-04-23T17:35:22.008Z",
+              "updatedAt": "2025-04-23T17:35:22.008Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "crName": "cr250605",
+      "reportsArray": [
+        {
+          "id": 40,
+          "dateSubmittedToClient": "2025-06-05T00:00:00.000Z",
+          "nameCrFormat": "cr250605",
+          "nameZipFile": "report_bundle_40.zip",
+          "userId": 2,
+          "createdAt": "2025-06-05T15:20:32.448Z",
+          "updatedAt": "2025-06-05T15:36:10.829Z",
+          "ArticleReportContracts": [
+            {
+              "id": 637,
+              "reportId": 40,
+              "articleId": 5242,
+              "articleReferenceNumberInReport": "250605001",
+              "articleAcceptedByCpsc": false,
+              "articleRejectionReason": "incorrect article associated",
+              "createdAt": "2025-06-05T15:20:32.517Z",
+              "updatedAt": "2025-06-16T15:09:21.285Z"
+            },
+            {
+              "id": 638,
+              "reportId": 40,
+              "articleId": 27330,
+              "articleReferenceNumberInReport": "250605002",
+              "articleAcceptedByCpsc": true,
+              "articleRejectionReason": "",
+              "createdAt": "2025-06-05T15:20:32.519Z",
+              "updatedAt": "2025-06-05T15:20:32.519Z"
+            },
+            {
+              "id": 639,
+              "reportId": 40,
+              "articleId": 27953,
+              "articleReferenceNumberInReport": "250605003",
+              "articleAcceptedByCpsc": true,
+              "articleRejectionReason": "",
+              "createdAt": "2025-06-05T15:20:32.525Z",
+              "updatedAt": "2025-06-05T15:20:32.525Z"
+            }
+          ]
+        },
+        {
+          "id": 50,
+          "dateSubmittedToClient": "N/A",
+          "nameCrFormat": "cr250605",
+          "nameZipFile": "report_bundle_50.zip",
+          "userId": 1,
+          "createdAt": "2025-06-13T16:43:09.642Z",
+          "updatedAt": "2025-06-13T16:43:12.914Z",
+          "ArticleReportContracts": [
+            {
+              "id": 2118,
+              "reportId": 50,
+              "articleId": 5242,
+              "articleReferenceNumberInReport": "250605001",
+              "articleAcceptedByCpsc": true,
+              "articleRejectionReason": "",
+              "createdAt": "2025-06-13T16:43:10.010Z",
+              "updatedAt": "2025-06-13T16:43:10.010Z"
+            },
+            {
+              "id": 2150,
+              "reportId": 50,
+              "articleId": 27330,
+              "articleReferenceNumberInReport": "250605002",
+              "articleAcceptedByCpsc": true,
+              "articleRejectionReason": "",
+              "createdAt": "2025-06-13T16:43:10.130Z",
+              "updatedAt": "2025-06-13T16:43:10.130Z"
+            },
+            {
+              "id": 2103,
+              "reportId": 50,
+              "articleId": 27953,
+              "articleReferenceNumberInReport": "250605003",
+              "articleAcceptedByCpsc": true,
+              "articleRejectionReason": "",
+              "createdAt": "2025-06-13T16:43:09.958Z",
+              "updatedAt": "2025-06-13T16:43:09.958Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
