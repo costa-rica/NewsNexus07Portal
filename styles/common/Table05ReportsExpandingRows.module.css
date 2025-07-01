@@ -52,6 +52,31 @@
   font-size: 0.8em;
   color: #555;
 }
+.divColumn {
+  display: flex;
+  justify-content: center;
+  /* background-color: green; */
+  /* width: 3rem; */
+}
+.spanExpandedRowColumnTest {
+  display: flex;
+  justify-content: center;
+  background-color: green;
+  flex: 1;
+}
+.spanExpandedRowColumn {
+  text-align: center;
+}
+.spanExpandedRowColumnEnd {
+  width: 100%;
+  text-align: right;
+  /* display: flex;
+  justify-content: flex-end;
+  background-color: green; */
+}
+.divExpandedRow {
+  display: flex;
+}
 .selectedRow {
   background-color: #e6e6e6;
 }
@@ -64,6 +89,22 @@
   background-color: var(--green-approved-article);
 }
 
-.expandedRow {
+.trExpandedRow {
   background-color: #f0f0f0;
+}
+
+.btnDate {
+  background: none;
+  color: blue;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  text-align: center;
+}
+.btnDownload {
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0.25rem 1rem;
+  border: none;
 }

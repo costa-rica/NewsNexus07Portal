@@ -17,6 +17,8 @@ import React from "react";
 export default function Table05ReportsExpandingRows({
   data,
   updateStagedArticlesTableWithReportArticles,
+  setIsOpenModalReportDate,
+  setSelectedReport,
 }) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [globalFilter, setGlobalFilter] = useState("");
@@ -43,23 +45,52 @@ export default function Table05ReportsExpandingRows({
           .sort((a, b) => a.id - b.id)
           .at(-1).id;
         return (
-          <div>
-            <div>
-              <button
-                onClick={() =>
-                  updateStagedArticlesTableWithReportArticles(
-                    row.original.reportsArray
-                      .at(-1)
-                      .ArticleReportContracts.map(
-                        (articleReportContract) =>
-                          articleReportContract.articleId
-                      )
-                  )
-                }
-              >
-                {highestId}
-              </button>
-            </div>
+          <div className={styles.divColumn}>
+            <button
+              onClick={() =>
+                updateStagedArticlesTableWithReportArticles(
+                  row.original.reportsArray
+                    .at(-1)
+                    .ArticleReportContracts.map(
+                      (articleReportContract) => articleReportContract.articleId
+                    )
+                )
+              }
+            >
+              {highestId}
+            </button>
+          </div>
+        );
+      },
+    },
+    {
+      id: "dateSubmittedToClient",
+      header: () => (
+        <div>
+          Submitted
+          <div style={{ fontSize: "12px" }}>(ET)</div>
+        </div>
+      ),
+      cell: ({ row }) => {
+        const highestId = [...row.original.reportsArray]
+          .sort((a, b) => a.id - b.id)
+          .at(-1).id;
+        const reportHighestId = row.original.reportsArray.find(
+          (report) => report.id === highestId
+        );
+        return (
+          <div className={styles.divColumn}>
+            <button
+              className={styles.btnDate}
+              onClick={() => {
+                setIsOpenModalReportDate(true);
+                setSelectedReport(reportHighestId);
+              }}
+            >
+              {reportHighestId?.dateSubmittedToClient
+                ? reportHighestId?.dateSubmittedToClient.split("T")[0]
+                : "missing value"}
+            </button>
           </div>
         );
       },
@@ -157,7 +188,7 @@ export default function Table05ReportsExpandingRows({
                 ))}
               </tr>
               {expandedRows[row.index] && (
-                <tr className={styles.expandedRow}>
+                <tr className={styles.trExpandedRow}>
                   <td colSpan={3}>
                     {[...row.original.reportsArray]
                       .sort((a, b) => a.id - b.id)
@@ -165,10 +196,13 @@ export default function Table05ReportsExpandingRows({
                       .map((report) => (
                         <div
                           key={report.id}
-                          style={{ display: "flex", gap: "1rem" }}
+                          // style={{ display: "inline" }}
+                          className={styles.divExpandedRow}
                         >
-                          <span>{row.original.crName}</span>
-                          <span>
+                          <span className={styles.spanExpandedRowColumn}>
+                            {row.original.crName}
+                          </span>
+                          <span className={styles.spanExpandedRowColumnTest}>
                             <button
                               onClick={() => {
                                 updateStagedArticlesTableWithReportArticles(
@@ -180,6 +214,17 @@ export default function Table05ReportsExpandingRows({
                               }}
                             >
                               {report.id}
+                            </button>
+                          </span>
+                          <span className={styles.spanExpandedRowColumnEnd}>
+                            <button
+                              className={styles.btnDate}
+                              onClick={() => {
+                                setIsOpenModalReportDate(true);
+                                setSelectedReport(report);
+                              }}
+                            >
+                              {report.dateSubmittedToClient.split("T")[0]}
                             </button>
                           </span>
                         </div>

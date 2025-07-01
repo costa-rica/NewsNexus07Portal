@@ -770,6 +770,8 @@ export default function Reports() {
                   updateStagedArticlesTableWithReportArticles={
                     updateStagedArticlesTableWithReportArticles
                   }
+                  setIsOpenModalReportDate={setIsOpenModalReportDate}
+                  setSelectedReport={setSelectedReport}
                 />
               </div>
             </div>
