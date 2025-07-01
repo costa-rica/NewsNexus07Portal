@@ -71,6 +71,14 @@ export default function Reports() {
     }
   };
 
+  const displayReportIdArray = () => {
+    console.log(
+      reportsArrayNew[0].reportsArray[0].ArticleReportContracts.map(
+        (article) => article.id
+      )
+    );
+  };
+
   // This is what we had before
   const fetchReportsList = async () => {
     try {
@@ -312,6 +320,10 @@ export default function Reports() {
 
   const updateStagedArticlesTableWithReportArticles = (articlesIdArray) => {
     const articles = userReducer.approvedArticlesArray;
+
+    console.log("----------");
+    console.log(articlesIdArray);
+    console.log("----------");
 
     const updatedArray = articles.map((article) => {
       if (articlesIdArray.includes(article.id)) {
@@ -741,6 +753,9 @@ export default function Reports() {
       <main className={styles.main}>
         <div className={styles.divMainSub}>
           <h1>Create Report</h1>
+          <button onClick={displayReportIdArray}>
+            Display Report Id Array --- testing purposes only
+          </button>
           <div className={styles.divTop}>
             <div className={styles.divTopLeft}>
               <div className={styles.divReportTable}>

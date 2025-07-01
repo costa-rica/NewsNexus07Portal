@@ -12,6 +12,7 @@ import {
   faChevronLeft,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 export default function Table05ReportsExpandingRows({
   data,
@@ -41,7 +42,26 @@ export default function Table05ReportsExpandingRows({
         const highestId = [...row.original.reportsArray]
           .sort((a, b) => a.id - b.id)
           .at(-1).id;
-        return <div>{highestId}</div>;
+        return (
+          <div>
+            <div>
+              <button
+                onClick={() =>
+                  updateStagedArticlesTableWithReportArticles(
+                    row.original.reportsArray
+                      .at(-1)
+                      .ArticleReportContracts.map(
+                        (articleReportContract) =>
+                          articleReportContract.articleId
+                      )
+                  )
+                }
+              >
+                {highestId}
+              </button>
+            </div>
+          </div>
+        );
       },
     },
     {
@@ -128,7 +148,7 @@ export default function Table05ReportsExpandingRows({
         </thead>
         <tbody>
           {table.getPaginationRowModel().rows.map((row) => (
-            <>
+            <React.Fragment key={row.id}>
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id}>
@@ -148,13 +168,26 @@ export default function Table05ReportsExpandingRows({
                           style={{ display: "flex", gap: "1rem" }}
                         >
                           <span>{row.original.crName}</span>
-                          <span>{report.id}</span>
+                          <span>
+                            <button
+                              onClick={() => {
+                                updateStagedArticlesTableWithReportArticles(
+                                  report.ArticleReportContracts.map(
+                                    (articleReportContract) =>
+                                      articleReportContract.articleId
+                                  )
+                                );
+                              }}
+                            >
+                              {report.id}
+                            </button>
+                          </span>
                         </div>
                       ))}
                   </td>
                 </tr>
               )}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>
