@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import ModalYesNo from "../common/modals/ModalYesNo";
 import Table01 from "../common/Tables/Table01";
 import Table02Small from "../common/Tables/Table02Small";
+import Table05ReportsExpandingRows from "../common/Tables/Table05ReportsExpandingRows";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useDispatch } from "react-redux";
 import { updateApprovedArticlesArray } from "../../reducers/user";
@@ -15,6 +16,7 @@ import ModalInformation from "../common/modals/ModalInformation";
 import ModalArticleRejected from "../common/modals/ModalArticleRejected";
 import ModalLoading from "../common/modals/ModalLoading";
 import ModalArticleReferenceNumber from "../common/modals/ModalArticleReferenceNumber";
+import reportsTableDummyData from "../../reportsTableDummyData.json";
 
 export default function Reports() {
   const userReducer = useSelector((state) => state.user);
@@ -22,6 +24,8 @@ export default function Reports() {
   const [isOpenReportType, setIsOpenReportType] = useState(false);
   const [isOpenAreYouSure, setIsOpenAreYouSure] = useState(false);
   const [reportsArray, setReportsArray] = useState([]);
+  const [reportsArrayNew, setReportsArrayNew] = useState([]);
+
   const [selectedReport, setSelectedReport] = useState(null);
   const [isOpenModalReportDate, setIsOpenModalReportDate] = useState(false);
   const [isOpenModalInformation, setIsOpenModalInformation] = useState(false);
@@ -51,8 +55,23 @@ export default function Reports() {
     if (userReducer?.approvedArticlesArray?.length === 0) {
       fetchApprovedArticlesArray();
     }
+    fetchReportsArrayNew();
   }, []);
 
+  const fetchReportsArrayNew = async () => {
+    try {
+      // Simulate fetching new report data from static JSON
+      setReportsArrayNew(reportsTableDummyData.reportsArrayByCrName);
+      console.log(
+        "Dummy reports loaded:",
+        reportsTableDummyData.reportsArrayByCrName
+      );
+    } catch (error) {
+      console.error("Failed to load dummy reports:", error);
+    }
+  };
+
+  // This is what we had before
   const fetchReportsList = async () => {
     try {
       setLoadingComponents((prev) => ({
@@ -725,12 +744,13 @@ export default function Reports() {
           <div className={styles.divTop}>
             <div className={styles.divTopLeft}>
               <div className={styles.divReportTable}>
-                <Table02Small
+                {/* <Table02Small
                   columns={columnsReports}
                   data={reportsArray}
                   loading={loadingComponents.table02SmallReports}
                   // loading={true}
-                />
+                /> */}
+                <Table05ReportsExpandingRows data={reportsArrayNew} />
               </div>
             </div>
             <div className={styles.divTopRight}>
