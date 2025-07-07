@@ -50,6 +50,11 @@ body {
   display: inline-block;
   cursor: help;
 }
+.tooltipWrapperCursorNormal {
+  position: relative;
+  display: inline-block;
+  /* cursor: help; */
+}
 
 .tooltipText {
   visibility: hidden;
@@ -68,6 +73,10 @@ body {
 }
 
 .tooltipWrapper:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+}
+.tooltipWrapperCursorNormal:hover .tooltipText {
   visibility: visible;
   opacity: 1;
 }

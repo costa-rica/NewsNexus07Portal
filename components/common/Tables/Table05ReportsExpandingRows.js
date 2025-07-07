@@ -135,15 +135,23 @@ export default function Table05ReportsExpandingRows({
               }}
               className={styles.btnDownload}
             >
-              <span className={styles.faDownload} />
+              <div className="tooltipWrapperCursorNormal">
+                <span className={styles.faDownload} />
+
+                <span className="tooltipText">Download report</span>
+              </div>
             </button>
             <button
               onClick={() => {
                 handleRecreateReport(reportHighestId.id);
               }}
-              className={styles.btnDownload}
+              className={styles.btnRecreate}
             >
-              recreate
+              <div className="tooltipWrapperCursorNormal">
+                <span className={styles.faSquarePlus} />
+
+                <span className="tooltipText">Recreate report</span>
+              </div>
             </button>
             <button
               onClick={() => {
@@ -152,7 +160,11 @@ export default function Table05ReportsExpandingRows({
               }}
               className={styles.btnDelete}
             >
-              <span className={styles.faTrash} />
+              <div className="tooltipWrapperCursorNormal">
+                <span className={styles.faTrash} />
+
+                <span className="tooltipText">Delete report</span>
+              </div>
             </button>
           </div>
         );
@@ -329,34 +341,54 @@ export default function Table05ReportsExpandingRows({
                               </td>
                               {/* manageReportButtons */}
                               <td>
-                                <button
-                                  onClick={() => {
-                                    fetchReportZipFile(report.id);
-                                  }}
-                                  className={styles.btnDownload}
+                                <div
+                                  className={
+                                    styles.divExpandedManageReportsButtons
+                                  }
                                 >
-                                  <span className={styles.faDownload} />
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    handleRecreateReport(report.id);
-                                  }}
-                                  className={styles.btnDownload}
-                                >
-                                  recreate
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setIsOpenAreYouSure(true);
-                                    setSelectedReport(report);
-                                  }}
-                                  className={styles.btnDelete}
-                                >
-                                  <span className={styles.faTrash} />
-                                </button>
+                                  <button
+                                    onClick={() => {
+                                      fetchReportZipFile(report.id);
+                                    }}
+                                    className={styles.btnDownload}
+                                  >
+                                    <div className="tooltipWrapperCursorNormal">
+                                      <span className={styles.faDownload} />
+                                      <span className="tooltipText">
+                                        Download report
+                                      </span>
+                                    </div>
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      handleRecreateReport(report.id);
+                                    }}
+                                    className={styles.btnRecreate}
+                                  >
+                                    <div className="tooltipWrapperCursorNormal">
+                                      <span className={styles.faSquarePlus} />
+
+                                      <span className="tooltipText">
+                                        Recreate report
+                                      </span>
+                                    </div>
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setIsOpenAreYouSure(true);
+                                      setSelectedReport(report);
+                                    }}
+                                    className={styles.btnDelete}
+                                  >
+                                    <div className="tooltipWrapperCursorNormal">
+                                      <span className={styles.faTrash} />
+                                      <span className="tooltipText">
+                                        Delete report
+                                      </span>
+                                    </div>
+                                  </button>
+                                </div>
                               </td>
-                              {/* <td style={{ width: "1rem" }} />{" "} */}
-                              {/* blank for expandIcon column */}
                             </tr>
                           ))}
                       </tbody>
