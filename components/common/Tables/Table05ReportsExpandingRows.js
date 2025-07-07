@@ -225,6 +225,24 @@ export default function Table05ReportsExpandingRows({
             placeholder="Search..."
           />
         </div>
+        <div className={styles.divPagination}>
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<"} Prev
+          </button>
+          <span>
+            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount()}
+          </span>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next {">"}
+          </button>
+        </div>
       </div>
       <table className={styles.tableRequest}>
         <thead>
