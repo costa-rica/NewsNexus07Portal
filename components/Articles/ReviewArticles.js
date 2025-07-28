@@ -500,6 +500,41 @@ export default function ReviewArticles() {
         );
       },
     }),
+    columnHelper.accessor("locationClassifierScore", {
+      header: () => (
+        <div className="tooltipWrapper">
+          <span className={styles.columnHeaderSmall}>
+            Nexus Location Rating
+          </span>
+          <span className="tooltipText">
+            This score is a determination of how likely the events in this
+            article occurred in the United States.
+          </span>
+        </div>
+      ),
+      enableSorting: true,
+      cell: ({ getValue }) => {
+        const value = getValue();
+        const normalized = Math.max(0, Math.min(1, value)); // Clamp between 0 and 1
+        const green = Math.floor(normalized * 200); // max ~200 for readability
+        const color = `rgb(${128 - green / 3}, ${green}, ${128 - green / 3})`; // green to gray gradient
+        const percent = Math.round(normalized * 100);
+        return value === "N/A" ? (
+          <div className={styles.divColumnCenter}>
+            <span>N/A</span>
+          </div>
+        ) : (
+          <div className={styles.divColumnCenter}>
+            <span
+              className={styles.circleRating}
+              style={{ backgroundColor: color }}
+            >
+              <span className={styles.circleRatingText}>{percent}%</span>
+            </span>
+          </div>
+        );
+      },
+    }),
   ];
 
   const handleClickedValidateState = async () => {

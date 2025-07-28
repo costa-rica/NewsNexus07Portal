@@ -174,36 +174,7 @@ export default function AddDeleteArticle() {
       table01: false,
     }));
   };
-  // const fetchStateArray = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/states`
-  //     );
 
-  //     console.log(`Response status: ${response.status}`);
-
-  //     if (!response.ok) {
-  //       const errorText = await response.text(); // Log response text for debugging
-  //       throw new Error(`Server Error: ${errorText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log("Fetched Data (states):", result);
-
-  //     if (result.statesArray && Array.isArray(result.statesArray)) {
-  //       const tempStatesArray = result.statesArray.map((stateObj) => ({
-  //         ...stateObj,
-  //         selected: false,
-  //       }));
-  //       dispatch(updateStateArray(tempStatesArray));
-  //     } else {
-  //       dispatch(updateStateArray([]));
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error.message);
-  //     // dispatch(updateStateArray([]));
-  //   }
-  // };
   const updateStateArrayWithArticleState = (article) => {
     if (!article?.States) {
       // alert("There are no states associated with this article");
