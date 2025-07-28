@@ -57,26 +57,13 @@ export default function Reports() {
     // fetchReportsArrayNew();
   }, []);
 
-  // const fetchReportsArrayNew = async () => {
-  //   try {
-  //     // Simulate fetching new report data from static JSON
-  //     setReportsArrayNew(reportsTableDummyData.reportsArrayByCrName);
-  //     console.log(
-  //       "Dummy reports loaded:",
-  //       reportsTableDummyData.reportsArrayByCrName
-  //     );
-  //   } catch (error) {
-  //     console.error("Failed to load dummy reports:", error);
-  //   }
+  // const displayReportIdArray = () => {
+  //   console.log(
+  //     reportsArrayNew[0].reportsArray[0].ArticleReportContracts.map(
+  //       (article) => article.id
+  //     )
+  //   );
   // };
-
-  const displayReportIdArray = () => {
-    console.log(
-      reportsArrayNew[0].reportsArray[0].ArticleReportContracts.map(
-        (article) => article.id
-      )
-    );
-  };
 
   // This is what we had before
   const fetchReportsArray = async () => {
@@ -180,12 +167,6 @@ export default function Reports() {
         }
       );
 
-      // let resJson = null;
-      // const contentType = response.headers.get("Content-Type");
-
-      // if (contentType?.includes("application/json")) {
-      //   resJson = await response.json();
-      // }
       let resJson = null;
       try {
         resJson = await response.json();
@@ -654,13 +635,6 @@ export default function Reports() {
           <div className={styles.divTop}>
             <div className={styles.divTopLeft}>
               <div className={styles.divReportTable}>
-                {/* <Table02Small
-                  columns={columnsReports}
-                  data={reportsArray}
-                  loading={loadingComponents.table02SmallReports}
-                  // loading={true}
-                /> */}
-
                 <Table05ReportsExpandingRows
                   data={reportsArray}
                   updateStagedArticlesTableWithReportArticles={
