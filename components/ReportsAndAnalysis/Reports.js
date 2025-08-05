@@ -556,14 +556,15 @@ export default function Reports() {
       ),
     }),
 
-    columnHelper.accessor("States", {
+    columnHelper.accessor("stateAbbreviation", {
       header: "State",
       enableSorting: true,
       cell: ({ row }) => (
         <div className={styles.divColumnValueTitle}>
-          {row.original.States.length > 1
+          {row.original.stateAbbreviation}
+          {/* {row.original.States.length > 1
             ? row.original.States.map((state) => state.abbreviation).join(", ")
-            : row.original?.States[0]?.abbreviation}
+            : row.original?.States[0]?.abbreviation} */}
         </div>
       ),
     }),
