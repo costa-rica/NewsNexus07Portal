@@ -607,8 +607,22 @@ export default function ReviewArticles() {
 
   const handleApproveArticle = async () => {
     try {
+      // // selectedArticle?.isApproved ? "Un-approve" : "Approve"
+      let approvedStatusObject = {};
+      if (selectedArticle?.isApproved) {
+        approvedStatusObject = {
+          approvedStatus: "Un-approve",
+          isApproved: false,
+        };
+      } else {
+        approvedStatusObject = {
+          approvedStatus: "Approve",
+          isApproved: true,
+        };
+      }
+
       const bodyObj = {
-        isApproved: !selectedArticle.isApproved,
+        ...approvedStatusObject,
         headlineForPdfReport: selectedArticle.title,
         publicationNameForPdfReport: selectedArticle.publicationName,
         publicationDateForPdfReport: selectedArticle.publishedDate,
@@ -616,6 +630,17 @@ export default function ReviewArticles() {
         urlForPdfReport: selectedArticle.url,
         kmNotes: "",
       };
+
+      // /// ---- OBE ------
+      // const bodyObj = {
+      //   isApproved: !selectedArticle.isApproved,
+      //   headlineForPdfReport: selectedArticle.title,
+      //   publicationNameForPdfReport: selectedArticle.publicationName,
+      //   publicationDateForPdfReport: selectedArticle.publishedDate,
+      //   textForPdfReport: selectedArticle.content,
+      //   urlForPdfReport: selectedArticle.url,
+      //   kmNotes: "",
+      // };
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/approve/${selectedArticle.id}`,
