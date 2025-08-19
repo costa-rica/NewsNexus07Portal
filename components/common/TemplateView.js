@@ -169,13 +169,6 @@ export default function TemplateView({ children }) {
                 style={{ padding: "0.25rem" }}
                 currentPath={currentPath}
               />
-              <NavBarSideLink
-                href="/articles/requests-analysis"
-                // iconFilenameAndPath="/images/menu/newspaper-solid-white.svg"
-                label="Requests Analysis"
-                style={{ padding: "0.25rem" }}
-                currentPath={currentPath}
-              />
             </NavBarSideDropdown>
 
             {/* Reports & Analysis */}

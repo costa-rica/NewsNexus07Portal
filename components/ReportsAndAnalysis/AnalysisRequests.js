@@ -181,21 +181,28 @@ export default function AnalysisRequests() {
           <h2>Requests Analysis</h2>
           <div>
             <p>Summary of Approved Articles since:</p>
-            <input
-              type="date"
-              value={
-                userReducer.requestsAnalysisTableBodyParams?.dateRequestsLimit
-              }
-              className={dateModified ? styles.inputModified : ""}
-              onChange={(e) => {
-                setDateModified(true);
-                dispatch(
-                  updateRequestsAnalysisTableBodyParams({
-                    dateRequestsLimit: e.target.value,
-                  })
-                );
-              }}
-            />
+            <div className={styles.divDateInput}>
+              <input
+                type="date"
+                value={
+                  userReducer.requestsAnalysisTableBodyParams?.dateRequestsLimit
+                }
+                className={dateModified ? styles.inputModified : ""}
+                onChange={(e) => {
+                  setDateModified(true);
+                  dispatch(
+                    updateRequestsAnalysisTableBodyParams({
+                      dateRequestsLimit: e.target.value,
+                    })
+                  );
+                }}
+              />
+              {dateModified && (
+                <span className={styles.spanModifiedDateText}>
+                  * Refresh screen for changes to take effect
+                </span>
+              )}
+            </div>
             <br />
             <ul>
               <li>

@@ -17,6 +17,7 @@
   /* background-color: gray; */
   /* border: 4px dashed gray; */
 }
+
 .divDownloadControls {
   display: flex;
   gap: 1rem;
@@ -31,8 +32,18 @@
   border-radius: 0.3rem;
   border: 1px solid #ccc;
 }
+.divDateInput {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
 .inputModified {
   background-color: yellow;
+}
+.spanModifiedDateText {
+  font-size: small;
+  color: gray;
+  font-style: italic;
 }
 /* ----------
 
